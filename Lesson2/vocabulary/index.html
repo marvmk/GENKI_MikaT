@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Genki Lesson 2 Vocab - Full Complete</title>
+  <title>Genki Lesson 2 Vocabulary - 43 Words Perfect</title>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <style>
     .perspective-1000 { perspective: 1000px; }
@@ -15,15 +15,19 @@
 <body class="bg-slate-50 font-sans min-h-screen flex flex-col justify-between">
 
   <header class="bg-teal-600 text-white py-6 shadow-md text-center">
-    <h1 class="text-3xl md:text-4xl font-extrabold tracking-wide">Genki L2 Vocab</h1>
+    <h1 class="text-3xl md:text-4xl font-extrabold tracking-wide">Genki L2 Vocab (43 Words)</h1>
     <p class="text-sm md:text-base mt-2 opacity-90">100% Every Single Word from Lesson 2</p>
   </header>
 
   <main class="max-w-4xl w-full mx-auto p-4 flex-grow flex flex-col items-center justify-center">
     
     <div id="tabs" class="w-full flex flex-wrap justify-center gap-2 mb-6">
-      <button onclick="switchCategory('things')" id="tab-things" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-teal-600 text-white">Things (15)</button>
-      <button onclick="switchCategory('places')" id="tab-places" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">Places & Others (15)</button>
+      <button onclick="switchCategory('ko_so_a_do')" id="tab-ko_so_a_do" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-teal-600 text-white">
+        Demonstrative(15)
+      </button>
+      <button onclick="switchCategory('food_items')" id="tab-food_items" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">
+        foods & belongings(28)
+      </button>
     </div>
 
     <div class="text-xl md:text-2xl font-bold text-slate-600 mb-4">
@@ -31,6 +35,7 @@
     </div>
 
     <div class="w-full max-w-2xl h-[500px] relative perspective-1000">
+      
       <div id="flashcard" onclick="flipCard()" class="w-full h-full relative transform-style-3d transition-transform duration-500 cursor-pointer">
         
         <div class="absolute w-full h-full bg-white rounded-3xl shadow-xl border-2 border-teal-100 p-8 flex flex-col justify-center items-center text-center backface-hidden">
@@ -55,6 +60,12 @@
           </div>
         </div>
       </div>
+
+      <div id="result-screen" class="absolute inset-0 bg-white rounded-3xl shadow-2xl border-4 border-teal-500 p-8 flex flex-col justify-center items-center text-center hidden z-10">
+        <div class="text-7xl mb-4">🎉</div>
+        <h2 class="text-4xl md:text-5xl font-black text-teal-600 mb-2">Done!</h2>
+        <button onclick="restartCategory()" class="bg-teal-600 hover:bg-teal-700 text-white font-bold text-2xl px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all active:scale-95">Restart</button>
+      </div>
     </div>
 
     <div id="controls" class="flex items-center justify-center gap-6 mt-8 w-full max-w-md">
@@ -65,48 +76,63 @@
 
   <script>
     const dataset = {
-      things: [
+      ko_so_a_do: [
         { icon: "👈", en: "this one", kanji: "これ", kana: "これ", romaji: "kore" },
         { icon: "👉", en: "that one", kanji: "それ", kana: "それ", romaji: "sore" },
-        { icon: "👆", en: "that one (over there)", kanji: "あれ", kana: "あれ", romaji: "are" },
+        { icon: "👆", en: "that one (far)", kanji: "あれ", kana: "あれ", romaji: "are" },
         { icon: "❓", en: "which one", kanji: "どれ", kana: "どれ", romaji: "dore" },
         { icon: "👈", en: "this...", kanji: "この", kana: "この", romaji: "kono" },
         { icon: "👉", en: "that...", kanji: "その", kana: "その", romaji: "sono" },
-        { icon: "👆", en: "that... (over there)", kanji: "あの", kana: "あの", romaji: "ano" },
+        { icon: "👆", en: "that... (far)", kanji: "あの", kana: "あの", romaji: "ano" },
         { icon: "❓", en: "which...", kanji: "どの", kana: "どの", romaji: "dono" },
-        { icon: "✏️", en: "pencil", kanji: "鉛筆", kana: "えんぴつ", romaji: "enpitsu" },
-        { icon: "☂️", en: "umbrella", kanji: "傘", kana: "かさ", romaji: "kasa" },
-        { icon: "🎒", en: "bag", kanji: "鞄", kana: "かばん", romaji: "kaban" },
-        { icon: "👟", en: "shoes", kanji: "靴", kana: "くつ", romaji: "kutsu" },
-        { icon: "👛", en: "wallet", kanji: "財布", kana: "さいふ", romaji: "saifu" },
-        { icon: "📚", en: "dictionary", kanji: "辞書", kana: "じしょ", romaji: "jisho" },
-        { icon: "🚲", en: "bicycle", kanji: "自転車", kana: "じてんしゃ", romaji: "jitensha" }
-      ],
-      places: [
         { icon: "📍", en: "here", kanji: "ここ", kana: "ここ", romaji: "koko" },
         { icon: "📍", en: "there", kanji: "そこ", kana: "そこ", romaji: "soko" },
         { icon: "📍", en: "over there", kanji: "あそこ", kana: "あそこ", romaji: "asoko" },
         { icon: "🔍", en: "where", kanji: "どこ", kana: "どこ", romaji: "doko" },
         { icon: "👤", en: "who", kanji: "だれ", kana: "だれ", romaji: "dare" },
         { icon: "😋", en: "delicious", kanji: "美味しい", kana: "おいしい", romaji: "oishii" },
+        { icon: "👤", en: "person", kanji: "人", kana: "ひと", romaji: "hito" }
+      ],
+      food_items: [
         { icon: "🐟", en: "fish", kanji: "魚", kana: "さかな", romaji: "sakana" },
         { icon: "🐷", en: "pork cutlet", kanji: "とんかつ", kana: "とんかつ", romaji: "tonkatsu" },
         { icon: "🥩", en: "meat", kanji: "肉", kana: "にく", romaji: "niku" },
         { icon: "📖", en: "menu", kanji: "メニュー", kana: "めにゅー", romaji: "menyū" },
         { icon: "🥦", en: "vegetable", kanji: "野菜", kana: "やさい", romaji: "yasai" },
+        { icon: "✏️", en: "pencil", kanji: "鉛筆", kana: "えんぴつ", romaji: "enpitsu" },
+        { icon: "☂️", en: "umbrella", kanji: "傘", kana: "かさ", romaji: "kasa" },
+        { icon: "🎒", en: "bag", kanji: "鞄", kana: "かばん", romaji: "kaban" },
+        { icon: "👟", en: "shoes", kanji: "靴", kana: "くつ", romaji: "kutsu" },
+        { icon: "👛", en: "wallet", kanji: "財布", kana: "さいふ", romaji: "saifu" },
+        { icon: "📚", en: "dictionary", kanji: "辞書", kana: "じしょ", romaji: "jisho" },
+        { icon: "🚲", en: "bicycle", kanji: "自転車", kana: "じてんしゃ", romaji: "jitensha" },
         { icon: "📰", en: "newspaper", kanji: "新聞", kana: "しんぶん", romaji: "shinbun" },
-        { icon: "⌚", en: "watch/clock", kanji: "時計", kana: "とけい", romaji: "tokei" },
+        { icon: "⌚", en: "watch", kanji: "時計", kana: "とけい", romaji: "tokei" },
         { icon: "📓", en: "notebook", kanji: "ノート", kana: "のーと", romaji: "nōto" },
-        { icon: "🖊️", en: "pen", kanji: "ペン", kana: "ぺん", romaji: "pen" }
+        { icon: "🖊️", en: "pen", kanji: "ペン", kana: "ぺん", romaji: "pen" },
+        { icon: "☎️", en: "phone", kanji: "電話", kana: "でんわ", romaji: "denwa" },
+        { icon: "🔑", en: "key", kanji: "鍵", kana: "かぎ", romaji: "kagi" },
+        { icon: "🎫", en: "ticket", kanji: "切符", kana: "きっぷ", romaji: "kippu" },
+        { icon: "🚗", en: "car", kanji: "車", kana: "くるま", romaji: "kuruma" },
+        { icon: "☕", en: "coffee", kanji: "コーヒー", kana: "こーひー", romaji: "kōhī" },
+        { icon: "🍵", en: "tea", kanji: "お茶", kana: "おちゃ", romaji: "ocha" },
+        { icon: "💧", en: "water", kanji: "水", kana: "みず", romaji: "mizu" },
+        { icon: "🚭", en: "tobacco", kanji: "たばこ", kana: "たばこ", romaji: "tabako" },
+        { icon: "📅", en: "notebook/planner", kanji: "手帳", kana: "てちょう", romaji: "techō" },
+        { icon: "🪑", en: "desk", kanji: "机", kana: "つくえ", romaji: "tsukue" },
+        { icon: "🪑", en: "chair", kanji: "椅子", kana: "いす", romaji: "isu" },
+        { icon: "💳", en: "business card", kanji: "名刺", kana: "めいし", romaji: "meishi" }
       ]
     };
 
-    let currentCategory = 'things';
+    let currentCategory = 'ko_so_a_do';
     let currentIndex = 0;
     let isFlipped = false;
 
     function switchCategory(cat) {
-      currentCategory = cat; currentIndex = 0; isFlipped = false;
+      currentCategory = cat;
+      currentIndex = 0;
+      isFlipped = false;
       document.querySelectorAll('#tabs button').forEach(btn => {
         btn.className = btn.id === 'tab-' + cat ? 'px-5 py-3 rounded-full font-bold text-lg shadow-sm bg-teal-600 text-white' : 'px-5 py-3 rounded-full font-bold text-lg shadow-sm bg-white text-teal-700 hover:bg-teal-50';
       });
@@ -115,6 +141,9 @@
     }
 
     function updateCard() {
+      const card = document.getElementById('flashcard');
+      card.classList.remove('rotate-y-180');
+      isFlipped = false;
       const data = dataset[currentCategory][currentIndex];
       document.getElementById('card-icon').innerText = data.icon;
       document.getElementById('card-en').innerText = data.en;
@@ -131,11 +160,29 @@
     }
 
     function nextCard() {
-      if (currentIndex < dataset[currentCategory].length - 1) { currentIndex++; updateCard(); }
+      if (currentIndex < dataset[currentCategory].length - 1) {
+        currentIndex++;
+        updateCard();
+      } else {
+        document.getElementById('flashcard').classList.add('hidden');
+        document.getElementById('result-screen').classList.remove('hidden');
+      }
     }
+
     function prevCard() {
-      if (currentIndex > 0) { currentIndex--; updateCard(); }
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateCard();
+      }
     }
+
+    function restartCategory() {
+      document.getElementById('result-screen').classList.add('hidden');
+      document.getElementById('flashcard').classList.remove('hidden');
+      currentIndex = 0;
+      updateCard();
+    }
+
     function speakText(e) {
       e.stopPropagation();
       const uttr = new SpeechSynthesisUtterance(dataset[currentCategory][currentIndex].kana);
