@@ -3,36 +3,44 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Genki Lesson 1 - Flashcards (with Romaji)</title>
+  <title>Genki Lesson 2 - Flashcards</title>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <style>
-    .perspective-1000 { perspective: 1000px; }
-    .transform-style-3d { transform-style: preserve-3d; }
-    .backface-hidden { backface-visibility: hidden; }
-    .rotate-y-180 { transform: rotateY(180deg); }
+    .perspective-1000 {
+      perspective: 1000px;
+    }
+    .transform-style-3d {
+      transform-style: preserve-3d;
+    }
+    .backface-hidden {
+      backface-visibility: hidden;
+    }
+    .rotate-y-180 {
+      transform: rotateY(180deg);
+    }
   </style>
 </head>
 <body class="bg-slate-50 font-sans min-h-screen flex flex-col justify-between">
 
   <header class="bg-teal-600 text-white py-6 shadow-md text-center">
-    <h1 class="text-3xl md:text-4xl font-extrabold tracking-wide">Genki Lesson 1 Flashcards</h1>
-    <p class="text-sm md:text-base mt-2 opacity-90">Practice with Kanji, Kana, and Romaji</p>
+    <h1 class="text-3xl md:text-4xl font-extrabold tracking-wide">Genki Lesson 2 Flashcards</h1>
+    <p class="text-sm md:text-base mt-2 opacity-90">Practice Kore/Sore/Are, Kono/Sono/Ano, Whose, and Prices</p>
   </header>
 
   <main class="max-w-4xl w-full mx-auto p-4 flex-grow flex flex-col items-center justify-center">
     
     <div id="tabs" class="w-full flex flex-wrap justify-center gap-2 mb-6">
-      <button onclick="switchCategory('nationality')" id="tab-nationality" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-teal-600 text-white">
-        Nationality & Identity
+      <button onclick="switchCategory('kore_sore')" id="tab-kore_sore" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-teal-600 text-white">
+        Kore / Sore / Are
       </button>
-      <button onclick="switchCategory('majors')" id="tab-majors" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">
-        School & Majors
+      <button onclick="switchCategory('kono_sono')" id="tab-kono_sono" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">
+        Kono / Sono / Ano
       </button>
-      <button onclick="switchCategory('age')" id="tab-age" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">
-        Age & Phone
+      <button onclick="switchCategory('whose_mo')" id="tab-whose_mo" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">
+        Whose & Particle 'mo'
       </button>
-      <button onclick="switchCategory('time')" id="tab-time" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">
-        Time & Clock
+      <button onclick="switchCategory('prices')" id="tab-prices" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">
+        Prices & Shopping
       </button>
     </div>
 
@@ -40,14 +48,14 @@
       Question: <span id="current-index" class="text-teal-600">1</span> / 17
     </div>
 
-    <div class="w-full max-w-2xl h-[480px] relative perspective-1000">
+    <div class="w-full max-w-2xl h-[450px] relative perspective-1000">
       
       <div id="flashcard" onclick="flipCard()" class="w-full h-full relative transform-style-3d transition-transform duration-500 cursor-pointer">
         
         <div class="absolute w-full h-full bg-white rounded-3xl shadow-xl border-2 border-teal-100 p-8 flex flex-col justify-center items-center text-center backface-hidden">
-          <div id="card-icon" class="text-7xl md:text-8xl mb-6 select-none">🇺🇸🙋‍♀️</div>
+          <div id="card-icon" class="text-7xl md:text-8xl mb-6 select-none">📱👉</div>
           <div id="card-en" class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800 leading-snug">
-            Mary is an American.
+            This is a smartphone.
           </div>
           <div class="text-xs text-teal-500 mt-8 font-semibold tracking-widest uppercase">Tap to see answer</div>
         </div>
@@ -55,18 +63,15 @@
         <div class="absolute w-full h-full bg-teal-50 rounded-3xl shadow-xl border-2 border-teal-200 p-6 flex flex-col justify-between items-center text-center backface-hidden rotate-y-180">
           
           <div id="card-en-back" class="text-xl md:text-2xl font-medium text-teal-800 pt-2">
-            Mary is an American.
+            This is a smartphone.
           </div>
 
-          <div class="flex flex-col gap-3 my-auto w-full px-2">
+          <div class="flex flex-col gap-4 my-auto w-full px-2">
             <div id="card-kanji" class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-wide">
-              メアリーさんはアメリカ人です。
+              これはスマホです。
             </div>
             <div id="card-kana" class="text-2xl md:text-3xl text-teal-600 font-bold tracking-normal">
-              めありーさんはあめりかじんです。
-            </div>
-            <div id="card-romaji" class="text-xl md:text-2xl text-amber-600 font-semibold tracking-wide italic">
-              mearī san wa amerika jin desu.
+              これはすまほです。
             </div>
           </div>
 
@@ -84,7 +89,7 @@
       <div id="result-screen" class="absolute inset-0 bg-white rounded-3xl shadow-2xl border-4 border-teal-500 p-8 flex flex-col justify-center items-center text-center hidden z-10">
         <div class="text-7xl mb-4">🎉</div>
         <h2 class="text-4xl md:text-5xl font-black text-teal-600 mb-2">Ottimo!</h2>
-        <p class="text-2xl text-slate-600 mb-8 font-medium">You completed this category!</p>
+        <p class="text-2xl text-slate-600 mb-8 font-medium">You completed Lesson 2 items!</p>
         <button onclick="restartCategory()" class="bg-teal-600 hover:bg-teal-700 text-white font-bold text-2xl px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all active:scale-95">
           Restart
         </button>
@@ -109,85 +114,85 @@
 
   <script>
     const dataset = {
-      nationality: [
-        { icon: "🇺🇸🙋‍♀️", en: "Mary is an American.", kanji: "メアリーさんはアメリカ人です。", kana: "めありーさんはあめりかじんです。", romaji: "mearī san wa amerika jin desu." },
-        { icon: "🇯🇵🙋‍♂️", en: "Takeshi is Japanese.", kanji: "たけしさんは日本人です。", kana: "たけしさんはにほんじんです。", romaji: "takeshi san wa nihon jin desu." },
-        { icon: "🇰🇷🙋‍♀️", en: "Sora is Korean.", kanji: "ソラさんは韓国人です。", kana: "そらさんはかんこくじんです。", romaji: "sora san wa kankoku jin desu." },
-        { icon: "🇬🇧🙋‍♂️", en: "Robert is British.", kanji: "ロバートさんはイギリス人です。", kana: "ろばーとさんはいぎりすじんです。", romaji: "robāto san wa igirisu jin desu." },
-        { icon: "👨‍🏫🇯🇵", en: "Professor Yamashita is Japanese.", kanji: "山下先生は日本人です。", kana: "やましたせんせいはにほんじんです。", romaji: "yamashita sensei wa nihon jin desu." },
-        { icon: "🇺🇸❓", en: "Are you an international student?", kanji: "留学生ですか。", kana: "りゅうがくせいですか。", romaji: "ryūgakusei desu ka." },
-        { icon: "🙋‍♂️🏫", en: "I am a student.", kanji: "学生です。", kana: "がくせいです。", romaji: "gakusei desu." },
-        { icon: "💁‍♀️💬", en: "Excuse me, what is your name?", kanji: "お名前はなんですか。", kana: "おなまえはなんですか。", romaji: "onamae wa nan desu ka." },
-        { icon: "🌍❓", en: "Where do you come from?", kanji: "ご出身はどこですか。", kana: "ごしゅっしんはどこですか。", romaji: "goshusshin wa doko desu ka." },
-        { icon: "💼❓", en: "What is your occupation?", kanji: "お仕事は何ですか。", kana: "おしごとはなんですか。", romaji: "oshigoto wa nan desu ka." },
-        { icon: "👩‍💼🏫", en: "I am an office worker.", kanji: "会社員です。", kana: "かいしゃいんです。", romaji: "kaishain desu." },
-        { icon: "👩‍⚕️🏥", en: "I am a nurse.", kanji: "看護師です。", kana: "かんごしです。", romaji: "kangoshi desu." },
-        { icon: "👩‍🎓🏫", en: "I am a high school student.", kanji: "高校生です。", kana: "こうこうせいです。", romaji: "kōkōsei desu." },
-        { icon: "👨‍🎓🎓", en: "I am a graduate student.", kanji: "大学院生です。", kana: "だいがくいんせいです。", romaji: "daigakuinsei desu." },
-        { icon: "🏠👩", en: "I am a housewife.", kanji: "主婦です。", kana: "しゅふです。", romaji: "shufu desu." },
-        { icon: "👨‍⚖️🏛️", en: "I am a lawyer.", kanji: "弁護士です。", kana: "べんごしです。", romaji: "bengoshi desu." },
-        { icon: "🇬🇧🙋‍♀️", en: "Mary is not British.", kanji: "メアリーさんはイギリス人じゃないです。", kana: "めありーさんはいぎりすじんじゃないです。", romaji: "mearī san wa igirisu jin janai desu." }
+      kore_sore: [
+        { icon: "📘👉", en: "This is a textbook.", kanji: "これは教科書です。", kana: "これはきょうかしょです。" },
+        { icon: "⌚👈", en: "That (near you) is a watch.", kanji: "それは時計です。", kana: "それはとけいです。" },
+        { icon: "🌂👇", en: "That (over there) is an umbrella.", kanji: "あれは傘です。", kana: "あれはかさです。" },
+        { icon: "❓🔎", en: "Which one is it?", kanji: "どれですか。", kana: "どれですか。" },
+        { icon: "🖋️👉", en: "This is a pen.", kanji: "これはペンです。", kana: "これはぺんです。" },
+        { icon: "👟👈", en: "Those (near you) are shoes.", kanji: "それは靴です。", kana: "それはくつです。" },
+        { icon: "🎒👇", en: "That (over there) is a bag.", kanji: "あれは鞄です。", kana: "あれはかばんです。" },
+        { icon: "❓📄", en: "What is this?", kanji: "これは何ですか。", kana: "これはなんですか。" },
+        { icon: "❓💬", en: "What is that (near you)?", kanji: "それは何ですか。", kana: "それはなんですか。" },
+        { icon: "❓🔭", en: "What is that over there?", kanji: "あれは何ですか。", kana: "あれはなんですか。" },
+        { icon: "🚲👉", en: "This is a bicycle.", kanji: "これは自転車です。", kana: "これはじてんしゃです。" },
+        { icon: "ノート👈", en: "That (near you) is a notebook.", kanji: "それはノートです。", kana: "それはのーとです。" },
+        { icon: "🚗👇", en: "That (over there) is a car.", kanji: "あれは車です。", kana: "あれはくるまです。" },
+        { icon: "🔑👉", en: "This is a key.", kanji: "これは鍵です。", kana: "これはかぎです。" },
+        { icon: "📰👈", en: "That (near you) is a newspaper.", kanji: "それは新聞です。", kana: "それはしんぶんです。" },
+        { icon: "ジーンズ👇", en: "Those (over there) are jeans.", kanji: "あれはジーンズです。", kana: "あれはじーんずです。" },
+        { icon: "💺👉", en: "This is a chair.", kanji: "これは椅子です。", kana: "これはいすです。" }
       ],
-      majors: [
-        { icon: "🇺🇸🏫", en: "Mary is a student at the University of Arizona.", kanji: "メアリーさんはアリゾナ大学の学生です。", kana: "めありーさんはありぞなだいがくのがくせいです。", romaji: "mearī san wa arizona daigaku no gakusei desu." },
-        { icon: "🌸🏫", en: "Takeshi is a student at Sakura University.", kanji: "たけしさんはさくら大学の学生です。", kana: "たけしさんはさくらだいがくのがくせいです。", romaji: "takeshi san wa sakura daigaku no gakusei desu." },
-        { icon: "🇰🇷🏫", en: "Sora is a student at Seoul University.", kanji: "ソラさんはソウル大学の学生です。", kana: "そらさんはそうるだいがくのがくせいです。", romaji: "sora san wa souru daigaku no gakusei desu." },
-        { icon: "🇬🇧🏫", en: "Robert is a student at the University of London.", kanji: "ロバートさんはロンドン大学の学生です。", kana: "ろばーとさんはろんどんだいがくのがくせいです。", romaji: "robāto san wa rondon daigaku no gakusei desu." },
-        { icon: "🗣️🇯🇵", en: "Mary's major is the Japanese language.", kanji: "メアリーさんの専攻は日本語です。", kana: "めありーさんのせんこうはにほんごです。", romaji: "mearī san no senkō wa nihongo desu." },
-        { icon: "📜⏳", en: "Takeshi's major is history.", kanji: "たけしさんの専攻は歴史です。", kana: "たけしさんのせんこうはれきしです。", romaji: "takeshi san no senkō wa rekishi desu." },
-        { icon: "💻🖱️", en: "Sora's major is computer science.", kanji: "ソラさんの専攻はコンピューターです。", kana: "そらさんのせんこうはこんぴゅーたーです。", romaji: "sora san no senkō wa konpyūtā desu." },
-        { icon: "📈💼", en: "Robert's major is business.", kanji: "ロバートさんの専攻はビジネスです。", kana: "ろばーとさんのせんこうはびじねすです。", romaji: "robāto san no senkō wa bijinesu desu." },
-        { icon: "💡❓", en: "What is your major?", kanji: "専攻は何ですか。", kana: "せんこうはなんですか。", romaji: "senkō wa nan desu ka." },
-        { icon: "📊📉", en: "My major is economics.", kanji: "専攻は経済です。", kana: "せんこうはけいざいです。", romaji: "senkō wa keizai desu." },
-        { icon: "🤝🌐", en: "My major is international relations.", kanji: "専攻は国際関係です。", kana: "せんこうはこくさいかんけいです。", romaji: "senkō wa kokusaikankei desu." },
-        { icon: "🧬🔬", en: "My major is biology.", kanji: "専攻は生物学です。", kana: "せんこうはせいぶつがくです。", romaji: "senkō wa seibutsugaku desu." },
-        { icon: "🏛️🗳️", en: "My major is politics.", kanji: "専攻は政治です。", kana: "せんこうはせいじです。", romaji: "senkō wa seiji desu." },
-        { icon: "🎨📚", en: "My major is literature.", kanji: "専攻は文学です。", kana: "せんこうはぶんがくです。", romaji: "senkō wa bungaku desu." },
-        { icon: "🛠️🏗️", en: "My major is engineering.", kanji: "専攻は工学です。", kana: "せんこうはこうがくです。", romaji: "senkō wa kōgaku desu." },
-        { icon: "🌏🔍", en: "My major is Asian studies.", kanji: "専攻はアジア研究です。", kana: "せんこうはあじあけんきゅうです。", romaji: "senkō wa ajia kenkyū desu." },
-        { icon: "🏫👨‍🏫", en: "Professor Yamashita is a teacher at Sakura University.", kanji: "山下先生はさくら大学の先生です。", kana: "やましたせんせいはさくらだいがくのせんせいです。", romaji: "yamashita sensei wa sakura daigaku no sensei desu." }
+      kono_sono: [
+        { icon: "💻👉", en: "This computer is mine.", kanji: "このコンピューターは私のです。", kana: "このこんぴゅーたーはわたしつのです。" },
+        { icon: "📖👈", en: "That book (near you) is interesting.", kanji: "その本は面白いです。", kana: "そのほんはおもしろいです。" },
+        { icon: "🏫👇", en: "That building over there is the library.", kanji: "あの建物は図書館です。", kana: "あのたてものはとしょかんです。" },
+        { icon: "⌚❓", en: "Which watch is it?", kanji: "どの時計ですか。", kana: "どのとけいですか。" },
+        { icon: "🎒👉", en: "This bag is 3,000 yen.", kanji: "この鞄は三千円です。", kana: "このかばんはさんぜんえんです。" },
+        { icon: "🌂👈", en: "That umbrella (near you) is 1,000 yen.", kanji: "その傘は千円です。", kana: "そのかさはせんえんです。" },
+        { icon: "🚲👇", en: "That bicycle over there is 20,000 yen.", kanji: "あの自転車は二万円です。", kana: "あのじてんしゃはにまんえんです。" },
+        { icon: "👟👉", en: "These shoes are Japanese shoes.", kanji: "この靴は日本の靴です。", kanji: "このくつはにほんのくつです。" },
+        { icon: "財布👈", en: "That wallet is a French wallet.", kanji: "その財布はフランスの財布です。", kana: "そのさいふはふらんすのさいふです。" },
+        { icon: "🎩👇", en: "That hat over there is an American hat.", kanji: "あの帽子はアメリカの帽子です。", kana: "あのぼうしはあめりかのぼうしです。" },
+        { icon: "🍵👉", en: "This tea is delicious.", kanji: "このお茶は美味しいです。", kana: "このおちゃはおいしいいです。" },
+        { icon: "🐟👈", en: "That fish (near you) is big.", kanji: "その魚は大きいです。", kana: "そのさかなはおおきいです。" },
+        { icon: "🥩👇", en: "That meat over there is cheap.", kanji: "あの肉は安いです。", kana: "あの肉はやすいです。" },
+        { icon: "🥬👉", en: "This vegetable is fresh.", kanji: "この野菜は新鮮です。", kana: "このやさいはしんせんです。" },
+        { icon: "☕👈", en: "That coffee (near you) is hot.", kanji: "そのコーヒーは熱いです。", kana: "そのこーひーはあついです。" },
+        { icon: "🚪👇", en: "That room over there is clean.", kanji: "あの部屋は綺麗です。", kana: "あのへやはがきれいです。" },
+        { icon: "🏫❓", en: "Which university is it?", kanji: "どの大学ですか。", kana: "どのだいがくですか。" }
       ],
-      age: [
-        { icon: "🎂👩", en: "Mary is 19 years old.", kanji: "メアリーさんは一九歳です。", kana: "めありーさんはじゅうきゅうさいです。", romaji: "mearī san wa jūkū sai desu." },
-        { icon: "🎂👨", en: "Takeshi is 22 years old.", kanji: "たけしさんは二十二歳です。", kana: "たけしさんはにじゅうにさいです。", romaji: "takeshi san wa nijūni sai desu." },
-        { icon: "🎂👧", en: "Sora is 20 years old.", kanji: "ソラさんは二十歳です。", kana: "そらさんははたちです。", romaji: "sora san wa hatachi desu." },
-        { icon: "🎂👨‍🏫", en: "Professor Yamashita is 47 years old.", kanji: "山下先生は四十七歳です。", kana: "やましたせんせいはよんじゅうななさいです。", romaji: "yamashita sensei wa yonjūnana sai desu." },
-        { icon: "🎂❓", en: "How old are you?", kanji: "何歳ですか。", kana: "なんさいですか。", romaji: "nan sai desu ka." },
-        { icon: "🎒1️⃣", en: "I am a first-year student.", kanji: "一年生です。", kana: "いちねんせいです。", romaji: "ichinesei desu." },
-        { icon: "🎒2️⃣", en: "Mary is a second-year student.", kanji: "メアリーさんは二年生です。", kana: "めありーさんはねんせいです。", romaji: "mearī san wa ninensei desu." },
-        { icon: "🎒3️⃣", en: "Sora is a third-year student.", kanji: "ソラさんは三年生です。", kana: "そらさんはさんねんせいです。", romaji: "sora san wa sannensei desu." },
-        { icon: "🎒4️⃣", en: "Takeshi is a fourth-year student.", kanji: "たけしさんは四年生です。", kana: "たけしさんはよねんせいです。", romaji: "takeshi san wa yonensei desu." },
-        { icon: "🎓❓", en: "What year are you in college?", kanji: "何年生ですか。", kana: "なんねんせいですか。", romaji: "nan nensei desu ka." },
-        { icon: "📱❓", en: "What is your telephone number?", kanji: "電話番号は何番ですか。", kana: "でんわばんごうはなんばんですか。", romaji: "denwa bangō wa nan ban desu ka." },
-        { icon: "📞🔢", en: "It is 283-9547.", kanji: "二八三の九五四七です。", kana: "にはちさんのきゅうごよんななです。", romaji: "ni hachi san no kyū go yon nana desu." },
-        { icon: "📞🤙", en: "Takeshi's phone number.", kanji: "たけしさんの電話番号。", kana: "たけしさんのでんわばんごう。", romaji: "takeshi san no denwa bangō." },
-        { icon: "🎂👶", en: "I am 1 year old.", kanji: "一歳です。", kana: "いっさいです。", romaji: "issai desu." },
-        { icon: "🎂👦", en: "I am 8 years old.", kanji: "八歳です。", kana: "はっさいです。", romaji: "hassai desu." },
-        { icon: "🎂🔟", en: "I am 10 years old.", kanji: "十歳です。", kana: "じゅっさいです。", romaji: "jussai desu." },
-        { icon: "🎂👨‍🦳", en: "My father is 48 years old.", kanji: "お父さんは四十八歳です。", kana: "おとうさんはよんじゅうはっさいです。", romaji: "otōsan wa yonjūhassai desu." }
+      whose_mo: [
+        { icon: "❓👤", en: "Whose notebook is this?", kanji: "これはだれのノートですか。", kana: "これはだれののーとですか。" },
+        { icon: "🙋‍♂️📋", en: "That (near you) is my notebook.", kanji: "それは私のノートです。", kana: "それはわたしののーとです。" },
+        { icon: "❓🔑", en: "Whose key is that over there?", kanji: "あれはだれの鍵ですか。", kana: "あれはだれのかぎですか。" },
+        { icon: "👩🔑", en: "That is Mary's key.", kanji: "あれはメアリーさんの鍵です。", kana: "あれはめありーさんのかぎです。" },
+        { icon: "❓🎒", en: "Whose bag is this?", kanji: "この鞄はだれのですか。", kana: "このかばんはだれのですか。" },
+        { icon: "👨🎒", en: "That is Takeshi's.", kanji: "それはたけしさんのです。", kana: "それはたけしさんのです。" },
+        { icon: "🇺🇸🤝", en: "Mary is an American. Robert is also an American.", kanji: "メアリーさんはアメリカ人です。ロバートさんもアメリカ人です。", kana: "めありーさんはあめりかじんです。ろばーとさんもあめりかじんです。" },
+        { icon: "🎓🤝", en: "I am a student. Takeshi is also a student.", kanji: "私は学生です。たけしさんも学生です。", kana: "わたしはがくせいです。たけしさんもがくせいです。" },
+        { icon: "💻🤝", en: "This is a computer. That is also a computer.", kanji: "これはコンピューターです。それもコンピューターです。", kana: "これはこんぴゅーたーです。それもこんぴゅーたーです。" },
+        { icon: "🌸🤝", en: "Sakura University is a good school. Seoul University is also a good school.", kanji: "さくら大学はいい学校です。ソウル大学もいい学校です。", kana: "さくらだいがくはいいがっこうです。そうるだいがくもいいがっこうです。" },
+        { icon: "🕒🤝", en: "My major is history. His major is also history.", kanji: "私の専攻は歴史です。彼の専攻も歴史です。", kana: "わたしのせんこうはれきしです。かれのせんこうもれきしです。" },
+        { icon: "🎂🤝", en: "Sora is 20 years old. I am also 20 years old.", kanji: "ソラさんは二十歳です。私も二十歳です。", kana: "そらさんははたちです。わたしもはたちです。" },
+        { icon: "📱🤝", en: "This is 10,000 yen. That is also 10,000 yen.", kanji: "これは一万円です。それも一万円です。", kana: "これはいちまんえんです。それもいちまんえんです。" },
+        { icon: "❓🚲", en: "Whose bicycle is this?", kanji: "この自転車はだれのですか。", kana: "このじてんしゃはだれのですか。" },
+        { icon: "👨‍🏫🚲", en: "It is Professor Yamashita's.", kanji: "山下先生のです。", kana: "やましたせんせいのです。" },
+        { icon: "❓🌂", en: "Whose umbrella is that?", kanji: "その傘はだれのですか。", kana: "そのかさはだれのですか。" },
+        { icon: "🇬🇧🤝", en: "Robert is British. His friend is also British.", kanji: "ロバートさんはイギリス人です。友達もイギリス人です。", kana: "ろばーとさんはいぎりすじんです。ともだちもいぎりすじんです。" }
       ],
-      time: [
-        { icon: "⏰❓", en: "What time is it now?", kanji: "いま何時ですか。", kana: "いまなんじですか。", romaji: "ima nan ji desu ka." },
-        { icon: "🕐✨", en: "It is 1 o'clock.", kanji: "一時です。", kana: "いちじです。", romaji: "ichi ji desu." },
-        { icon: "🕓⚡", en: "It is 4 o'clock.", kanji: "四時です。", kana: "よじです。", romaji: "yo ji desu." },
-        { icon: "🕖🌅", en: "It is 7 o'clock.", kanji: "七時です。", kana: "しちじです。", romaji: "shichi ji desu." },
-        { icon: "🕘🌙", en: "It is 9 o'clock.", kanji: "九時です。", kana: "くじです。", romaji: "ku ji desu." },
-        { icon: "🕜⏳", en: "It is half past one.", kanji: "一時半です。", kana: "いちじはんです。", romaji: "ichi ji han desu." },
-        { icon: "⏰☀️", en: "It is 3:00 P.M.", kanji: "午後三時です。", kana: "ごごさんじです。", romaji: "gogo san ji desu." },
-        { icon: "⏰🙋", en: "It is 9:18 A.M.", kanji: "午前九時十八分です。", kana: "ごぜんくじじゅうはっぷんです。", romaji: "gozen ku ji jūhappun desu." },
-        { icon: "⏱️1️⃣", en: "1 minute", kanji: "一分", kana: "いっぷん", romaji: "ippun" },
-        { icon: "⏱️2️⃣", en: "2 minutes", kanji: "二分", kana: "にふん", romaji: "nifun" },
-        { icon: "⏱️3️⃣", en: "3 minutes", kanji: "三分", kana: "さんぷん", romaji: "sanpun" },
-        { icon: "⏱️4️⃣", en: "4 minutes", kanji: "四分", kana: "よんぷん", romaji: "yonpun" },
-        { icon: "⏱️5️⃣", en: "5 minutes", kanji: "五分", kana: "ごふん", romaji: "gofun" },
-        { icon: "⏱️6️⃣", en: "6 minutes", kanji: "六分", kana: "ろっぷん", romaji: "roppun" },
-        { icon: "⏱️7️⃣", en: "7 minutes", kanji: "七分", kana: "ななふん", romaji: "nanafun" },
-        { icon: "⏱️8️⃣", en: "8 minutes", kanji: "八分", kana: "はっぷん", romaji: "happun" },
-        { icon: "⏱️🔟", en: "10 minutes", kanji: "十分", kana: "じゅっぷん", romaji: "juppun" }
+      prices: [
+        { icon: "💰❓", en: "How much is this?", kanji: "これはいくらですか。", kana: "これはいくらですか。" },
+        { icon: "💴1️⃣", en: "It is 800 yen.", kanji: "八百円です。", kana: "はちひゃくえんです。" },
+        { icon: "💰👈", en: "How much is that (near you)?", kanji: "それはいくらですか。", kana: "それはいくらですか。" },
+        { icon: "💴2️⃣", en: "It is 3,500 yen.", kanji: "三千五百円です。", kana: "さんぜんごひゃくえんです。" },
+        { icon: "💰👇", en: "How much is that over there?", kanji: "あれはいくらですか。", kana: "あれはいくらですか。" },
+        { icon: "💴3️⃣", en: "It is 12,000 yen.", kanji: "一万二千円です。", kana: "いちまんにせんえんです。" },
+        { icon: "🎒💰", en: "How much is this bag?", kanji: "この鞄はいくらですか。", kana: "このかばんはいくらですか。" },
+        { icon: "💴4️⃣", en: "That bag is 4,800 yen.", kanji: "その鞄は四千八百円です。", kana: "そのかばんはよんせんはっぴゃくえんです。" },
+        { icon: "⌚💰", en: "How much is that watch over there?", kanji: "あの時計はいくらですか。", kana: "あのとけいはいくらですか。" },
+        { icon: "💴5️⃣", en: "It is 15,000 yen.", kanji: "一万五千円です。", kana: "いちまんごせんえんです。" },
+        { icon: "🛒🤝", en: "Then, I will take this one.", kanji: "じゃあ、これをください。", kana: "じゃあ、これをください。" },
+        { icon: "🛒👈", en: "Then, I will take that one (near you).", kanji: "じゃあ、それをください。", kana: "じゃあ、それをください。" },
+        { icon: "🛒👇", en: "Then, I will take that one over there.", kanji: "じゃあ、あれをください。", kana: "じゃあ、あれをください。" },
+        { icon: "💴6️⃣", en: "It is 100 yen.", kanji: "百円です。", kana: "ひゃくえんです。" },
+        { icon: "💴7️⃣", en: "It is 600 yen.", kanji: "六百円です。", kana: "ろっぴゃくえんです。" },
+        { icon: "💴8️⃣", en: "It is 8,000 yen.", kanji: "八千円です。", kana: "はっせんえんです。" },
+        { icon: "💴9️⃣", en: "It is 90,000 yen.", kanji: "九万円です。", kana: "きゅうまんえんです。" }
       ]
     };
 
-    let currentCategory = 'nationality';
+    let currentCategory = 'kore_sore';
     let currentIndex = 0;
     let isFlipped = false;
 
@@ -196,7 +201,7 @@
       currentIndex = 0;
       isFlipped = false;
       
-      const categories = ['nationality', 'majors', 'age', 'time'];
+      const categories = ['kore_sore', 'kono_sono', 'whose_mo', 'prices'];
       categories.forEach(cat => {
         const tab = document.getElementById(`tab-${cat}`);
         if (cat === category) {
@@ -227,7 +232,6 @@
       document.getElementById('card-en-back').innerText = data.en;
       document.getElementById('card-kanji').innerText = data.kanji;
       document.getElementById('card-kana').innerText = data.kana;
-      document.getElementById('card-romaji').innerText = data.romaji;
 
       document.getElementById('current-index').innerText = currentIndex + 1;
     }
@@ -271,15 +275,22 @@
 
     function speakText(event) {
       event.stopPropagation();
+
       const data = dataset[currentCategory][currentIndex];
+      const textToSpeak = data.kana;
+
       window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(data.kana);
+
+      const utterance = new SpeechSynthesisUtterance(textToSpeak);
       utterance.lang = 'ja-JP';
       utterance.rate = 0.85;
+
       window.speechSynthesis.speak(utterance);
     }
 
-    window.onload = () => { updateCard(); };
+    window.onload = () => {
+      updateCard();
+    };
   </script>
 </body>
 </html>
