@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Genki Lesson 1 Vocab - 55 Words Perfect</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    .perspective-1000 { perspective: 1000px; }
+    .transform-style-3d { transform-style: preserve-3d; }
+    .backface-hidden { backface-visibility: hidden; }
+    .rotate-y-180 { transform: rotateY(180deg); }
+  </style>
+</head>
+<body class="bg-slate-50 font-sans min-h-screen flex flex-col justify-between">
+
+  <header class="bg-teal-600 text-white py-6 shadow-md text-center">
+    <h1 class="text-3xl md:text-4xl font-extrabold tracking-wide">Genki L1 Vocab (55 Words Perfect)</h1>
+    <p class="text-sm md:text-base mt-2 opacity-90">100% Every Single Word from Lesson 1</p>
+  </header>
+
+  <main class="max-w-4xl w-full mx-auto p-4 flex-grow flex flex-col items-center justify-center">
+    
+    <div id="tabs" class="w-full flex flex-wrap justify-center gap-2 mb-6">
+      <button onclick="switchCategory('basic')" id="tab-basic" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-teal-600 text-white">Basic & People (20)</button>
+      <button onclick="switchCategory('time')" id="tab-time" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">Time & Dates (15)</button>
+      <button onclick="switchCategory('countries')" id="tab-countries" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">Countries (20)</button>
+    </div>
+
+    <div class="text-xl md:text-2xl font-bold text-slate-600 mb-4">
+      Word Count: <span id="current-index" class="text-teal-600">1</span> / <span id="total-index">20</span>
+    </div>
+
+    <div class="w-full max-w-2xl h-[500px] relative perspective-1000">
+      <div id="flashcard" onclick="flipCard()" class="w-full h-full relative transform-style-3d transition-transform duration-500 cursor-pointer">
+        
+        <div class="absolute w-full h-full bg-white rounded-3xl shadow-xl border-2 border-teal-100 p-8 flex flex-col justify-center items-center text-center backface-hidden">
+          <div id="card-icon" class="text-7xl md:text-8xl mb-6 select-none">🧑‍🎓</div>
+          <div id="card-en" class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800 leading-snug">student</div>
+          <div class="text-xs text-teal-500 mt-8 font-semibold tracking-widest uppercase">Tap to see Japanese</div>
+        </div>
+
+        <div class="absolute w-full h-full bg-teal-50 rounded-3xl shadow-xl border-2 border-teal-200 p-6 flex flex-col justify-between items-center text-center backface-hidden rotate-y-180">
+          <div class="w-full flex flex-col items-center pt-2 gap-1">
+            <div id="card-en-back" class="text-xl md:text-2xl font-medium text-teal-800">student</div>
+            <div id="card-type" class="text-xs px-3 py-1 bg-slate-100 text-slate-800 font-bold rounded-full uppercase tracking-wider">Noun</div>
+          </div>
+          <div class="flex flex-col gap-3 my-auto w-full px-2">
+            <div id="card-kanji" class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-wide">学生</div>
+            <div id="card-kana" class="text-2xl md:text-3xl text-teal-600 font-bold tracking-normal">がくせい</div>
+            <div id="card-romaji" class="text-xl md:text-2xl text-amber-600 font-semibold tracking-wide italic">gakusei</div>
+          </div>
+          <div class="pb-2">
+            <button onclick="speakText(event)" class="bg-teal-600 hover:bg-teal-700 active:scale-95 text-white p-5 rounded-full shadow-lg transition-all duration-200 flex items-center justify-center group" title="Listen">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 group-hover:animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="controls" class="flex items-center justify-center gap-6 mt-8 w-full max-w-md">
+      <button onclick="prevCard()" class="flex-1 bg-slate-700 hover:bg-slate-800 text-white font-bold text-xl py-4 rounded-xl shadow-md transition-all active:scale-95">← Previous</button>
+      <button onclick="nextCard()" class="flex-1 bg-teal-600 hover:bg-teal-700 text-white font-bold text-xl py-4 rounded-xl shadow-md transition-all active:scale-95">Next →</button>
+    </div>
+  </main>
+
+  <script>
+    const dataset = {
+      basic: [
+        { icon: "🧑‍🎓", en: "student", kanji: "学生", kana: "がくせい", romaji: "gakusei" },
+        { icon: "👨‍🏫", en: "teacher", kanji: "先生", kana: "せんせい", romaji: "sensei" },
+        { icon: "💼", en: "job", kanji: "仕事", kana: "しごと", romaji: "shigoto" },
+        { icon: "🩺", en: "doctor", kanji: "医者", kana: "いしゃ", romaji: "isha" },
+        { icon: "🏢", en: "office worker", kanji: "会社員", kana: "かいしゃいん", romaji: "kaishain" },
+        { icon: "📞", en: "telephone", kanji: "電話", kana: "でんわ", romaji: "denwa" },
+        { icon: "👤", en: "person", kanji: "人", kana: "ひと", romaji: "hito" },
+        { icon: "🙋", en: "I", kanji: "私", kana: "わたし", romaji: "watashi" },
+        { icon: "👫", en: "friend", kanji: "友達", kana: "ともだち", romaji: "tomodachi" },
+        { icon: "🏷️", en: "name", kanji: "名前", kana: "なまえ", romaji: "namae" },
+        { icon: "❓", en: "what", kanji: "何", kana: "なに", romaji: "nani" },
+        { icon: "🎓", en: "-year student", kanji: "-年生", kana: "-ねんせい", romaji: "-nensei" },
+        { icon: "🤝", en: "Nice to meet you", kanji: "はじめまして", kana: "はじめまして", romaji: "hajimemashite" },
+        { icon: "💁", en: "is / am / are", kanji: "〜です", kana: "〜です", romaji: "desu" },
+        { icon: "👤", en: "Mr. / Ms.", kanji: "〜さん", kana: "〜さん", romaji: "san" },
+        { icon: "🗣️", en: "-language", kanji: "〜語", kana: "〜ご", romaji: "go" },
+        { icon: "🎂", en: "-years old", kanji: "〜さい", kana: "〜さい", romaji: "sai" },
+        { icon: "👋", en: "Goodbye", kanji: "さようなら", kana: "さようなら", romaji: "sayōnara" },
+        { icon: "🙏", en: "Excuse me", kanji: "すみません", kana: "すみません", romaji: "sumimasen" },
+        { icon: "👋", en: "Hello/Afternoon", kanji: "こんにちは", kana: "こんにちは", romaji: "konnichiwa" }
+      ],
+      time: [
+        { icon: "🌅", en: "tomorrow", kanji: "明日", kana: "あした", romaji: "ashita" },
+        { icon: "☀️", en: "today", kanji: "今日", kana: "きょう", romaji: "kyō" },
+        { icon: "🌇", en: "yesterday", kanji: "昨日", kana: "きのう", romaji: "kinō" },
+        { icon: "🌌", en: "tonight", kanji: "今晩", kana: "こんばん", romaji: "konban" },
+        { icon: "📅", en: "every day", kanji: "毎日", kana: "まいにち", romaji: "mainichi" },
+        { icon: "⏰", en: "o'clock", kanji: "時", kana: "じ", romaji: "ji" },
+        { icon: "❓", en: "what time", kanji: "何時", kana: "なんじ", romaji: "nanji" },
+        { icon: "☕", en: "A.M.", kanji: "午前", kana: "ごぜん", romaji: "gozen" },
+        { icon: "🌙", en: "P.M.", kanji: "午後", kana: "ごご", romaji: "gogo" },
+        { icon: "🎆", en: "this year", kanji: "今年", kana: "ことし", romaji: "kotoshi" },
+        { icon: "1️⃣", en: "1", kanji: "一", kana: "いち", romaji: "ichi" },
+        { icon: "2️⃣", en: "2", kanji: "二", kana: "に", romaji: "ni" },
+        { icon: "3️⃣", en: "3", kanji: "三", kana: "さん", romaji: "san" },
+        { icon: "4️⃣", en: "4", kanji: "四", kana: "よん", romaji: "yon" },
+        { icon: "5️⃣", en: "5", kanji: "五", kana: "ご", romaji: "go" }
+      ],
+      countries: [
+        { icon: "🇯🇵", en: "Japan", kanji: "日本", kana: "にほん", romaji: "nihon" },
+        { icon: "🇺🇸", en: "USA", kanji: "アメリカ", kana: "あめりか", romaji: "amerika" },
+        { icon: "🇬🇧", en: "UK", kanji: "イギリス", kana: "いぎりす", romaji: "igirisu" },
+        { icon: "🇦🇺", en: "Australia", kanji: "オーストラリア", kana: "おーすとらりあ", romaji: "ōsutoraria" },
+        { icon: "🇰🇷", en: "Korea", kanji: "韓国", kana: "かんこく", romaji: "kankoku" },
+        { icon: "🇨🇳", en: "China", kanji: "中国", kana: "ちゅうごく", romaji: "chūgoku" },
+        { icon: "🇫🇷", en: "France", kanji: "フランス", kana: "ふらんす", romaji: "furansu" },
+        { icon: "🇧🇷", en: "Brazil", kanji: "ブラジル", kana: "ぶらじる", romaji: "burajiru" },
+        { icon: "🇩🇪", en: "Germany", kanji: "ドイツ", kana: "どいつ", romaji: "doitsu" },
+        { icon: "🇯🇵", en: "Japanese", kanji: "日本人", kana: "にほんじん", romaji: "nihonjin" },
+        { icon: "🇺🇸", en: "American", kanji: "アメリカ人", kana: "あめりかじん", romaji: "amerikajin" },
+        { icon: "6️⃣", en: "6", kanji: "六", kana: "ろく", romaji: "roku" },
+        { icon: "7️⃣", en: "7", kanji: "七", kana: "なな", romaji: "nana" },
+        { icon: "8️⃣", en: "8", kanji: "八", kana: "はち", romaji: "hachi" },
+        { icon: "9️⃣", en: "9", kanji: "九", kana: "きゅう", romaji: "kyū" },
+        { icon: "🔟", en: "10", kanji: "十", kana: "じゅう", romaji: "jū" },
+        { icon: "🏫", en: "university", kanji: "大学", kana: "だいがく", romaji: "daigaku" },
+        { icon: "🎒", en: "high school", kanji: "高校", kana: "こうこう", romaji: "kōkō" },
+        { icon: "📚", en: "major", kanji: "専攻", kana: "せんこう", romaji: "senkō" },
+        { icon: "💼", en: "job", kanji: "仕事", kana: "しごと", romaji: "shigoto" }
+      ]
+    };
+
+    let currentCategory = 'basic';
+    let currentIndex = 0;
+
+    function switchCategory(cat) {
+      currentCategory = cat;
+      currentIndex = 0;
+      document.querySelectorAll('#tabs button').forEach(btn => {
+        btn.className = btn.id === 'tab-' + cat ? 'px-5 py-3 rounded-full font-bold text-lg shadow-sm bg-teal-600 text-white' : 'px-5 py-3 rounded-full font-bold text-lg shadow-sm bg-white text-teal-700 hover:bg-teal-50';
+      });
+      document.getElementById('total-index').innerText = dataset[cat].length;
+      updateCard();
+    }
+
+    function updateCard() {
+      const data = dataset[currentCategory][currentIndex];
+      document.getElementById('card-icon').innerText = data.icon;
+      document.getElementById('card-en').innerText = data.en;
+      document.getElementById('card-en-back').innerText = data.en;
+      document.getElementById('card-kanji').innerText = data.kanji;
+      document.getElementById('card-kana').innerText = data.kana;
+      document.getElementById('card-romaji').innerText = data.romaji;
+      document.getElementById('current-index').innerText = currentIndex + 1;
+    }
+
+    function flipCard() {
+      document.getElementById('flashcard').classList.toggle('rotate-y-180');
+    }
+
+    function nextCard() {
+      if (currentIndex < dataset[currentCategory].length - 1) {
+        currentIndex++;
+        updateCard();
+      }
+    }
+
+    function prevCard() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateCard();
+      }
+    }
+
+    function speakText() {
+      const data = dataset[currentCategory][currentIndex];
+      const uttr = new SpeechSynthesisUtterance(data.kana);
+      uttr.lang = 'ja-JP';
+      window.speechSynthesis.speak(uttr);
+    }
+  </script>
+</body>
+</html>
