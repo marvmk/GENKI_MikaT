@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Genki Lesson 2 Vocab - Full Complete</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    .perspective-1000 { perspective: 1000px; }
+    .transform-style-3d { transform-style: preserve-3d; }
+    .backface-hidden { backface-visibility: hidden; }
+    .rotate-y-180 { transform: rotateY(180deg); }
+  </style>
+</head>
+<body class="bg-slate-50 font-sans min-h-screen flex flex-col justify-between">
+
+  <header class="bg-teal-600 text-white py-6 shadow-md text-center">
+    <h1 class="text-3xl md:text-4xl font-extrabold tracking-wide">Genki L2 Vocab</h1>
+    <p class="text-sm md:text-base mt-2 opacity-90">100% Every Single Word from Lesson 2</p>
+  </header>
+
+  <main class="max-w-4xl w-full mx-auto p-4 flex-grow flex flex-col items-center justify-center">
+    
+    <div id="tabs" class="w-full flex flex-wrap justify-center gap-2 mb-6">
+      <button onclick="switchCategory('things')" id="tab-things" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-teal-600 text-white">Things (15)</button>
+      <button onclick="switchCategory('places')" id="tab-places" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">Places & Others (15)</button>
+    </div>
+
+    <div class="text-xl md:text-2xl font-bold text-slate-600 mb-4">
+      Word Count: <span id="current-index" class="text-teal-600">1</span> / <span id="total-index">15</span>
+    </div>
+
+    <div class="w-full max-w-2xl h-[500px] relative perspective-1000">
+      <div id="flashcard" onclick="flipCard()" class="w-full h-full relative transform-style-3d transition-transform duration-500 cursor-pointer">
+        
+        <div class="absolute w-full h-full bg-white rounded-3xl shadow-xl border-2 border-teal-100 p-8 flex flex-col justify-center items-center text-center backface-hidden">
+          <div id="card-icon" class="text-7xl md:text-8xl mb-6 select-none">👈</div>
+          <div id="card-en" class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800 leading-snug">this one</div>
+          <div class="text-xs text-teal-500 mt-8 font-semibold tracking-widest uppercase">Tap to see Japanese</div>
+        </div>
+
+        <div class="absolute w-full h-full bg-teal-50 rounded-3xl shadow-xl border-2 border-teal-200 p-6 flex flex-col justify-between items-center text-center backface-hidden rotate-y-180">
+          <div class="w-full flex flex-col items-center pt-2 gap-1">
+            <div id="card-en-back" class="text-xl md:text-2xl font-medium text-teal-800">this one</div>
+          </div>
+          <div class="flex flex-col gap-3 my-auto w-full px-2">
+            <div id="card-kanji" class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-wide">これ</div>
+            <div id="card-kana" class="text-2xl md:text-3xl text-teal-600 font-bold tracking-normal">これ</div>
+            <div id="card-romaji" class="text-xl md:text-2xl text-amber-600 font-semibold tracking-wide italic">kore</div>
+          </div>
+          <div class="pb-2">
+            <button onclick="speakText(event)" class="bg-teal-600 hover:bg-teal-700 active:scale-95 text-white p-5 rounded-full shadow-lg transition-all duration-200 flex items-center justify-center group">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="controls" class="flex items-center justify-center gap-6 mt-8 w-full max-w-md">
+      <button onclick="prevCard()" class="flex-1 bg-slate-700 hover:bg-slate-800 text-white font-bold text-xl py-4 rounded-xl shadow-md transition-all active:scale-95">←</button>
+      <button onclick="nextCard()" class="flex-1 bg-teal-600 hover:bg-teal-700 text-white font-bold text-xl py-4 rounded-xl shadow-md transition-all active:scale-95">→</button>
+    </div>
+  </main>
+
+  <script>
+    const dataset = {
+      things: [
+        { icon: "👈", en: "this one", kanji: "これ", kana: "これ", romaji: "kore" },
+        { icon: "👉", en: "that one", kanji: "それ", kana: "それ", romaji: "sore" },
+        { icon: "👆", en: "that one (over there)", kanji: "あれ", kana: "あれ", romaji: "are" },
+        { icon: "❓", en: "which one", kanji: "どれ", kana: "どれ", romaji: "dore" },
+        { icon: "👈", en: "this...", kanji: "この", kana: "この", romaji: "kono" },
+        { icon: "👉", en: "that...", kanji: "その", kana: "その", romaji: "sono" },
+        { icon: "👆", en: "that... (over there)", kanji: "あの", kana: "あの", romaji: "ano" },
+        { icon: "❓", en: "which...", kanji: "どの", kana: "どの", romaji: "dono" },
+        { icon: "✏️", en: "pencil", kanji: "鉛筆", kana: "えんぴつ", romaji: "enpitsu" },
+        { icon: "☂️", en: "umbrella", kanji: "傘", kana: "かさ", romaji: "kasa" },
+        { icon: "🎒", en: "bag", kanji: "鞄", kana: "かばん", romaji: "kaban" },
+        { icon: "👟", en: "shoes", kanji: "靴", kana: "くつ", romaji: "kutsu" },
+        { icon: "👛", en: "wallet", kanji: "財布", kana: "さいふ", romaji: "saifu" },
+        { icon: "📚", en: "dictionary", kanji: "辞書", kana: "じしょ", romaji: "jisho" },
+        { icon: "🚲", en: "bicycle", kanji: "自転車", kana: "じてんしゃ", romaji: "jitensha" }
+      ],
+      places: [
+        { icon: "📍", en: "here", kanji: "ここ", kana: "ここ", romaji: "koko" },
+        { icon: "📍", en: "there", kanji: "そこ", kana: "そこ", romaji: "soko" },
+        { icon: "📍", en: "over there", kanji: "あそこ", kana: "あそこ", romaji: "asoko" },
+        { icon: "🔍", en: "where", kanji: "どこ", kana: "どこ", romaji: "doko" },
+        { icon: "👤", en: "who", kanji: "だれ", kana: "だれ", romaji: "dare" },
+        { icon: "😋", en: "delicious", kanji: "美味しい", kana: "おいしい", romaji: "oishii" },
+        { icon: "🐟", en: "fish", kanji: "魚", kana: "さかな", romaji: "sakana" },
+        { icon: "🐷", en: "pork cutlet", kanji: "とんかつ", kana: "とんかつ", romaji: "tonkatsu" },
+        { icon: "🥩", en: "meat", kanji: "肉", kana: "にく", romaji: "niku" },
+        { icon: "📖", en: "menu", kanji: "メニュー", kana: "めにゅー", romaji: "menyū" },
+        { icon: "🥦", en: "vegetable", kanji: "野菜", kana: "やさい", romaji: "yasai" },
+        { icon: "📰", en: "newspaper", kanji: "新聞", kana: "しんぶん", romaji: "shinbun" },
+        { icon: "⌚", en: "watch/clock", kanji: "時計", kana: "とけい", romaji: "tokei" },
+        { icon: "📓", en: "notebook", kanji: "ノート", kana: "のーと", romaji: "nōto" },
+        { icon: "🖊️", en: "pen", kanji: "ペン", kana: "ぺん", romaji: "pen" }
+      ]
+    };
+
+    let currentCategory = 'things';
+    let currentIndex = 0;
+    let isFlipped = false;
+
+    function switchCategory(cat) {
+      currentCategory = cat; currentIndex = 0; isFlipped = false;
+      document.querySelectorAll('#tabs button').forEach(btn => {
+        btn.className = btn.id === 'tab-' + cat ? 'px-5 py-3 rounded-full font-bold text-lg shadow-sm bg-teal-600 text-white' : 'px-5 py-3 rounded-full font-bold text-lg shadow-sm bg-white text-teal-700 hover:bg-teal-50';
+      });
+      document.getElementById('total-index').innerText = dataset[cat].length;
+      updateCard();
+    }
+
+    function updateCard() {
+      const data = dataset[currentCategory][currentIndex];
+      document.getElementById('card-icon').innerText = data.icon;
+      document.getElementById('card-en').innerText = data.en;
+      document.getElementById('card-en-back').innerText = data.en;
+      document.getElementById('card-kanji').innerText = data.kanji;
+      document.getElementById('card-kana').innerText = data.kana;
+      document.getElementById('card-romaji').innerText = data.romaji;
+      document.getElementById('current-index').innerText = currentIndex + 1;
+    }
+
+    function flipCard() {
+      document.getElementById('flashcard').classList.toggle('rotate-y-180');
+      isFlipped = !isFlipped;
+    }
+
+    function nextCard() {
+      if (currentIndex < dataset[currentCategory].length - 1) { currentIndex++; updateCard(); }
+    }
+    function prevCard() {
+      if (currentIndex > 0) { currentIndex--; updateCard(); }
+    }
+    function speakText(e) {
+      e.stopPropagation();
+      const uttr = new SpeechSynthesisUtterance(dataset[currentCategory][currentIndex].kana);
+      uttr.lang = 'ja-JP';
+      window.speechSynthesis.speak(uttr);
+    }
+  </script>
+</body>
+</html>
