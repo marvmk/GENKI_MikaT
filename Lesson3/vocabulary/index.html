@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Genki Lesson 3 Vocab - 53 Words Complete</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .perspective-1000 { perspective: 1000px; }
+    .transform-style-3d { transform-style: preserve-3d; }
+    .backface-hidden { backface-visibility: hidden; }
+    .rotate-y-180 { transform: rotateY(180deg); }
+  </style>
+</head>
+<body class="bg-slate-50 font-sans min-h-screen flex flex-col items-center p-4">
+
+  <h1 class="text-3xl font-extrabold text-teal-700 mb-8 mt-4">Genki L3 Vocab (53 Words) 🏃</h1>
+
+  <div class="w-full max-w-sm h-96 relative perspective-1000 cursor-pointer" onclick="flip()">
+    <div id="flashcard" class="w-full h-full relative transition-transform duration-500 transform-style-3d">
+      <div class="absolute w-full h-full bg-white rounded-3xl shadow-xl p-8 flex flex-col items-center justify-center backface-hidden border-2 border-teal-100">
+        <div id="card-icon" class="text-7xl mb-4">🏃</div>
+        <p id="word-j" class="text-4xl font-black text-gray-800 text-center">行く</p>
+        <p class="text-sm text-gray-400 mt-8 uppercase tracking-widest">Tap to flip</p>
+      </div>
+      <div class="absolute w-full h-full bg-teal-50 rounded-3xl shadow-xl p-8 flex flex-col items-center justify-center backface-hidden rotate-y-180 border-2 border-teal-200">
+        <p id="word-r" class="text-2xl text-teal-600 font-bold mb-2">iku</p>
+        <p id="word-e" class="text-4xl font-bold text-gray-700">to go</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex gap-4 mt-8">
+    <button onclick="prev()" class="bg-slate-600 text-white px-6 py-3 rounded-full font-bold shadow-lg hover:bg-slate-700 active:scale-95">←</button>
+    <button onclick="next()" class="bg-teal-600 text-white px-6 py-3 rounded-full font-bold shadow-lg hover:bg-teal-700 active:scale-95">→</button>
+  </div>
+  
+  <button onclick="speak()" class="mt-6 bg-blue-500 text-white px-8 py-3 rounded-full font-bold shadow-md hover:bg-blue-600 active:scale-95">🔊 音声を聞く</button>
+
+  <script>
+    const vocab = [
+      {j:"行く", r:"iku", e:"to go", i:"🏃"}, {j:"帰る", r:"kaeru", e:"to return", i:"🏠"}, {j:"聞く", r:"kiku", e:"to listen", i:"👂"},
+      {j:"飲む", r:"nomu", e:"to drink", i:"🥤"}, {j:"話す", r:"hanasu", e:"to speak", i:"🗣️"}, {j:"読む", r:"yomu", e:"to read", i:"📖"},
+      {j:"起きる", r:"okiru", e:"to wake up", i:"⏰"}, {j:"食べる", r:"taberu", e:"to eat", i:"🍱"}, {j:"寝る", r:"neru", e:"to sleep", i:"💤"},
+      {j:"見る", r:"miru", e:"to watch", i:"📺"}, {j:"来る", r:"kuru", e:"to come", i:"🚶"}, {j:"する", r:"suru", e:"to do", i:"💪"},
+      {j:"勉強する", r:"benkyō suru", e:"to study", i:"✍️"}, {j:"会う", r:"au", e:"to meet", i:"🤝"}, {j:"ある", r:"aru", e:"to exist (thing)", i:"📦"},
+      {j:"いる", r:"iru", e:"to exist (person)", i:"👤"}, {j:"朝", r:"asa", e:"morning", i:"🌅"}, {j:"明日", r:"ashita", e:"tomorrow", i:"🗓️"},
+      {j:"今日", r:"kyō", e:"today", i:"☀️"}, {j:"仕事", r:"shigoto", e:"work", i:"💼"}, {j:"大学", r:"daigaku", e:"uni", i:"🏫"},
+      {j:"夜", r:"yoru", e:"night", i:"🌃"}, {j:"毎日", r:"mainichi", e:"every day", i:"📅"}, {j:"家", r:"ie", e:"home", i:"🏠"},
+      {j:"学校", r:"gakkō", e:"school", i:"🏫"}, {j:"午前", r:"gozen", e:"AM", i:"☕"}, {j:"午後", r:"gogo", e:"PM", i:"🌙"},
+      {j:"〜時", r:"-ji", e:"o'clock", i:"🕒"}, {j:"土曜日", r:"doyōbi", e:"Saturday", i:"📅"}, {j:"日曜日", r:"nichiyōbi", e:"Sunday", i:"📅"},
+      {j:"水", r:"mizu", e:"water", i:"💧"}, {j:"お茶", r:"ocha", e:"tea", i:"🍵"}, {j:"コーヒー", r:"kōhī", e:"coffee", i:"☕"},
+      {j:"晩ご飯", r:"bangohan", e:"dinner", i:"🍲"}, {j:"映画", r:"eiga", e:"movie", i:"🎬"}, {j:"CD", r:"shīdī", e:"CD", i:"💿"},
+      {j:"手紙", r:"tegami", e:"letter", i:"✉️"}, {j:"雑誌", r:"zasshi", e:"magazine", i:"📰"}, {j:"朝ご飯", r:"asagohan", e:"breakfast", i:"🍳"},
+      {j:"昼ご飯", r:"hirugohan", e:"lunch", i:"🍽️"}, {j:"いつも", r:"itsumo", e:"always", i:"♾️"}, {j:"時々", r:"tokidoki", e:"sometimes", i:"⏳"},
+      {j:"よく", r:"yoku", e:"often", i:"🔁"}, {j:"あまり〜ない", r:"amari~nai", e:"not much", i:"🤏"}, {j:"全然〜ない", r:"zenzen~nai", e:"not at all", i:"🚫"},
+      {j:"たいてい", r:"taitei", e:"usually", i:"✔️"}, {j:"ちょっと", r:"chotto", e:"a little", i:"🤏"}, {j:"早い", r:"hayai", e:"early", i:"⚡"},
+      {j:"それから", r:"sorekara", e:"and then", i:"➡️"}, {j:"〜時半", r:"-ji han", e:"half past", i:"🌗"}, {j:"どうですか", r:"dō desu ka", e:"how is it?", i:"🤔"},
+      {j:"ええ", r:"ē", e:"yes (informal)", i:"😊"}, {j:"でも", r:"demo", e:"but", i:"⚠️"}
+    ];
+    let idx = 0;
+    let flipped = false;
+
+    function flip() {
+      document.getElementById('flashcard').classList.toggle('rotate-y-180');
+      flipped = !flipped;
+    }
+    function update() {
+      if (flipped) flip();
+      setTimeout(() => {
+        document.getElementById('card-icon').innerText = vocab[idx].i;
+        document.getElementById('word-j').innerText = vocab[idx].j;
+        document.getElementById('word-r').innerText = vocab[idx].r;
+        document.getElementById('word-e').innerText = vocab[idx].e;
+      }, 250);
+    }
+    function next() { idx = (idx + 1) % vocab.length; update(); }
+    function prev() { idx = (idx - 1 + vocab.length) % vocab.length; update(); }
+    function speak() {
+      const msg = new SpeechSynthesisUtterance(vocab[idx].j);
+      msg.lang = 'ja-JP';
+      window.speechSynthesis.speak(msg);
+    }
+  </script>
+</body>
+</html>
