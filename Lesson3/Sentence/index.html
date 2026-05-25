@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Genki Lesson 3 - Flashcards (with Romaji)</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    .perspective-1000 { perspective: 1000px; }
+    .transform-style-3d { transform-style: preserve-3d; }
+    .backface-hidden { backface-visibility: hidden; }
+    .rotate-y-180 { transform: rotateY(180deg); }
+  </style>
+</head>
+<body class="bg-slate-50 font-sans min-h-screen flex flex-col justify-between">
+
+  <header class="bg-teal-600 text-white py-6 shadow-md text-center">
+    <h1 class="text-3xl md:text-4xl font-extrabold tracking-wide">Genki Lesson 3 Flashcards</h1>
+    <p class="text-sm md:text-base mt-2 opacity-90">Practice Verbs, Particles (o/ni/de/he), and Daily Routines</p>
+  </header>
+
+  <main class="max-w-4xl w-full mx-auto p-4 flex-grow flex flex-col items-center justify-center">
+    
+    <div id="tabs" class="w-full flex flex-wrap justify-center gap-2 mb-6">
+      <button onclick="switchCategory('daily_verbs')" id="tab-daily_verbs" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-teal-600 text-white">
+        Ru & U Verbs (Affirmative)
+      </button>
+      <button onclick="switchCategory('negative_verbs')" id="tab-negative_verbs" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">
+        Negative & Irregular
+      </button>
+      <button onclick="switchCategory('particles_place')" id="tab-particles_place" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">
+        Particles & Places
+      </button>
+      <button onclick="switchCategory('invitation_time')" id="tab-invitation_time" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">
+        Time, Frequency & Invitation
+      </button>
+    </div>
+
+    <div class="text-xl md:text-2xl font-bold text-slate-600 mb-4">
+      Question: <span id="current-index" class="text-teal-600">1</span> / 17
+    </div>
+
+    <div class="w-full max-w-2xl h-[480px] relative perspective-1000">
+      
+      <div id="flashcard" onclick="flipCard()" class="w-full h-full relative transform-style-3d transition-transform duration-500 cursor-pointer">
+        
+        <div class="absolute w-full h-full bg-white rounded-3xl shadow-xl border-2 border-teal-100 p-8 flex flex-col justify-center items-center text-center backface-hidden">
+          <div id="card-icon" class="text-7xl md:text-8xl mb-6 select-none">📺🙋‍♂️</div>
+          <div id="card-en" class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800 leading-snug">
+            I watch TV.
+          </div>
+          <div class="text-xs text-teal-500 mt-8 font-semibold tracking-widest uppercase">Tap to see answer</div>
+        </div>
+
+        <div class="absolute w-full h-full bg-teal-50 rounded-3xl shadow-xl border-2 border-teal-200 p-6 flex flex-col justify-between items-center text-center backface-hidden rotate-y-180">
+          
+          <div id="card-en-back" class="text-xl md:text-2xl font-medium text-teal-800 pt-2">
+            I watch TV.
+          </div>
+
+          <div class="flex flex-col gap-3 my-auto w-full px-2">
+            <div id="card-kanji" class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-wide">
+              テレビを見ます。
+            </div>
+            <div id="card-kana" class="text-2xl md:text-3xl text-teal-600 font-bold tracking-normal">
+              てれびをみます。
+            </div>
+            <div id="card-romaji" class="text-xl md:text-2xl text-amber-600 font-semibold tracking-wide italic">
+              terebi o mimasu.
+            </div>
+          </div>
+
+          <div class="pb-2">
+            <button onclick="speakText(event)" class="bg-teal-600 hover:bg-teal-700 active:scale-95 text-white p-5 rounded-full shadow-lg transition-all duration-200 flex items-center justify-center group" title="Listen">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 group-hover:animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="result-screen" class="absolute inset-0 bg-white rounded-3xl shadow-2xl border-4 border-teal-500 p-8 flex flex-col justify-center items-center text-center hidden z-10">
+        <div class="text-7xl mb-4">🎉</div>
+        <h2 class="text-4xl md:text-5xl font-black text-teal-600 mb-2">Ottimo!</h2>
+        <p class="text-2xl text-slate-600 mb-8 font-medium">You completed Lesson 3 items!</p>
+        <button onclick="restartCategory()" class="bg-teal-600 hover:bg-teal-700 text-white font-bold text-2xl px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all active:scale-95">
+          Restart
+        </button>
+      </div>
+
+    </div>
+
+    <div id="controls" class="flex items-center justify-center gap-6 mt-8 w-full max-w-md">
+      <button onclick="prevCard()" class="flex-1 bg-slate-700 hover:bg-slate-800 text-white font-bold text-xl py-4 rounded-xl shadow-md transition-all active:scale-95 disabled:opacity-30 disabled:pointer-events-none">
+        ← Previous
+      </button>
+      <button onclick="nextCard()" class="flex-1 bg-teal-600 hover:bg-teal-700 text-white font-bold text-xl py-4 rounded-xl shadow-md transition-all active:scale-95">
+        Next →
+      </button>
+    </div>
+
+  </main>
+
+  <footer class="bg-slate-800 text-slate-400 py-4 text-center text-sm border-t border-slate-700">
+    &copy; FujiGreentea - Japanese Learning Materials (Genki I)
+  </footer>
+
+  <script>
+    const dataset = {
+      daily_verbs: [
+        { icon: "📺🙋‍♂️", en: "I watch TV.", kanji: "テレビを見ます。", kana: "てれびをみます。", romaji: "terebi o mimasu." },
+        { icon: "📖🎒", en: "Mary reads books.", kanji: "メアリーさんは本を読みます。", kana: "めありーさんはほんをよみます。", romaji: "mearī san wa hon o yomimasu." },
+        { icon: "☕🌅", en: "I drink coffee.", kanji: "コーヒーを飲みます。", kana: "こーひーをのみます。", romaji: "kōhī o nomimasu." },
+        { icon: "🍳🍱", en: "Takeshi eats breakfast.", kanji: "たけしさんは朝ご飯を食べます。", kana: "たけしさんはあすごはんをたべます。", romaji: "takeshi san wa asagohan o tabemasu." },
+        { icon: "📝🎶", en: "I listen to music.", kanji: "音楽を聞きます。", kana: "おんがくをききます。", romaji: "ongaku o kikimasu." },
+        { icon: "🗣️🇯🇵", en: "I speak Japanese.", kanji: "日本語を話します。", kana: "にほんごをはなします。", romaji: "nihongo wa hanashimasu." },
+        { icon: "🎾🏫", en: "I play tennis.", kanji: "テニスをします。", kana: "てにすをします。", romaji: "tenisu o shimasu." },
+        { icon: "🛌💤", en: "I sleep.", kanji: "寝ます。", kana: "ねます。", romaji: "nemasu." },
+        { icon: "🌅🚶‍♂️", en: "I get up.", kanji: "起きます。", kana: "おきます。", romaji: "okimasu." },
+        { icon: "✉️✍️", en: "I write letters.", kanji: "手紙を書きます。", kana: "てがみをかきます。", romaji: "tegami o kakimasu." },
+        { icon: "📸🏙️", en: "I take pictures.", kanji: "写真を撮ります。", kana: "しゃしんをとります。", romaji: "shashin o torimasu." },
+        { icon: "🎴🃏", en: "Robert plays cards.", kanji: "ロバートさんはトランプをします。", kana: "ろばーとさんはとらんぷをします。", romaji: "robāto san wa toranpu o shimasu." },
+        { icon: "🍔😋", en: "I eat hamburgers.", kanji: "ハンバーガーを食べます。", kana: "はんばーがーをたべます。", romaji: "hanbāgā o tabemasu." },
+        { icon: "🍵🥢", en: "Professor Yamashita drinks green tea.", kanji: "山下先生はお茶を飲みます。", kana: "やましたせんせいはおちゃをのみます。", romaji: "yamashita sensei wa ocha o nomimasu." },
+        { icon: "📻🎙️", en: "I listen to the radio.", kanji: "ラジオを聞きます。", kana: "らじおをききます。", romaji: "rajio o kikimasu." },
+        { icon: "📰☕", en: "My father reads the newspaper.", kanji: "お父さんは新聞を読みます。", kana: "おとうさんはしんぶんをよみます。", romaji: "otōsan wa shinbun o yomimasu." },
+        { icon: "📘🤓", en: "I study.", kanji: "勉強します。", kana: "べんきょうします。", romaji: "benkyō shimasu." }
+      ],
+      negative_verbs: [
+        { icon: "📺🙅‍♀️", en: "I do not watch TV.", kanji: "テレビを見ません。", kana: "てれびをみません。", romaji: "terebi o mimasen." },
+        { icon: "☕🙅‍♂️", en: "Takeshi does not drink coffee.", kanji: "たけしさんはコーヒーを飲みません。", kana: "たけしさんはこーひーをのみません。", romaji: "takeshi san wa kōhī o nomimasen." },
+        { icon: "🍔🙅‍♀️", en: "Mary does not eat meat.", kanji: "メアリーさんは肉を食べません。", kana: "めありーさんはにくをたべません。", romaji: "mearī san wa niku o tabemasen." },
+        { icon: "🗣️💬", en: "Robert does not speak Japanese.", kanji: "ロバートさんは日本語を話しません。", kana: "ろばーとさんはにほんごをはなしません。", romaji: "robāto san wa nihongo o hanashimasen." },
+        { icon: "🎸🙅‍♂️", en: "I do not listen to music.", kanji: "音楽を聞きません。", kana: "おんがくをききません。", romaji: "ongaku o kikimasen." },
+        { icon: "🏫🏃‍♂️", en: "I go to school.", kanji: "学校に行きます。", kana: "がっこうにいきます。", romaji: "gakkō ni ikimasu." },
+        { icon: "🏠🏃‍♀️", en: "Mary returns home.", kanji: "メアリーさんは家に帰ります。", kana: "めありーさんはうちに帰ります。", romaji: "mearī san wa uchi ni kaerimasu." },
+        { icon: "🏢🚶‍♂️", en: "I come to the office/company.", kanji: "会社に来ます。", kana: "かいしゃにきます。", romaji: "kaisha ni kimasu." },
+        { icon: "🏫🙅‍♂️", en: "I do not go to school.", kanji: "学校に行きません。", kana: "がっこうにいきません。", romaji: "gakkō ni ikimasen." },
+        { icon: "🍿🙅‍♀️", en: "I do not watch movies.", kanji: "映画を見ません。", kana: "えいがをみません。", romaji: "eiga o mimasen." },
+        { icon: "📖🙅‍♂️", en: "I do not read magazines.", kanji: "雑誌を読みません。", kana: "ざっしをよみません。", romaji: "zasshi o yomimasen." },
+        { icon: "🎾🙅‍♀️", en: "Sora does not play tennis.", kanji: "ソラさんはテニスをしません。", kana: "そらさんはてにすをしません。", romaji: "sora san wa tenisu o shimasen." },
+        { icon: "🧪🙅‍♂️", en: "I do not study today.", kanji: "今日は勉強しません。", kana: "きょうはべんきょうしません。", romaji: "kyō wa benkyō shimasen." },
+        { icon: "🏃‍♂️💨", en: "Takeshi comes home early.", kanji: "たけしさんは早く帰ります。", kana: "たけしさんははやくかえります。", romaji: "takeshi san wa hayaku kaerimasu." },
+        { icon: "🎒🏫", en: "Robert goes to the university.", kanji: "ロバートさんは大学に行きます。", kana: "ろばーとさんはだいがくにいきます。", romaji: "robāto san wa daigaku ni ikimasu." },
+        { icon: "🛌🙅‍♂️", en: "I do not sleep early.", kanji: "早く寝ません。", kana: "はやくねません。", romaji: "hayaku nemasen." },
+        { icon: "🚶‍♀️✨", en: "Mary comes to Japan.", kanji: "メアリーさんは日本に来ます。", kana: "めありーさんはにほんにきます。", romaji: "mearī san wa nihon ni kimasu." }
+      ],
+      particles_place: [
+        { icon: "🏫📖", en: "I read books at the library.", kanji: "図書館で本を読みます。", kana: "としょかんでほんをよみます。", romaji: "toshokan de hon o yomimasu." },
+        { icon: "🏠📺", en: "I watch TV at home.", kanji: "家でテレビを見ます。", kana: "うちでてれびをみます。", romaji: "uchi de terebi o mimasu." },
+        { icon: "🏫🍳", en: "I eat lunch at the cafeteria.", kanji: "食堂で昼ご飯を食べます。", kana: "しょくどうでひるごはんをたべます。", romaji: "shokudō de hirugohan o tabemasu." },
+        { icon: "🛌🏫", en: "I sleep at school.", kanji: "学校で寝ます。", kana: "がっこうでねます。", romaji: "gakkō de nemasu." },
+        { icon: "🏙️☕", en: "I drink coffee at a café.", kanji: "喫茶店でコーヒーを飲みます。", kana: "きっさてんでこーひーをのみます。", romaji: "kissaten de kōhī o nomimasu." },
+        { icon: "🏃‍♂️🇺🇸", en: "I go to the United States.", kanji: "アメリカに行きます。", kana: "あめりかにいきます。", romaji: "amerika ni ikimasu." },
+        { icon: "🏠🏃‍♂️", en: "I go home.", kanji: "家に行きます。", kana: "うちにいきます。", romaji: "uchi ni ikimasu." },
+        { icon: "❓🏃‍♂️", en: "Where do you go?", kanji: "どこに行きますか。", kana: "どこにいきますか。", romaji: "doko ni ikimasu ka." },
+        { icon: "🏫❓", en: "Do you go to school?", kanji: "学校に行きますか。", kana: "がっこうにいきますか。", romaji: "gakkō ni ikimasu ka." },
+        { icon: "🏙️🎬", en: "I watch a movie at the theater.", kanji: "映画館で映画を見ます。", kana: "えいがかんでえいがをみます。", romaji: "eigakan de eiga o mimasu." },
+        { icon: "🛌🏠", en: "Takeshi sleeps at his house.", kanji: "たけしさんは家で寝ます。", kana: "たけしさんはうちでねます。", romaji: "takeshi san wa uchi de nemasu." },
+        { icon: "📝🏫", en: "I study at the library.", kanji: "図書館で勉強します。", kana: "としょかんでべんきょうします。", romaji: "toshokan de benkyō shimasu." },
+        { icon: "🥤🍔", en: "Mary eats a hamburger at the restaurant.", kanji: "メアリーさんはレストランでハンバーガーを食べます。", kana: "めありーさんはれすとらんではんばーがーをたべます。", romaji: "mearī san wa resutoran de hanbāgā o tabemasu." },
+        { icon: "📻🛏️", en: "I listen to the radio in my room.", kanji: "部屋でラジオを聞きます。", kana: "へやでらじおをききます。", romaji: "heya de rajio o kikimasu." },
+        { icon: "🗣️🏠", en: "I speak English at home.", kanji: "家で英語を話します。", kana: "うちでえいごをはなします。", romaji: "uchi de eigo o hanashimasu." },
+        { icon: "❓🍟", en: "Where do you eat lunch?", kanji: "どこで昼ご飯を食べますか。", kana: "どこでひるごはんをたべますか。", romaji: "doko de hirugohan o tabemasu ka." },
+        { icon: "❌🏃‍♂️", en: "I am not going anywhere.", kanji: "どこへも行きません。", kana: "どこへもいきません。", romaji: "doko he mo ikimasen." }
+      ],
+      invitation_time: [
+        { icon: "📅❓", en: "Would you like to watch a movie with me?", kanji: "一緒に映画を見ませんか。", kana: "いっしょにえいがをみませんか。", romaji: "issho ni eiga o mimasen ka." },
+        { icon: "🎾❓", en: "Would you like to play tennis with me?", kanji: "一緒にテニスをしませんか。", kana: "いっしょにてにすをしませんか。", romaji: "issho ni tenisu o shimasen ka." },
+        { icon: "☕❓", en: "Would you like to drink coffee with me?", kanji: "一緒にコーヒーを飲みませんか。", kana: "いっしょにこーひーをのみませんか。", romaji: "issho ni kōhī o nomimasen ka." },
+        { icon: "👍💬", en: "That sounds good.", kanji: "いいですね。", kana: "いいですね。", romaji: "ii desu ne." },
+        { icon: "📅✨", en: "I watch movies on Saturdays.", kanji: "土曜日に映画を見ます。", kana: "どようびにえいがをみます。", romaji: "doyōbi ni eiga o mimasu." },
+        { icon: "⏰🛌", en: "I sleep at 11:00 P.M.", kanji: "午後十一時に寝ます。", kana: "ごごじゅういちじにねます。", romaji: "gogo jūichiji ni nemasu." },
+        { icon: "⏰起", en: "I get up at 6:30 A.M.", kanji: "午前六時半に起きます。", kana: "ごぜんろくじはんにおきます。", romaji: "gozen rokujihan ni okimasu." },
+        { icon: "⏳📅", en: "I will go tomorrow.", kanji: "明日行きます。", kana: "あしたいきます。", romaji: "ashita ikimasu." },
+        { icon: "🔄📅", en: "I study every day.", kanji: "毎日勉強します。", kana: "まいにちべんきょうします。", romaji: "mainichi benkyō shimasu." },
+        { icon: "🌟🌃", en: "I watch TV tonight.", kanji: "今晩テレビを見ます。", kana: "こんばんてれびをみます。", romaji: "konban terebi o mimasu." },
+        { icon: "💯🔄", en: "I always listen to music.", kanji: "よく音楽を聞きます。", kana: "よくおんがくをききます。", romaji: "yoku ongaku o kikimasu." },
+        { icon: "🌓🔄", en: "I sometimes read magazines.", kanji: "時々雑誌を読みます。", kana: "ときどきざっしをよみます。", romaji: "tokidoki zasshi o yomimasu." },
+        { icon: "🙅‍♂️🔄", en: "I do not watch TV at all.", kanji: "全然テレビを見ません。", kana: "ぜんぜんてれびをみません。", romaji: "zenzen terebi o mimasen." },
+        { icon: "📅🍟", en: "I eat fast food on Sundays.", kanji: "日曜日にファーストフードを食べます。", kana: "にちようびにふぁーすとふーどをたべます。", romaji: "nichiyōbi ni fāsutofūdo o tabemasu." },
+        { icon: "⏰❓", en: "When will you go?", kanji: "いつ行きますか。", kana: "いついきますか。", romaji: "itsu ikimasu ka." },
+        { icon: "📅🏫", en: "I don't go to school on Sundays.", kanji: "日曜日に学校に行きません。", kana: "にちようびにがくっこうにいきません。", romaji: "nichiyōbi ni gakkō ni ikimasen." },
+        { icon: "🙅‍♂️🍲", en: "I do not eat breakfast at all.", kanji: "全然朝ご飯を食べません。", kana: "ぜんぜんあすごはんをたべません。", romaji: "zenzen asagohan o tabemasen." }
+      ]
+    };
+
+    let currentCategory = 'daily_verbs';
+    let currentIndex = 0;
+    let isFlipped = false;
+
+    function switchCategory(category) {
+      currentCategory = category;
+      currentIndex = 0;
+      isFlipped = false;
+      
+      const categories = ['daily_verbs', 'negative_verbs', 'particles_place', 'invitation_time'];
+      categories.forEach(cat => {
+        const tab = document.getElementById(`tab-${cat}`);
+        if (cat === category) {
+          tab.classList.remove('bg-white', 'text-teal-700', 'hover:bg-teal-50');
+          tab.classList.add('bg-teal-600', 'text-white');
+        } else {
+          tab.classList.remove('bg-teal-600', 'text-white');
+          tab.classList.add('bg-white', 'text-teal-700', 'hover:bg-teal-50');
+        }
+      });
+
+      document.getElementById('result-screen').classList.add('hidden');
+      document.getElementById('flashcard').classList.remove('hidden');
+      document.getElementById('controls').classList.remove('opacity-30', 'pointer-events-none');
+      
+      updateCard();
+    }
+
+    function updateCard() {
+      const card = document.getElementById('flashcard');
+      card.classList.remove('rotate-y-180');
+      isFlipped = false;
+
+      const data = dataset[currentCategory][currentIndex];
+      
+      document.getElementById('card-icon').innerText = data.icon;
+      document.getElementById('card-en').innerText = data.en;
+      document.getElementById('card-en-back').innerText = data.en;
+      document.getElementById('card-kanji').innerText = data.kanji;
+      document.getElementById('card-kana').innerText = data.kana;
+      document.getElementById('card-romaji').innerText = data.romaji;
+
+      document.getElementById('current-index').innerText = currentIndex + 1;
+    }
+
+    function flipCard() {
+      const card = document.getElementById('flashcard');
+      if (!isFlipped) {
+        card.classList.add('rotate-y-180');
+        isFlipped = true;
+      } else {
+        card.classList.remove('rotate-y-180');
+        isFlipped = false;
+      }
+    }
+
+    function nextCard() {
+      if (currentIndex < 16) {
+        currentIndex++;
+        updateCard();
+      } else {
+        document.getElementById('flashcard').classList.add('hidden');
+        document.getElementById('controls').classList.add('opacity-30', 'pointer-events-none');
+        document.getElementById('result-screen').classList.remove('hidden');
+      }
+    }
+
+    function prevCard() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateCard();
+      }
+    }
+
+    function restartCategory() {
+      document.getElementById('result-screen').classList.add('hidden');
+      document.getElementById('flashcard').classList.remove('hidden');
+      document.getElementById('controls').classList.remove('opacity-30', 'pointer-events-none');
+      currentIndex = 0;
+      updateCard();
+    }
+
+    function speakText(event) {
+      event.stopPropagation();
+      const data = dataset[currentCategory][currentIndex];
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(data.kana);
+      utterance.lang = 'ja-JP';
+      utterance.rate = 0.85;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    window.onload = () => { updateCard(); };
+  </script>
+</body>
+</html>
