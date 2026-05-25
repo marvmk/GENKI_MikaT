@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Genki Lesson 1 - Flashcards (with Romaji)</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    .perspective-1000 { perspective: 1000px; }
+    .transform-style-3d { transform-style: preserve-3d; }
+    .backface-hidden { backface-visibility: hidden; }
+    .rotate-y-180 { transform: rotateY(180deg); }
+  </style>
+</head>
+<body class="bg-slate-50 font-sans min-h-screen flex flex-col justify-between">
+
+  <header class="bg-teal-600 text-white py-6 shadow-md text-center">
+    <h1 class="text-3xl md:text-4xl font-extrabold tracking-wide">Genki Lesson 1 Flashcards</h1>
+    <p class="text-sm md:text-base mt-2 opacity-90">Practice with Kanji, Kana, and Romaji</p>
+  </header>
+
+  <main class="max-w-4xl w-full mx-auto p-4 flex-grow flex flex-col items-center justify-center">
+    
+    <div id="tabs" class="w-full flex flex-wrap justify-center gap-2 mb-6">
+      <button onclick="switchCategory('nationality')" id="tab-nationality" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-teal-600 text-white">
+        Nationality & Identity
+      </button>
+      <button onclick="switchCategory('majors')" id="tab-majors" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">
+        School & Majors
+      </button>
+      <button onclick="switchCategory('age')" id="tab-age" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">
+        Age & Phone
+      </button>
+      <button onclick="switchCategory('time')" id="tab-time" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">
+        Time & Clock
+      </button>
+    </div>
+
+    <div class="text-xl md:text-2xl font-bold text-slate-600 mb-4">
+      Question: <span id="current-index" class="text-teal-600">1</span> / 17
+    </div>
+
+    <div class="w-full max-w-2xl h-[480px] relative perspective-1000">
+      
+      <div id="flashcard" onclick="flipCard()" class="w-full h-full relative transform-style-3d transition-transform duration-500 cursor-pointer">
+        
+        <div class="absolute w-full h-full bg-white rounded-3xl shadow-xl border-2 border-teal-100 p-8 flex flex-col justify-center items-center text-center backface-hidden">
+          <div id="card-icon" class="text-7xl md:text-8xl mb-6 select-none">🇺🇸🙋‍♀️</div>
+          <div id="card-en" class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800 leading-snug">
+            Mary is an American.
+          </div>
+          <div class="text-xs text-teal-500 mt-8 font-semibold tracking-widest uppercase">Tap to see answer</div>
+        </div>
+
+        <div class="absolute w-full h-full bg-teal-50 rounded-3xl shadow-xl border-2 border-teal-200 p-6 flex flex-col justify-between items-center text-center backface-hidden rotate-y-180">
+          
+          <div id="card-en-back" class="text-xl md:text-2xl font-medium text-teal-800 pt-2">
+            Mary is an American.
+          </div>
+
+          <div class="flex flex-col gap-3 my-auto w-full px-2">
+            <div id="card-kanji" class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-wide">
+              メアリーさんはアメリカ人です。
+            </div>
+            <div id="card-kana" class="text-2xl md:text-3xl text-teal-600 font-bold tracking-normal">
+              めありーさんはあめりかじんです。
+            </div>
+            <div id="card-romaji" class="text-xl md:text-2xl text-amber-600 font-semibold tracking-wide italic">
+              mearī san wa amerika jin desu.
+            </div>
+          </div>
+
+          <div class="pb-2">
+            <button onclick="speakText(event)" class="bg-teal-600 hover:bg-teal-700 active:scale-95 text-white p-5 rounded-full shadow-lg transition-all duration-200 flex items-center justify-center group" title="Listen">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 group-hover:animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="result-screen" class="absolute inset-0 bg-white rounded-3xl shadow-2xl border-4 border-teal-500 p-8 flex flex-col justify-center items-center text-center hidden z-10">
+        <div class="text-7xl mb-4">🎉</div>
+        <h2 class="text-4xl md:text-5xl font-black text-teal-600 mb-2">Ottimo!</h2>
+        <p class="text-2xl text-slate-600 mb-8 font-medium">You completed this category!</p>
+        <button onclick="restartCategory()" class="bg-teal-600 hover:bg-teal-700 text-white font-bold text-2xl px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all active:scale-95">
+          Restart
+        </button>
+      </div>
+
+    </div>
+
+    <div id="controls" class="flex items-center justify-center gap-6 mt-8 w-full max-w-md">
+      <button onclick="prevCard()" class="flex-1 bg-slate-700 hover:bg-slate-800 text-white font-bold text-xl py-4 rounded-xl shadow-md transition-all active:scale-95 disabled:opacity-30 disabled:pointer-events-none">
+        ← Previous
+      </button>
+      <button onclick="nextCard()" class="flex-1 bg-teal-600 hover:bg-teal-700 text-white font-bold text-xl py-4 rounded-xl shadow-md transition-all active:scale-95">
+        Next →
+      </button>
+    </div>
+
+  </main>
+
+  <footer class="bg-slate-800 text-slate-400 py-4 text-center text-sm border-t border-slate-700">
+    &copy; FujiGreentea - Japanese Learning Materials (Genki I)
+  </footer>
+
+  <script>
+    const dataset = {
+      nationality: [
+        { icon: "🇺🇸🙋‍♀️", en: "Mary is an American.", kanji: "メアリーさんはアメリカ人です。", kana: "めありーさんはあめりかじんです。", romaji: "mearī san wa amerika jin desu." },
+        { icon: "🇯🇵🙋‍♂️", en: "Takeshi is Japanese.", kanji: "たけしさんは日本人です。", kana: "たけしさんはにほんじんです。", romaji: "takeshi san wa nihon jin desu." },
+        { icon: "🇰🇷🙋‍♀️", en: "Sora is Korean.", kanji: "ソラさんは韓国人です。", kana: "そらさんはかんこくじんです。", romaji: "sora san wa kankoku jin desu." },
+        { icon: "🇬🇧🙋‍♂️", en: "Robert is British.", kanji: "ロバートさんはイギリス人です。", kana: "ろばーとさんはいぎりすじんです。", romaji: "robāto san wa igirisu jin desu." },
+        { icon: "👨‍🏫🇯🇵", en: "Professor Yamashita is Japanese.", kanji: "山下先生は日本人です。", kana: "やましたせんせいはにほんじんです。", romaji: "yamashita sensei wa nihon jin desu." },
+        { icon: "🇺🇸❓", en: "Are you an international student?", kanji: "留学生ですか。", kana: "りゅうがくせいですか。", romaji: "ryūgakusei desu ka." },
+        { icon: "🙋‍♂️🏫", en: "I am a student.", kanji: "学生です。", kana: "がくせいです。", romaji: "gakusei desu." },
+        { icon: "💁‍♀️💬", en: "Excuse me, what is your name?", kanji: "お名前はなんですか。", kana: "おなまえはなんですか。", romaji: "onamae wa nan desu ka." },
+        { icon: "🌍❓", en: "Where do you come from?", kanji: "ご出身はどこですか。", kana: "ごしゅっしんはどこですか。", romaji: "goshusshin wa doko desu ka." },
+        { icon: "💼❓", en: "What is your occupation?", kanji: "お仕事は何ですか。", kana: "おしごとはなんですか。", romaji: "oshigoto wa nan desu ka." },
+        { icon: "👩‍💼🏫", en: "I am an office worker.", kanji: "会社員です。", kana: "かいしゃいんです。", romaji: "kaishain desu." },
+        { icon: "👩‍⚕️🏥", en: "I am a nurse.", kanji: "看護師です。", kana: "かんごしです。", romaji: "kangoshi desu." },
+        { icon: "👩‍🎓🏫", en: "I am a high school student.", kanji: "高校生です。", kana: "こうこうせいです。", romaji: "kōkōsei desu." },
+        { icon: "👨‍🎓🎓", en: "I am a graduate student.", kanji: "大学院生です。", kana: "だいがくいんせいです。", romaji: "daigakuinsei desu." },
+        { icon: "🏠👩", en: "I am a housewife.", kanji: "主婦です。", kana: "しゅふです。", romaji: "shufu desu." },
+        { icon: "👨‍⚖️🏛️", en: "I am a lawyer.", kanji: "弁護士です。", kana: "べんごしです。", romaji: "bengoshi desu." },
+        { icon: "🇬🇧🙋‍♀️", en: "Mary is not British.", kanji: "メアリーさんはイギリス人じゃないです。", kana: "めありーさんはいぎりすじんじゃないです。", romaji: "mearī san wa igirisu jin janai desu." }
+      ],
+      majors: [
+        { icon: "🇺🇸🏫", en: "Mary is a student at the University of Arizona.", kanji: "メアリーさんはアリゾナ大学の学生です。", kana: "めありーさんはありぞなだいがくのがくせいです。", romaji: "mearī san wa arizona daigaku no gakusei desu." },
+        { icon: "🌸🏫", en: "Takeshi is a student at Sakura University.", kanji: "たけしさんはさくら大学の学生です。", kana: "たけしさんはさくらだいがくのがくせいです。", romaji: "takeshi san wa sakura daigaku no gakusei desu." },
+        { icon: "🇰🇷🏫", en: "Sora is a student at Seoul University.", kanji: "ソラさんはソウル大学の学生です。", kana: "そらさんはそうるだいがくのがくせいです。", romaji: "sora san wa souru daigaku no gakusei desu." },
+        { icon: "🇬🇧🏫", en: "Robert is a student at the University of London.", kanji: "ロバートさんはロンドン大学の学生です。", kana: "ろばーとさんはろんどんだいがくのがくせいです。", romaji: "robāto san wa rondon daigaku no gakusei desu." },
+        { icon: "🗣️🇯🇵", en: "Mary's major is the Japanese language.", kanji: "メアリーさんの専攻は日本語です。", kana: "めありーさんのせんこうはにほんごです。", romaji: "mearī san no senkō wa nihongo desu." },
+        { icon: "📜⏳", en: "Takeshi's major is history.", kanji: "たけしさんの専攻は歴史です。", kana: "たけしさんのせんこうはれきしです。", romaji: "takeshi san no senkō wa rekishi desu." },
+        { icon: "💻🖱️", en: "Sora's major is computer science.", kanji: "ソラさんの専攻はコンピューターです。", kana: "そらさんのせんこうはこんぴゅーたーです。", romaji: "sora san no senkō wa konpyūtā desu." },
+        { icon: "📈💼", en: "Robert's major is business.", kanji: "ロバートさんの専攻はビジネスです。", kana: "ろばーとさんのせんこうはびじねすです。", romaji: "robāto san no senkō wa bijinesu desu." },
+        { icon: "💡❓", en: "What is your major?", kanji: "専攻は何ですか。", kana: "せんこうはなんですか。", romaji: "senkō wa nan desu ka." },
+        { icon: "📊📉", en: "My major is economics.", kanji: "専攻は経済です。", kana: "せんこうはけいざいです。", romaji: "senkō wa keizai desu." },
+        { icon: "🤝🌐", en: "My major is international relations.", kanji: "専攻は国際関係です。", kana: "せんこうはこくさいかんけいです。", romaji: "senkō wa kokusaikankei desu." },
+        { icon: "🧬🔬", en: "My major is biology.", kanji: "専攻は生物学です。", kana: "せんこうはせいぶつがくです。", romaji: "senkō wa seibutsugaku desu." },
+        { icon: "🏛️🗳️", en: "My major is politics.", kanji: "専攻は政治です。", kana: "せんこうはせいじです。", romaji: "senkō wa seiji desu." },
+        { icon: "🎨📚", en: "My major is literature.", kanji: "専攻は文学です。", kana: "せんこうはぶんがくです。", romaji: "senkō wa bungaku desu." },
+        { icon: "🛠️🏗️", en: "My major is engineering.", kanji: "専攻は工学です。", kana: "せんこうはこうがくです。", romaji: "senkō wa kōgaku desu." },
+        { icon: "🌏🔍", en: "My major is Asian studies.", kanji: "専攻はアジア研究です。", kana: "せんこうはあじあけんきゅうです。", romaji: "senkō wa ajia kenkyū desu." },
+        { icon: "🏫👨‍🏫", en: "Professor Yamashita is a teacher at Sakura University.", kanji: "山下先生はさくら大学の先生です。", kana: "やましたせんせいはさくらだいがくのせんせいです。", romaji: "yamashita sensei wa sakura daigaku no sensei desu." }
+      ],
+      age: [
+        { icon: "🎂👩", en: "Mary is 19 years old.", kanji: "メアリーさんは一九歳です。", kana: "めありーさんはじゅうきゅうさいです。", romaji: "mearī san wa jūkū sai desu." },
+        { icon: "🎂👨", en: "Takeshi is 22 years old.", kanji: "たけしさんは二十二歳です。", kana: "たけしさんはにじゅうにさいです。", romaji: "takeshi san wa nijūni sai desu." },
+        { icon: "🎂👧", en: "Sora is 20 years old.", kanji: "ソラさんは二十歳です。", kana: "そらさんははたちです。", romaji: "sora san wa hatachi desu." },
+        { icon: "🎂👨‍🏫", en: "Professor Yamashita is 47 years old.", kanji: "山下先生は四十七歳です。", kana: "やましたせんせいはよんじゅうななさいです。", romaji: "yamashita sensei wa yonjūnana sai desu." },
+        { icon: "🎂❓", en: "How old are you?", kanji: "何歳ですか。", kana: "なんさいですか。", romaji: "nan sai desu ka." },
+        { icon: "🎒1️⃣", en: "I am a first-year student.", kanji: "一年生です。", kana: "いちねんせいです。", romaji: "ichinesei desu." },
+        { icon: "🎒2️⃣", en: "Mary is a second-year student.", kanji: "メアリーさんは二年生です。", kana: "めありーさんはねんせいです。", romaji: "mearī san wa ninensei desu." },
+        { icon: "🎒3️⃣", en: "Sora is a third-year student.", kanji: "ソラさんは三年生です。", kana: "そらさんはさんねんせいです。", romaji: "sora san wa sannensei desu." },
+        { icon: "🎒4️⃣", en: "Takeshi is a fourth-year student.", kanji: "たけしさんは四年生です。", kana: "たけしさんはよねんせいです。", romaji: "takeshi san wa yonensei desu." },
+        { icon: "🎓❓", en: "What year are you in college?", kanji: "何年生ですか。", kana: "なんねんせいですか。", romaji: "nan nensei desu ka." },
+        { icon: "📱❓", en: "What is your telephone number?", kanji: "電話番号は何番ですか。", kana: "でんわばんごうはなんばんですか。", romaji: "denwa bangō wa nan ban desu ka." },
+        { icon: "📞🔢", en: "It is 283-9547.", kanji: "二八三の九五四七です。", kana: "にはちさんのきゅうごよんななです。", romaji: "ni hachi san no kyū go yon nana desu." },
+        { icon: "📞🤙", en: "Takeshi's phone number.", kanji: "たけしさんの電話番号。", kana: "たけしさんのでんわばんごう。", romaji: "takeshi san no denwa bangō." },
+        { icon: "🎂👶", en: "I am 1 year old.", kanji: "一歳です。", kana: "いっさいです。", romaji: "issai desu." },
+        { icon: "🎂👦", en: "I am 8 years old.", kanji: "八歳です。", kana: "はっさいです。", romaji: "hassai desu." },
+        { icon: "🎂🔟", en: "I am 10 years old.", kanji: "十歳です。", kana: "じゅっさいです。", romaji: "jussai desu." },
+        { icon: "🎂👨‍🦳", en: "My father is 48 years old.", kanji: "お父さんは四十八歳です。", kana: "おとうさんはよんじゅうはっさいです。", romaji: "otōsan wa yonjūhassai desu." }
+      ],
+      time: [
+        { icon: "⏰❓", en: "What time is it now?", kanji: "いま何時ですか。", kana: "いまなんじですか。", romaji: "ima nan ji desu ka." },
+        { icon: "🕐✨", en: "It is 1 o'clock.", kanji: "一時です。", kana: "いちじです。", romaji: "ichi ji desu." },
+        { icon: "🕓⚡", en: "It is 4 o'clock.", kanji: "四時です。", kana: "よじです。", romaji: "yo ji desu." },
+        { icon: "🕖🌅", en: "It is 7 o'clock.", kanji: "七時です。", kana: "しちじです。", romaji: "shichi ji desu." },
+        { icon: "🕘🌙", en: "It is 9 o'clock.", kanji: "九時です。", kana: "くじです。", romaji: "ku ji desu." },
+        { icon: "🕜⏳", en: "It is half past one.", kanji: "一時半です。", kana: "いちじはんです。", romaji: "ichi ji han desu." },
+        { icon: "⏰☀️", en: "It is 3:00 P.M.", kanji: "午後三時です。", kana: "ごごさんじです。", romaji: "gogo san ji desu." },
+        { icon: "⏰🙋", en: "It is 9:18 A.M.", kanji: "午前九時十八分です。", kana: "ごぜんくじじゅうはっぷんです。", romaji: "gozen ku ji jūhappun desu." },
+        { icon: "⏱️1️⃣", en: "1 minute", kanji: "一分", kana: "いっぷん", romaji: "ippun" },
+        { icon: "⏱️2️⃣", en: "2 minutes", kanji: "二分", kana: "にふん", romaji: "nifun" },
+        { icon: "⏱️3️⃣", en: "3 minutes", kanji: "三分", kana: "さんぷん", romaji: "sanpun" },
+        { icon: "⏱️4️⃣", en: "4 minutes", kanji: "四分", kana: "よんぷん", romaji: "yonpun" },
+        { icon: "⏱️5️⃣", en: "5 minutes", kanji: "五分", kana: "ごふん", romaji: "gofun" },
+        { icon: "⏱️6️⃣", en: "6 minutes", kanji: "六分", kana: "ろっぷん", romaji: "roppun" },
+        { icon: "⏱️7️⃣", en: "7 minutes", kanji: "七分", kana: "ななふん", romaji: "nanafun" },
+        { icon: "⏱️8️⃣", en: "8 minutes", kanji: "八分", kana: "はっぷん", romaji: "happun" },
+        { icon: "⏱️🔟", en: "10 minutes", kanji: "十分", kana: "じゅっぷん", romaji: "juppun" }
+      ]
+    };
+
+    let currentCategory = 'nationality';
+    let currentIndex = 0;
+    let isFlipped = false;
+
+    function switchCategory(category) {
+      currentCategory = category;
+      currentIndex = 0;
+      isFlipped = false;
+      
+      const categories = ['nationality', 'majors', 'age', 'time'];
+      categories.forEach(cat => {
+        const tab = document.getElementById(`tab-${cat}`);
+        if (cat === category) {
+          tab.classList.remove('bg-white', 'text-teal-700', 'hover:bg-teal-50');
+          tab.classList.add('bg-teal-600', 'text-white');
+        } else {
+          tab.classList.remove('bg-teal-600', 'text-white');
+          tab.classList.add('bg-white', 'text-teal-700', 'hover:bg-teal-50');
+        }
+      });
+
+      document.getElementById('result-screen').classList.add('hidden');
+      document.getElementById('flashcard').classList.remove('hidden');
+      document.getElementById('controls').classList.remove('opacity-30', 'pointer-events-none');
+      
+      updateCard();
+    }
+
+    function updateCard() {
+      const card = document.getElementById('flashcard');
+      card.classList.remove('rotate-y-180');
+      isFlipped = false;
+
+      const data = dataset[currentCategory][currentIndex];
+      
+      document.getElementById('card-icon').innerText = data.icon;
+      document.getElementById('card-en').innerText = data.en;
+      document.getElementById('card-en-back').innerText = data.en;
+      document.getElementById('card-kanji').innerText = data.kanji;
+      document.getElementById('card-kana').innerText = data.kana;
+      document.getElementById('card-romaji').innerText = data.romaji;
+
+      document.getElementById('current-index').innerText = currentIndex + 1;
+    }
+
+    function flipCard() {
+      const card = document.getElementById('flashcard');
+      if (!isFlipped) {
+        card.classList.add('rotate-y-180');
+        isFlipped = true;
+      } else {
+        card.classList.remove('rotate-y-180');
+        isFlipped = false;
+      }
+    }
+
+    function nextCard() {
+      if (currentIndex < 16) {
+        currentIndex++;
+        updateCard();
+      } else {
+        document.getElementById('flashcard').classList.add('hidden');
+        document.getElementById('controls').classList.add('opacity-30', 'pointer-events-none');
+        document.getElementById('result-screen').classList.remove('hidden');
+      }
+    }
+
+    function prevCard() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateCard();
+      }
+    }
+
+    function restartCategory() {
+      document.getElementById('result-screen').classList.add('hidden');
+      document.getElementById('flashcard').classList.remove('hidden');
+      document.getElementById('controls').classList.remove('opacity-30', 'pointer-events-none');
+      currentIndex = 0;
+      updateCard();
+    }
+
+    function speakText(event) {
+      event.stopPropagation();
+      const data = dataset[currentCategory][currentIndex];
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(data.kana);
+      utterance.lang = 'ja-JP';
+      utterance.rate = 0.85;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    window.onload = () => { updateCard(); };
+  </script>
+</body>
+</html>
