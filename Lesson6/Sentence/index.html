@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Genki Lesson 6 - Flashcards (with Romaji)</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    .perspective-1000 { perspective: 1000px; }
+    .transform-style-3d { transform-style: preserve-3d; }
+    .backface-hidden { backface-visibility: hidden; }
+    .rotate-y-180 { transform: rotateY(180deg); }
+  </style>
+</head>
+<body class="bg-slate-50 font-sans min-h-screen flex flex-col justify-between">
+
+  <header class="bg-teal-600 text-white py-6 shadow-md text-center">
+    <h1 class="text-3xl md:text-4xl font-extrabold tracking-wide">Genki Lesson 6 Flashcards</h1>
+    <p class="text-sm md:text-base mt-2 opacity-90">Practice Te-form, Requests, Permissions, and Progress</p>
+  </header>
+
+  <main class="max-w-4xl w-full mx-auto p-4 flex-grow flex flex-col items-center justify-center">
+    
+    <div id="tabs" class="w-full flex flex-wrap justify-center gap-2 mb-6">
+      <button onclick="switchCategory('te_request')" id="tab-te_request" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-teal-600 text-white">
+        Te-form & Request (Please do)
+      </button>
+      <button onclick="switchCategory('te_permission')" id="tab-te_permission" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">
+        Permission & Prohibition (May I / Must not)
+      </button>
+      <button onclick="switchCategory('te_iru')" id="tab-te_iru" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">
+        Te-iru (Action in Progress / State)
+      </button>
+      <button onclick="switchCategory('kara_purpose')" id="tab-kara_purpose" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">
+        Because (kara) & Purpose of Movement
+      </button>
+    </div>
+
+    <div class="text-xl md:text-2xl font-bold text-slate-600 mb-4">
+      Question: <span id="current-index" class="text-teal-600">1</span> / 17
+    </div>
+
+    <div class="w-full max-w-2xl h-[480px] relative perspective-1000">
+      
+      <div id="flashcard" onclick="flipCard()" class="w-full h-full relative transform-style-3d transition-transform duration-500 cursor-pointer">
+        
+        <div class="absolute w-full h-full bg-white rounded-3xl shadow-xl border-2 border-teal-100 p-8 flex flex-col justify-center items-center text-center backface-hidden">
+          <div id="card-icon" class="text-7xl md:text-8xl mb-6 select-none">🙋‍♂️📋</div>
+          <div id="card-en" class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800 leading-snug">
+            Please stand up.
+          </div>
+          <div class="text-xs text-teal-500 mt-8 font-semibold tracking-widest uppercase">Tap to see answer</div>
+        </div>
+
+        <div class="absolute w-full h-full bg-teal-50 rounded-3xl shadow-xl border-2 border-teal-200 p-6 flex flex-col justify-between items-center text-center backface-hidden rotate-y-180">
+          
+          <div id="card-en-back" class="text-xl md:text-2xl font-medium text-teal-800 pt-2">
+            Please stand up.
+          </div>
+
+          <div class="flex flex-col gap-3 my-auto w-full px-2">
+            <div id="card-kanji" class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-wide">
+              立ってください。
+            </div>
+            <div id="card-kana" class="text-2xl md:text-3xl text-teal-600 font-bold tracking-normal">
+              たってください。
+            </div>
+            <div id="card-romaji" class="text-xl md:text-2xl text-amber-600 font-semibold tracking-wide italic">
+              tatte kudasai.
+            </div>
+          </div>
+
+          <div class="pb-2">
+            <button onclick="speakText(event)" class="bg-teal-600 hover:bg-teal-700 active:scale-95 text-white p-5 rounded-full shadow-lg transition-all duration-200 flex items-center justify-center group" title="Listen">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 group-hover:animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="result-screen" class="absolute inset-0 bg-white rounded-3xl shadow-2xl border-4 border-teal-500 p-8 flex flex-col justify-center items-center text-center hidden z-10">
+        <div class="text-7xl mb-4">🎉</div>
+        <h2 class="text-4xl md:text-5xl font-black text-teal-600 mb-2">Ottimo!</h2>
+        <p class="text-2xl text-slate-600 mb-8 font-medium">You completed Lesson 6 items!</p>
+        <button onclick="restartCategory()" class="bg-teal-600 hover:bg-teal-700 text-white font-bold text-2xl px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all active:scale-95">
+          Restart
+        </button>
+      </div>
+
+    </div>
+
+    <div id="controls" class="flex items-center justify-center gap-6 mt-8 w-full max-w-md">
+      <button onclick="prevCard()" class="flex-1 bg-slate-700 hover:bg-slate-800 text-white font-bold text-xl py-4 rounded-xl shadow-md transition-all active:scale-95 disabled:opacity-30 disabled:pointer-events-none">
+        ← Previous
+      </button>
+      <button onclick="nextCard()" class="flex-1 bg-teal-600 hover:bg-teal-700 text-white font-bold text-xl py-4 rounded-xl shadow-md transition-all active:scale-95">
+        Next →
+      </button>
+    </div>
+
+  </main>
+
+  <footer class="bg-slate-800 text-slate-400 py-4 text-center text-sm border-t border-slate-700">
+    &copy; FujiGreentea - Japanese Learning Materials (Genki I)
+  </footer>
+
+  <script>
+    const dataset = {
+      te_request: [
+        { icon: "🙋‍♂️📋", en: "Please stand up.", kanji: "立ってください。", kana: "たってください。", romaji: "tatte kudasai." },
+        { icon: "💺👇", en: "Please sit down.", kanji: "座ってください。", kana: "すわってください。", romaji: "suwatte kudasai." },
+        { icon: "📖🎒", en: "Please open the textbook.", kanji: "教科書を開けてください。", kana: "きょうかしょをあけてください。", romaji: "kyōkasho o akete kudasai." },
+        { icon: "📝✏️", en: "Please write your name here.", kanji: "ここに名前を書いてください。", kana: "ここになまえをかいてください。", romaji: "koko ni namae o kaite kudasai." },
+        { icon: "🔊💬", en: "Please speak slowly.", kanji: "ゆっくり話してください。", kana: "ゆっくりはなしてください。", romaji: "yukkuri hanashite kudasai." },
+        { icon: "👀📋", en: "Please look at this.", kanji: "これを見てください。", kana: "これをみてください。", romaji: "kore o mite kudasai." },
+        { icon: "🔑💁‍♂️", en: "Please bring the key.", kanji: "鍵を持ってきてください。", kana: "かぎをもってきてください。", romaji: "kagi o motte kite kudasai." },
+        { icon: "🙋‍♂️🎁", en: "Please help a little.", kanji: "ちょっと手伝ってください。", kana: "ちょっとてつだってください。", romaji: "chotto tetsudatte kudasai." },
+        { icon: "🔍📖", en: "Please teach/tell me.", kanji: "教えてください。", kana: "おしえてください。", romaji: "oshiete kudasai." },
+        { icon: "🔊📻", en: "Please listen.", kanji: "聞いてください。", kana: "きいてください。", romaji: "kiite kudasai." },
+        { icon: "💡🔌", en: "Please turn on the light.", kanji: "電気をつけてください。", kana: "でんきをつけてください。", romaji: "denki o tsukete kudasai." },
+        { icon: "🚪🔒", en: "Please close the door.", kanji: "ドアを閉めてください。", kana: "どあをしめてください。", romaji: "doa o shimete kudasai." },
+        { icon: "📱💁‍♀️", en: "Please call me.", kanji: "電話をしてください。", kana: "でんわをしてください。", romaji: "denwa o shite kudasai." },
+        { icon: "⏳🙋‍♂️", en: "Please wait for a moment.", kanji: "ちょっと待ってください。", kana: "ちょっとまってください。", romaji: "chotto matte kudasai." },
+        { icon: "🚗💨", en: "Please hurry.", kanji: "急いでください。", kana: "いそいでください。", romaji: "isoide kudasai." },
+        { icon: "💵💁‍♂️", en: "Please lend me some money.", kanji: "お金を貸してください。", kana: "おかねをかしてください。", romaji: "okane o kashite kudasai." },
+        { icon: "🛑🚙", en: "Please stop the car here.", kanji: "ここに車を止めてください。", kana: "ここにくるまをとめてください。", romaji: "koko ni kuruma o tomete kudasai." }
+      ],
+      te_permission: [
+        { icon: "❓🚬", en: "May I smoke here?", kanji: "ここでタバコを吸ってもいいですか。", kana: "ここでたばこをすってもいいですか。", romaji: "koko de tabako o sutte mo ii desu ka." },
+        { icon: "👍📱", en: "You may use this smartphone.", kanji: "このスマホを使ってもいいですよ。", kana: "このすまほをつかってもいいですよ。", romaji: "kono sumaho o tsukatte mo ii desu yo." },
+        { icon: "❓📗", en: "May I borrow this book?", kanji: "この本を借りてもいいですか。", kanji: "このほんをかりてもいいですか。", kana: "このほんをかりてもいいですか。", romaji: "kono hon o karite mo ii desu ka." },
+        { icon: "❓🗺️", en: "May I take a picture here?", kanji: "ここで写真を撮ってもいいですか。", kana: "ここでしゃしんをとってもいいですか。", romaji: "koko de shashin o totte mo ii desu ka." },
+        { icon: "❓🚪", en: "May I enter the room?", kanji: "部屋に入ってもいいですか。", kana: "へやにはいってもいいですか。", romaji: "heya ni haitte mo ii desu ka." },
+        { icon: "🛑🍷", en: "You must not drink alcohol here.", kanji: "ここでお酒を飲んではいけません。", kana: "ここでおさけをのんではいけません。", romaji: "koko de osake o nonde wa ikemasen." },
+        { icon: "🛑💯", en: "You must not look at the textbook during the test.", kanji: "テストで教科書を見てはいけません。", kana: "てすとできょうかしょをみてはいけません。", romaji: "tesuto de kyōkasho o mite wa ikemasen." },
+        { icon: "❓💺", en: "May I sit here?", kanji: "ここに座ってもいいですか。", kana: "ここにすわってもいいですか。", romaji: "koko ni suwatte mo ii desu ka." },
+        { icon: "🛑🚗", en: "You must not park the car here.", kanji: "ここに車を止めてはいけません。", kana: "ここにくるまをとめてはいけません。", romaji: "koko ni kuruma o tomete wa ikemasen." },
+        { icon: "❓🧼", en: "May I take a shower?", kanji: "シャワーを浴びてもいいですか。", kana: "しゃわーをあびてもいいですか。", romaji: "shawā o abite mo ii desu ka." },
+        { icon: "🛑📱", en: "You must not use your phone in class.", kanji: "クラスでスマホを使ってはいけません。", kana: "くらすですまほをつかってはいけません。", romaji: "kurasu de sumaho o tsukatte wa ikemasen." },
+        { icon: "👍💬", en: "Yes, you may go.", kanji: "はい、行ってもいいですよ。", kana: "はい、いってもいいですよ。", romaji: "hai, itte mo ii desu yo." },
+        { icon: "🛑🏠", en: "You must not return home yet.", kanji: "まだ家に帰ってはいけません。", kana: "まだうちにかえってはいけません。", romaji: "mada uchi ni kaette wa ikemasen." },
+        { icon: "❓🍿", en: "May I watch TV tonight?", kanji: "今晩テレビを見てもいいですか。", kana: "こんばんてれびをみてもいいですか。", romaji: "konban terebi o mite mo ii desu ka." },
+        { icon: "👍🛏️", en: "You may sleep now.", kanji: "もう寝てもいいですよ。", kana: "もうねてもいいですよ。", romaji: "mō nete mo ii desu yo." },
+        { icon: "🛑💬", en: "You must not speak English here.", kanji: "ここで英語を話してはいけません。", kana: "ここでえいごをはなしてはいけません。", romaji: "koko de eigo o hanashite wa ikemasen." },
+        { icon: "❓🖊️", en: "May I use this pen?", kanji: "このペンを使ってもいいですか。", kana: "このぺんをつかってもいいですか。", romaji: "kono pen o tsukatte mo ii desu ka." }
+      ],
+      te_iru: [
+        { icon: "🗣️🇯🇵", en: "Robert is studying Japanese now.", kanji: "ロバートさんは今日本語を勉強しています。", kana: "ろばーとさんはいまにほんごをべんきょうしています。", romaji: "robāto san wa ima nihongo o benkyō shite imasu." },
+        { icon: "📖🛋️", en: "Takeshi is reading a book in his room.", kanji: "たけしさんは部屋で本を読んでいます。", kana: "たけしさんはへやでほんをよんでいます。", romaji: "takeshi san wa heya de hon o yonde imasu." },
+        { icon: "🥞👩", en: "Mary is eating lunch now.", kanji: "メアリーさんは今昼ご飯を食べています。", kana: "めありーさんはいまひるごはんをたべています。", romaji: "mearī san wa ima hirugohan o tabete imasu." },
+        { icon: "🛌💤", en: "My child is sleeping.", kanji: "子供は寝ています。", kana: "こどもはねています。", romaji: "kodomo ga nete imasu." },
+        { icon: "🎶🎧", en: "I am listening to music now.", kanji: "私は今音楽を聞いています。", kana: "わたしはいまおんがくをきいています。", romaji: "watashi wa ima ongaku o kiite imasu." },
+        { icon: "❓🍿", en: "What are you doing now?", kanji: "今何回をしていますか。", kanji: "今何をしていますか。", kana: "いま何をしていますか。", kana: "いまなんをしていますか。", kana: "いまなんにをしていますか。", kana: "いまなにをしていますか。", romaji: "ima nani o shite imasu ka." },
+        { icon: "🎬🍿", en: "I am watching a movie.", kanji: "映画を見ています。", kana: "えいがをみています。", romaji: "eiga o mite imasu." },
+        { icon: "🚶‍♂️🏫", en: "Sora is walking to school.", kanji: "ソラさんは学校へ歩いています。", kana: "そらさんはがっこうへあるいています。", romaji: "sora san wa gakkō he aruite imasu." },
+        { icon: "👨‍🏫💬", en: "The teacher is talking with Mary.", kanji: "先生はメアリーさんと話しています。", kana: "せんせいはめありーさんとはなしています。", romaji: "sensei wa mearī san to hanashite imasu." },
+        { icon: "📱💬", en: "I am making a phone call.", kanji: "電話をしています。", kana: "でんわをしています。", romaji: "denwa o shite imasu." },
+        { icon: "🏠📍", en: "I live in Tokyo.", kanji: "東京に住んでいます。", kana: "とうきょうにすんでいます。", romaji: "tōkyō ni sunde imasu." },
+        { icon: "🚗✨", en: "Professor Yamashita owns a car.", kanji: "山下先生は車を持っています。", kana: "やましたせんせいはくるまをもっています。", romaji: "yamashita sensei wa kuruma o motte imasu." },
+        { icon: "🤷‍♂️❌", en: "I don't know.", kanji: "知りません。", kana: "しりません。", romaji: "shirimasen." },
+        { icon: "🤝💓", en: "I know Robert's friend.", kanji: "ロバートさんの友達を知っています。", kana: "ろばーとさんのともだちをしっています。", romaji: "robāto san no tomodachi o shitte imasu." },
+        { icon: "👩‍💼💼", en: "My older sister works at a bank.", kanji: "姉は銀行で働いています。", kana: "あねはぎんこうではたらいています。", romaji: "ane wa ginkō de hatarite imasu." },
+        { icon: "🏫🎓", en: "Sora is married.", kanji: "ソラさんは結婚しています。", kana: "そらさんはけっこんしています。", romaji: "sora san wa kekkon shite imasu." },
+        { icon: "☕🛋️", en: "I am drinking coffee at a café.", kanji: "喫茶店でコーヒーを飲んでいます。", kana: "きっさてんでこーひーをのんでいます。", romaji: "kissaten de kōhī o nonde imasu." }
+      ],
+      kara_purpose: [
+        { icon: "📝💯", en: "Because I have an exam tomorrow, I will study tonight.", kanji: "明日テストがありますから、今晩勉強します。", kana: "あしたてすとがありますから、こんばんべんきょうします。", romaji: "ashita tesuto ga arimasu kara, konban benkyō shimasu." },
+        { icon: "🥵🥤", en: "Because it is hot, I will drink water.", kanji: "暑いですから、水を飲みます。", kana: "あついですから、みずをのみます。", romaji: "atsui desu kara, mizu o nomimasu." },
+        { icon: "🤷‍♂️📉", en: "Because I have no money, I won't go out.", kanji: "お金がありませんから、出かけません。", kana: "おかねがありませんから、でかけません。", romaji: "okane ga arimasen kara, dekakemasen." },
+        { icon: "🎬❤️", en: "Because I love movies, I watch them often.", kanji: "映画が好きですから、よく見ます。", kana: "えいががすきですから、よくみます。", romaji: "eiga ga suki desu kara, yoku mimasu." },
+        { icon: "😴💤", en: "Because I am busy, I won't sleep early.", kanji: "忙しいですから、早く寝ません。", kana: "いそがしいですから、はやくねません。", romaji: "isogashii desu kara, hayaku nemasen." },
+        { icon: "🌸🏃‍♂️", en: "I went to Kyoto to see the autumn leaves.", kanji: "京都へ写真を撮りに行きました。", kana: "きょうとへしゃしんをとりにいきました。", romaji: "kyōto he shashin o tori ni ikimashita." },
+        { icon: "🏫🍟", en: "I go to the cafeteria to eat lunch.", kanji: "食堂へ昼ご飯を食べに行きます。", kana: "しょくどうへひるごはんをたべにいきます。", romaji: "shokudō he hirugohan o tabe ni ikimasu." },
+        { icon: "🏫📖", en: "Mary went to the library to borrow books.", kanji: "メアリーさんは図書館へ本を借りに行きました。", kana: "めありーさんはとしょかんへほんをかりにいきました。", romaji: "mearī san wa toshokan he hon o kari ni ikimashita." },
+        { icon: "🏙️🛒", en: "I will go to the department store to buy shoes.", kanji: "デパートへ靴を買いに行きます。", kana: "でぱーとへくつをかいにいきます。", romaji: "depāto he kutsu o kai ni ikimasu." },
+        { icon: "🏠🍟", en: "Robert came to my house to eat dinner.", kanji: "ロバートさんは家に晩ご飯を食べに来ました。", kana: "ろばーとさんはうちにばんごはんをたべにきました。", romaji: "robāto san wa uchi ni bangohan o tabe ni kimashita." },
+        { icon: "❓🛫", en: "Why do you study Japanese?", kanji: "どうして日本語を勉強するのですか。", kana: "どうしてにほんごをべんきょうするのですか。", romaji: "dōshite nihongo o benkyō suru no desu ka." },
+        { icon: "🇯🇵✈️", en: "Because I will go to Japan next year.", kanji: "来年日本に行きますから。", kana: "らいねんにほんにいきますから。", romaji: "rainen nihon ni ikimasu kara." },
+        { icon: "🛌💤", en: "Because I am tired, I will sleep.", kanji: "疲れていますから、寝ます。", kana: "つかれていますから、ねます。", romaji: "tsukarete imasu kara, nemasu." },
+        { icon: "🎮🤝", en: "I will go to Takeshi's room to play video games.", kanji: "たけしさんの部屋へゲームをしに行きます。", kana: "たけしさんのへやへげーむをしにいきます。", romaji: "takeshi san no heya he gēmu o shi ni ikimasu." },
+        { icon: "🌊🏄‍♂️", en: "I went to Okinawa to surf.", kanji: "沖縄へサーフィンをしに行きました。", kana: "おきなわへさーふぃんをしにいきました。", romaji: "okinawa he sāfin o shi ni ikimashita." },
+        { icon: "🛒🍱", en: "I go to the convenience store to buy a bento.", kanji: "コンビニへお弁当を買いに行きます。", kana: "こんびにへおべんとうをかいにいきます。", romaji: "konbini he obentō o kai ni ikimasu." },
+        { icon: "🤔❓", en: "Why didn't you come yesterday?", kanji: "どうして昨日来なかったのですか。", kana: "どうしてきのうこなかったのですか。", romaji: "dōshite kinō konakatta no desu ka." }
+      ]
+    };
+
+    let currentCategory = 'te_request';
+    let currentIndex = 0;
+    let isFlipped = false;
+
+    function switchCategory(category) {
+      currentCategory = category;
+      currentIndex = 0;
+      isFlipped = false;
+      
+      const categories = ['te_request', 'te_permission', 'te_iru', 'kara_purpose'];
+      categories.forEach(cat => {
+        const tab = document.getElementById(`tab-${cat}`);
+        if (cat === category) {
+          tab.classList.remove('bg-white', 'text-teal-700', 'hover:bg-teal-50');
+          tab.classList.add('bg-teal-600', 'text-white');
+        } else {
+          tab.classList.remove('bg-teal-600', 'text-white');
+          tab.classList.add('bg-white', 'text-teal-700', 'hover:bg-teal-50');
+        }
+      });
+
+      document.getElementById('result-screen').classList.add('hidden');
+      document.getElementById('flashcard').classList.remove('hidden');
+      document.getElementById('controls').classList.remove('opacity-30', 'pointer-events-none');
+      
+      updateCard();
+    }
+
+    function updateCard() {
+      const card = document.getElementById('flashcard');
+      card.classList.remove('rotate-y-180');
+      isFlipped = false;
+
+      const data = dataset[currentCategory][currentIndex];
+      
+      document.getElementById('card-icon').innerText = data.icon;
+      document.getElementById('card-en').innerText = data.en;
+      document.getElementById('card-en-back').innerText = data.en;
+      document.getElementById('card-kanji').innerText = data.kanji;
+      document.getElementById('card-kana').innerText = data.kana;
+      document.getElementById('card-romaji').innerText = data.romaji;
+
+      document.getElementById('current-index').innerText = currentIndex + 1;
+    }
+
+    function flipCard() {
+      const card = document.getElementById('flashcard');
+      if (!isFlipped) {
+        card.classList.add('rotate-y-180');
+        isFlipped = true;
+      } else {
+        card.classList.remove('rotate-y-180');
+        isFlipped = false;
+      }
+    }
+
+    function nextCard() {
+      if (currentIndex < 16) {
+        currentIndex++;
+        updateCard();
+      } else {
+        document.getElementById('flashcard').classList.add('hidden');
+        document.getElementById('controls').classList.add('opacity-30', 'pointer-events-none');
+        document.getElementById('result-screen').classList.remove('hidden');
+      }
+    }
+
+    function prevCard() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateCard();
+      }
+    }
+
+    function restartCategory() {
+      document.getElementById('result-screen').classList.add('hidden');
+      document.getElementById('flashcard').classList.remove('hidden');
+      document.getElementById('controls').classList.remove('opacity-30', 'pointer-events-none');
+      currentIndex = 0;
+      updateCard();
+    }
+
+    function speakText(event) {
+      event.stopPropagation();
+      const data = dataset[currentCategory][currentIndex];
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(data.kana);
+      utterance.lang = 'ja-JP';
+      utterance.rate = 0.85;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    window.onload = () => { updateCard(); };
+  </script>
+</body>
+</html>
