@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Genki Lesson 5 - Flashcards (with Romaji)</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    .perspective-1000 { perspective: 1000px; }
+    .transform-style-3d { transform-style: preserve-3d; }
+    .backface-hidden { backface-visibility: hidden; }
+    .rotate-y-180 { transform: rotateY(180deg); }
+  </style>
+</head>
+<body class="bg-slate-50 font-sans min-h-screen flex flex-col justify-between">
+
+  <header class="bg-teal-600 text-white py-6 shadow-md text-center">
+    <h1 class="text-3xl md:text-4xl font-extrabold tracking-wide">Genki Lesson 5 Flashcards</h1>
+    <p class="text-sm md:text-base mt-2 opacity-90">Practice I-Adjectives, Na-Adjectives, and New Vocabulary</p>
+  </header>
+
+  <main class="max-w-4xl w-full mx-auto p-4 flex-grow flex flex-col items-center justify-center">
+    
+    <div id="tabs" class="w-full flex flex-wrap justify-center gap-2 mb-6">
+      <button onclick="switchCategory('i_adj_pres')" id="tab-i_adj_pres" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-teal-600 text-white">
+        I-Adjectives (Present)
+      </button>
+      <button onclick="switchCategory('i_adj_past')" id="tab-i_adj_past" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">
+        I-Adjectives (Past)
+      </button>
+      <button onclick="switchCategory('na_adj_all')" id="tab-na_adj_all" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">
+        Na-Adjectives (All)
+      </button>
+      <button onclick="switchCategory('vocab_particles')" id="tab-vocab_particles" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">
+        Vocab & Particles (to/kara/made)
+      </button>
+    </div>
+
+    <div class="text-xl md:text-2xl font-bold text-slate-600 mb-4">
+      Question: <span id="current-index" class="text-teal-600">1</span> / 17
+    </div>
+
+    <div class="w-full max-w-2xl h-[480px] relative perspective-1000">
+      
+      <div id="flashcard" onclick="flipCard()" class="w-full h-full relative transform-style-3d transition-transform duration-500 cursor-pointer">
+        
+        <div class="absolute w-full h-full bg-white rounded-3xl shadow-xl border-2 border-teal-100 p-8 flex flex-col justify-center items-center text-center backface-hidden">
+          <div id="card-icon" class="text-7xl md:text-8xl mb-6 select-none">☀️🥵</div>
+          <div id="card-en" class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800 leading-snug">
+            Today is hot.
+          </div>
+          <div class="text-xs text-teal-500 mt-8 font-semibold tracking-widest uppercase">Tap to see answer</div>
+        </div>
+
+        <div class="absolute w-full h-full bg-teal-50 rounded-3xl shadow-xl border-2 border-teal-200 p-6 flex flex-col justify-between items-center text-center backface-hidden rotate-y-180">
+          
+          <div id="card-en-back" class="text-xl md:text-2xl font-medium text-teal-800 pt-2">
+            Today is hot.
+          </div>
+
+          <div class="flex flex-col gap-3 my-auto w-full px-2">
+            <div id="card-kanji" class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-wide">
+              今日は暑いです。
+            </div>
+            <div id="card-kana" class="text-2xl md:text-3xl text-teal-600 font-bold tracking-normal">
+              きょうはあついです。
+            </div>
+            <div id="card-romaji" class="text-xl md:text-2xl text-amber-600 font-semibold tracking-wide italic">
+              kyō wa atsui desu.
+            </div>
+          </div>
+
+          <div class="pb-2">
+            <button onclick="speakText(event)" class="bg-teal-600 hover:bg-teal-700 active:scale-95 text-white p-5 rounded-full shadow-lg transition-all duration-200 flex items-center justify-center group" title="Listen">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 group-hover:animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="result-screen" class="absolute inset-0 bg-white rounded-3xl shadow-2xl border-4 border-teal-500 p-8 flex flex-col justify-center items-center text-center hidden z-10">
+        <div class="text-7xl mb-4">🎉</div>
+        <h2 class="text-4xl md:text-5xl font-black text-teal-600 mb-2">Ottimo!</h2>
+        <p class="text-2xl text-slate-600 mb-8 font-medium">You completed Lesson 5 items!</p>
+        <button onclick="restartCategory()" class="bg-teal-600 hover:bg-teal-700 text-white font-bold text-2xl px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all active:scale-95">
+          Restart
+        </button>
+      </div>
+
+    </div>
+
+    <div id="controls" class="flex items-center justify-center gap-6 mt-8 w-full max-w-md">
+      <button onclick="prevCard()" class="flex-1 bg-slate-700 hover:bg-slate-800 text-white font-bold text-xl py-4 rounded-xl shadow-md transition-all active:scale-95 disabled:opacity-30 disabled:pointer-events-none">
+        ← Previous
+      </button>
+      <button onclick="nextCard()" class="flex-1 bg-teal-600 hover:bg-teal-700 text-white font-bold text-xl py-4 rounded-xl shadow-md transition-all active:scale-95">
+        Next →
+      </button>
+    </div>
+
+  </main>
+
+  <footer class="bg-slate-800 text-slate-400 py-4 text-center text-sm border-t border-slate-700">
+    &copy; FujiGreentea - Japanese Learning Materials (Genki I)
+  </footer>
+
+  <script>
+    const dataset = {
+      i_adj_pres: [
+        { icon: "☀️🥵", en: "Today is hot.", kanji: "今日は暑いです。", kana: "きょうはあついです。", romaji: "kyō wa atsui desu." },
+        { icon: "🍂❄️", en: "Tomorrow is not cold.", kanji: "明日は寒くないです。", kana: "あしたはさむくないです。", romaji: "ashita wa samukunai desu." },
+        { icon: "🌶️🍜", en: "This ramen is spicy.", kanji: "このラーメンは辛いです。", kana: "このらーめんはからいです。", romaji: "kono rāmen wa karai desu." },
+        { icon: "📘❌", en: "This textbook is not interesting.", kanji: "この教科書は面白くないです。", kana: "このきょうかしょはおもしろくないです。", romaji: "kono kyōkasho wa omashirokunai desu." },
+        { icon: "💴📈", en: "The watch is expensive.", kanji: "時計は高いです。", kana: "とけいはたかいです。", romaji: "tokei wa takai desu." },
+        { icon: "🎟️📉", en: "Movie tickets are cheap.", kanji: "映画のチケットは安いです。", kana: "えいがのちけっとはやすいです。", romaji: "eiga no chiketto wa yasui desu." },
+        { icon: "🌅⏰", en: "Tomorrow morning is early.", kanji: "明日の朝は早いです。", kana: "あしたのあさははやいです。", romaji: "ashita no asa wa hayai desu." },
+        { icon: "🏫🎒", en: "My university is big.", kanji: "私の大学は大きいです。", kana: "わたしのだいがくはおおきいです。", romaji: "watashi no daigaku wa ōkii desu." },
+        { icon: "☕😋", en: "This coffee is good / delicious.", kanji: "このコーヒーは美味しいです。", kana: "このこーひーはおいしいです。", romaji: "kono kōhī wa oishii desu." },
+        { icon: "💯✨", en: "Japanese is fun.", kanji: "日本語は楽しいです。", kana: "にほんごはたのしいです。", romaji: "nihongo wa tanoshii desu." },
+        { icon: "🌊🏄‍♂️", en: "The sea is beautiful / blue.", kanji: "海は青いです。", kana: "うみはあおいです。", romaji: "umi wa aoi desu." },
+        { icon: "🐕🎒", en: "That dog over there is small.", kanji: "あの犬は小さいです。", kana: "あのいぬはちいさいです。", romaji: "ano inu wa chiisai desu." },
+        { icon: "💯🤔", en: "The exam is difficult.", kanji: "テストは難しいです。", kana: "てすとはむずかしいです。", romaji: "tesuto wa muzukashii desu." },
+        { icon: "📖🎒", en: "This book is not bad.", kanji: "この本は悪くないです。", kana: "このほんはわるくないです。", romaji: "kono hon wa warukunai desu." },
+        { icon: "🙎‍♂️👍", en: "Weather is good.", kanji: "天気がいいです。", kana: "てんきがいいです。", romaji: "tenki ga ii desu." },
+        { icon: "🙅‍♂️👍", en: "Weather is not good.", kanji: "天気がよくないです。", kana: "てんきがよくないです。", romaji: "tenki ga yokunai desu." },
+        { icon: "❓🎒", en: "Is your bag new?", kanji: "鞄は新しいですか。", kana: "かばんはあたらしいですか。", romaji: "kaban wa atarashii desu ka." }
+      ],
+      i_adj_past: [
+        { icon: "☀️🔙", en: "Yesterday was hot.", kanji: "昨日は暑かったです。", kana: "きのうはあつかったです。", romaji: "kinō wa atsukatta desu." },
+        { icon: "❄️🔙", en: "Yesterday was not cold.", kanji: "昨日は寒くなかったです。", kana: "きのうはさむくなかったです。", romaji: "kinō wa samukunakatta desu." },
+        { icon: "🎬🔙", en: "The movie was interesting.", kanji: "映画は面白かったです。", kana: "えいがはおもしろかったです。", romaji: "eiga wa omashirokatta desu." },
+        { icon: "💯🔙", en: "The exam was not difficult.", kanji: "テストは難しくなかったです。", kana: "てすとはむずかしくなかったです。", romaji: "tesuto wa muzukashikunakatta desu." },
+        { icon: "🍿🔙", en: "The movie was fun.", kanji: "映画は楽しかったです。", kana: "えいがはたのしかったです。", romaji: "eiga wa tanoshikatta desu." },
+        { icon: "🍔🔙", en: "The hamburger was delicious.", kanji: "ハンバーガーは美味しかったです。", kana: "はんばーがーはおいしかったです。", romaji: "hanbāgā wa oishikatta desu." },
+        { icon: "🎒🔙", en: "The bag was expensive.", kanji: "鞄は高かったです。", kana: "かばんはたかかったです。", romaji: "kaban wa takatta desu." },
+        { icon: "👟🔙", en: "The shoes were not cheap.", kanji: "靴は安くなかったです。", kana: "くつはやすくなかったです。", romaji: "kutsu wa yasukunakatta desu." },
+        { icon: "✈️🌍", en: "The trip was scary.", kanji: "旅行は怖かったです。", kana: "りょこうはこわかったです。", romaji: "ryokō wa kowakatta desu." },
+        { icon: "🛏️⏰", en: "I woke up early this morning (morning was early).", kanji: "今朝は早かったです。", kana: "けさははやかったです。", romaji: "kesa wa hayakatta desu." },
+        { icon: "🏫🔙", en: "The school was old.", kanji: "学校は古かったです。", kana: "がっこうはふるかったです。", romaji: "gakkō wa furukatta desu." },
+        { icon: "🏢🔙", en: "The library was not big.", kanji: "図書館は大きくなかったです。", kana: "としょかんはおおきくなかったです。", romaji: "toshokan wa ōkikunakatta desu." },
+        { icon: "🐶🔙", en: "The dog was small.", kanji: "犬は小さかったです。", kana: "いぬはちいさかったです。", romaji: "inu wa chiisatta desu." },
+        { icon: "🍜🔙", en: "The food was not spicy.", kanji: "ご飯は辛くなかったです。", kana: "ごはんからはからくなかったです。", romaji: "gohan wa karakunakatta desu." },
+        { icon: "👍🔙", en: "The weather was good yesterday.", kanji: "昨日は天気がよかったです。", kana: "きのうはてんきがよかったです。", romaji: "kinō wa tenki ga yokatta desu." },
+        { icon: "🙅‍♂️🔙", en: "The weather was not good yesterday.", kanji: "昨日は天気がよくなかったです。", kana: "きのうはてんきがよくなかったです。", romaji: "kinō wa tenki ga yokunakatta desu." },
+        { icon: "❓🛫", en: "Was the trip fun?", kanji: "旅行は楽しかったですか。", kana: "りょこうはたのしかったですか。", romaji: "ryokō wa tanoshikatta desu ka." }
+      ],
+      na_adj_all: [
+        { icon: "❤️👤", en: "Professor Yamashita is kind.", kanji: "山下先生は親切です。", kana: "やましたせんせいはしんせつです。", romaji: "yamashita sensei wa shinsetsu desu." },
+        { icon: "🏙️✨", en: "This town is lively.", kanji: "この町は賑やかです。", kana: "このまちはにぎやかです。", romaji: "kono machi wa nigiyaka desu." },
+        { icon: "🚪🙅‍♂️", en: "My room is not clean / tidy.", kanji: "私の部屋は綺麗じゃないです。", kana: "わたしのへやはきれいじゃないです。", romaji: "watashi no heya wa kirei janai desu." },
+        { icon: "🌸🔙", en: "Kyoto was beautiful.", kanji: "京都は綺麗でした。", kana: "きょうとはきれいでした。", romaji: "kyōto wa kirei deshita." },
+        { icon: "🏝️🔙", en: "The island was not quiet.", kanji: "島は静かじゃありませんでした。", kana: "しまはしずかじゃありませんでした。", romaji: "shima wa shizuka ja arimasen deshita." },
+        { icon: "🙍‍♂️❤️", en: "Mary likes hamburgers.", kanji: "メアリーさんはハンバーガーが好きです。", kana: "めありーさんははんばーがーがすきです。", romaji: "mearī san wa hanbāgā ga suki desu." },
+        { icon: "🐟🙅‍♂️", en: "I do not like fish.", kanji: "私は魚が好きじゃないです。", kana: "わたしはさかながすきじゃないです。", romaji: "watashi wa sakana ga suki janai desu." },
+        { icon: "🏫🤔", en: "I am free today.", kanji: "今日は暇です。", kana: "きょうはひまです。", romaji: "kyō wa hima desu." },
+        { icon: "📅🙅‍♂️", en: "Tomorrow I am not free.", kanji: "明日は暇じゃないです。", kana: "あしたはひまじゃないです。", romaji: "ashita wa hima janai desu." },
+        { icon: "🛋️🔙", en: "The hotel was quiet.", kanji: "ホテルは静かでした。", kana: "ほてるはしずかでした。", romaji: "hoteru wa shizuka deshita." },
+        { icon: "🍿❓", en: "What kind of movie do you like?", kanji: "どんな映画が好きですか。", kana: "どんないががすきですか。", romaji: "donna eiga ga suki desu ka." },
+        { icon: "💔🥦", en: "I hate vegetables.", kanji: "野菜がきらいです。", kana: "やさいがきらいです。", romaji: "yasai ga kirai desu." },
+        { icon: "🎶🔙", en: "The concert was lively.", kanji: "コンサートは賑やかでした。", kana: "こんさーとはにぎやかでした。", romaji: "konsāto wa nigiyaka deshita." },
+        { icon: "🏫🔙", en: "The homework was not tough / hard.", kanji: "宿題は大変じゃありませんでした。", kana: "しゅくだいはたいへんじゃありませんでした。", romaji: "shukudai wa taihen ja arimasen deshita." },
+        { icon: "📚✨", en: "Takeshi is energetic / healthy.", kanji: "たけしさんは元気です。", kana: "たけしさんはげんきです。", romaji: "takeshi san wa genki desu." },
+        { icon: "❓👤", en: "Is that person handsome?", kanji: "あの人はハンサムですか。", kana: "あのひとはんさむですか。", romaji: "ano hito wa hansamu desu ka." },
+        { icon: "💻🔙", en: "I liked this computer.", kanji: "このコンピューターが好きでした。", kana: "このこんぴゅーたーがすきでした。", romaji: "kono konpyūtā ga suki deshita." }
+      ],
+      vocab_particles: [
+        { icon: "🌊🏄‍♂️", en: "I do surfing.", kanji: "サーフィンをします。", kana: "さーふぃんをします。", romaji: "sāfin o shimasu." },
+        { icon: "🛫🗺️", en: "I travel.", kanji: "旅行をします。", kana: "りょこうをします。", romaji: "ryokō o shimasu." },
+        { icon: "🎫🍿", en: "I buy a ticket.", kanji: "チケットを買います。", kana: "ちけっとをかいます。", romaji: "chiketto o kaimu." },
+        { icon: "🍨😋", en: "I eat ice cream.", kanji: "アイスクリームを食べます。", kana: "あいすくりーむをたべます。", romaji: "aisukurīmu o tabemasu." },
+        { icon: "🙎‍♂️🤝", en: "I talk with Robert.", kanji: "ロバートさんと話します。", kana: "ろばーとさんとはなします。", romaji: "robāto san to hanashimasu." },
+        { icon: "🎬👩", en: "I watch a movie with Mary.", kanji: "メアリーさんと映画を見ます。", kana: "めありーさんとえいがをみます。", romaji: "mearī san to eiga o mimasu." },
+        { icon: "🕒⏰", en: "From 9 o'clock to 5 o'clock.", kanji: "九時から五時まで。", kana: "くじからごじまで。", romaji: "ku ji kara go ji made." },
+        { icon: "🏫🎒", en: "From home to university.", kanji: "家から大学まで。", kana: "うちからだいがくまで。", romaji: "uchi kara daigaku made." },
+        { icon: "📅🛫", en: "Two tickets, please.", kanji: "チケットを二枚ください。", kana: "ちけっとをにまいください。", romaji: "chiketto o nimai kudasai." },
+        { icon: "🏖️✨", en: "Let's go to the sea.", kanji: "海に行きましょう。", kana: "うみにいきましょう。", romaji: "umi ni ikimashō." },
+        { icon: "🚌💨", en: "I go by bus.", kanji: "バスで行きます。", kana: "ばすでいきます。", romaji: "basu de ikimasu." },
+        { icon: "📄✍️", en: "There is homework.", kanji: "宿題があります。", kana: "しゅくだいがあります。", romaji: "shukudai ga arimasu." },
+        { icon: "📅✨", en: "Holiday / Day off", kanji: "休み", kana: "やすみ", romaji: "yasumi" },
+        { icon: "❓🛫", en: "Together with whom?", kanji: "だれと一緒に。", kana: "だれといっしょに。", romaji: "dare to issho ni." },
+        { icon: "💯🎟️", en: "The test is from 1 o'clock.", kanji: "テストは一時からです。", kana: "てすとはいちじからです。", romaji: "tesuto wa ichiji kara desu." },
+        { icon: "🌸🏯", en: "Kyoto is beautiful, isn't it?", kanji: "京都は綺麗ですね。", kana: "きょうとはきれいですね。", romaji: "kyōto wa kirei desu ne." },
+        { icon: "🤔💬", en: "Let's study together.", kanji: "一緒に勉強しましょう。", kana: "いっしょにべんきょうしましょう。", romaji: "issho ni benkyō shimashō." }
+      ]
+    };
+
+    let currentCategory = 'i_adj_pres';
+    let currentIndex = 0;
+    let isFlipped = false;
+
+    function switchCategory(category) {
+      currentCategory = category;
+      currentIndex = 0;
+      isFlipped = false;
+      
+      const categories = ['i_adj_pres', 'i_adj_past', 'na_adj_all', 'vocab_particles'];
+      categories.forEach(cat => {
+        const tab = document.getElementById(`tab-${cat}`);
+        if (cat === category) {
+          tab.classList.remove('bg-white', 'text-teal-700', 'hover:bg-teal-50');
+          tab.classList.add('bg-teal-600', 'text-white');
+        } else {
+          tab.classList.remove('bg-teal-600', 'text-white');
+          tab.classList.add('bg-white', 'text-teal-700', 'hover:bg-teal-50');
+        }
+      });
+
+      document.getElementById('result-screen').classList.add('hidden');
+      document.getElementById('flashcard').classList.remove('hidden');
+      document.getElementById('controls').classList.remove('opacity-30', 'pointer-events-none');
+      
+      updateCard();
+    }
+
+    function updateCard() {
+      const card = document.getElementById('flashcard');
+      card.classList.remove('rotate-y-180');
+      isFlipped = false;
+
+      const data = dataset[currentCategory][currentIndex];
+      
+      document.getElementById('card-icon').innerText = data.icon;
+      document.getElementById('card-en').innerText = data.en;
+      document.getElementById('card-en-back').innerText = data.en;
+      document.getElementById('card-kanji').innerText = data.kanji;
+      document.getElementById('card-kana').innerText = data.kana;
+      document.getElementById('card-romaji').innerText = data.romaji;
+
+      document.getElementById('current-index').innerText = currentIndex + 1;
+    }
+
+    function flipCard() {
+      const card = document.getElementById('flashcard');
+      if (!isFlipped) {
+        card.classList.add('rotate-y-180');
+        isFlipped = true;
+      } else {
+        card.classList.remove('rotate-y-180');
+        isFlipped = false;
+      }
+    }
+
+    function nextCard() {
+      if (currentIndex < 16) {
+        currentIndex++;
+        updateCard();
+      } else {
+        document.getElementById('flashcard').classList.add('hidden');
+        document.getElementById('controls').classList.add('opacity-30', 'pointer-events-none');
+        document.getElementById('result-screen').classList.remove('hidden');
+      }
+    }
+
+    function prevCard() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateCard();
+      }
+    }
+
+    function restartCategory() {
+      document.getElementById('result-screen').classList.add('hidden');
+      document.getElementById('flashcard').classList.remove('hidden');
+      document.getElementById('controls').classList.remove('opacity-30', 'pointer-events-none');
+      currentIndex = 0;
+      updateCard();
+    }
+
+    function speakText(event) {
+      event.stopPropagation();
+      const data = dataset[currentCategory][currentIndex];
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(data.kana);
+      utterance.lang = 'ja-JP';
+      utterance.rate = 0.85;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    window.onload = () => { updateCard(); };
+  </script>
+</body>
+</html>
