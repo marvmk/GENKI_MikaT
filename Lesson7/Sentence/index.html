@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Genki Lesson 7 Sentences - Flashcards (with Romaji)</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    .perspective-1000 { perspective: 1000px; }
+    .transform-style-3d { transform-style: preserve-3d; }
+    .backface-hidden { backface-visibility: hidden; }
+    .rotate-y-180 { transform: rotateY(180deg); }
+  </style>
+</head>
+<body class="bg-slate-50 font-sans min-h-screen flex flex-col justify-between">
+
+  <header class="bg-teal-600 text-white py-6 shadow-md text-center">
+    <h1 class="text-3xl md:text-4xl font-extrabold tracking-wide">Genki Lesson 7 Sentences</h1>
+    <p class="text-sm md:text-base mt-2 opacity-90">Practice Te-iru (State), Describing People, Te-forms for Joining, and Clothing</p>
+  </header>
+
+  <main class="max-w-4xl w-full mx-auto p-4 flex-grow flex flex-col items-center justify-center">
+    
+    <div id="tabs" class="w-full flex flex-wrap justify-center gap-2 mb-6">
+      <button onclick="switchCategory('te_iru_state')" id="tab-te_iru_state" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-teal-600 text-white">
+        Te-iru (State & Result)
+      </button>
+      <button onclick="switchCategory('body_description')" id="tab-body_description" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">
+        Describing People (ga ii)
+      </button>
+      <button onclick="switchCategory('te_joining')" id="tab-te_joining" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">
+        Joining Sentences (Te-form)
+      </button>
+      <button onclick="switchCategory('clothing_purpose')" id="tab-clothing_purpose" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">
+        Clothing & Purpose (ni iku)
+      </button>
+    </div>
+
+    <div class="text-xl md:text-2xl font-bold text-slate-600 mb-4">
+      Question: <span id="current-index" class="text-teal-600">1</span> / 17
+    </div>
+
+    <div class="w-full max-w-2xl h-[480px] relative perspective-1000">
+      
+      <div id="flashcard" onclick="flipCard()" class="w-full h-full relative transform-style-3d transition-transform duration-500 cursor-pointer">
+        
+        <div class="absolute w-full h-full bg-white rounded-3xl shadow-xl border-2 border-teal-100 p-8 flex flex-col justify-center items-center text-center backface-hidden">
+          <div id="card-icon" class="text-7xl md:text-8xl mb-6 select-none">🏠📍</div>
+          <div id="card-en" class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800 leading-snug">
+            Professor Yamashita is married.
+          </div>
+          <div class="text-xs text-teal-500 mt-8 font-semibold tracking-widest uppercase">Tap to see answer</div>
+        </div>
+
+        <div class="absolute w-full h-full bg-teal-50 rounded-3xl shadow-xl border-2 border-teal-200 p-6 flex flex-col justify-between items-center text-center backface-hidden rotate-y-180">
+          
+          <div id="card-en-back" class="text-xl md:text-2xl font-medium text-teal-800 pt-2">
+            Professor Yamashita is married.
+          </div>
+
+          <div class="flex flex-col gap-3 my-auto w-full px-2">
+            <div id="card-kanji" class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-wide">
+              山下先生は結婚しています。
+            </div>
+            <div id="card-kana" class="text-2xl md:text-3xl text-teal-600 font-bold tracking-normal">
+              やましたせんせいはけっこんしています。
+            </div>
+            <div id="card-romaji" class="text-xl md:text-2xl text-amber-600 font-semibold tracking-wide italic">
+              yamashita sensei wa kekkon shite imasu.
+            </div>
+          </div>
+
+          <div class="pb-2">
+            <button onclick="speakText(event)" class="bg-teal-600 hover:bg-teal-700 active:scale-95 text-white p-5 rounded-full shadow-lg transition-all duration-200 flex items-center justify-center group" title="Listen">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 group-hover:animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="result-screen" class="absolute inset-0 bg-white rounded-3xl shadow-2xl border-4 border-teal-500 p-8 flex flex-col justify-center items-center text-center hidden z-10">
+        <div class="text-7xl mb-4">🎉</div>
+        <h2 class="text-4xl md:text-5xl font-black text-teal-600 mb-2">Ottimo!</h2>
+        <p class="text-2xl text-slate-600 mb-8 font-medium">You completed Lesson 7 sentences!</p>
+        <button onclick="restartCategory()" class="bg-teal-600 hover:bg-teal-700 text-white font-bold text-2xl px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all active:scale-95">
+          Restart
+        </button>
+      </div>
+
+    </div>
+
+    <div id="controls" class="flex items-center justify-center gap-6 mt-8 w-full max-w-md">
+      <button onclick="prevCard()" class="flex-1 bg-slate-700 hover:bg-slate-800 text-white font-bold text-xl py-4 rounded-xl shadow-md transition-all active:scale-95 disabled:opacity-30 disabled:pointer-events-none">
+        ← Previous
+      </button>
+      <button onclick="nextCard()" class="flex-1 bg-teal-600 hover:bg-teal-700 text-white font-bold text-xl py-4 rounded-xl shadow-md transition-all active:scale-95">
+        Next →
+      </button>
+    </div>
+
+  </main>
+
+  <footer class="bg-slate-800 text-slate-400 py-4 text-center text-sm border-t border-slate-700">
+    &copy; FujiGreentea - Japanese Learning Materials (Genki I)
+  </footer>
+
+  <script>
+    // --- 17問 × 4カテゴリー ＝ 全68問の完璧なデータ構造 ---
+    const dataset = {
+      // 1. て形＋います（状態・結果・習慣：17問）
+      te_iru_state: [
+        { icon: "💍👨‍🏫", en: "Professor Yamashita is married.", kanji: "山下先生は結婚しています。", kana: "やましたせんせいはけっこんしています。", romaji: "yamashita sensei wa kekkon shite imasu." },
+        { icon: "🏠🏙️", en: "Sora lives in Tokyo.", kanji: "ソラさんは東京に住んでいます。", kana: "そらさんはとうきょうにすんでいます。", romaji: "sora san wa tōkyō ni sunde imasu." },
+        { icon: "🚗💨", en: "My older brother owns a car.", kanji: "兄は車を持っています。", kana: "あにはくるまをもっています。", romaji: "ani wa kuruma o motte imasu." },
+        { icon: "🤝💓", en: "I know Robert's friend.", kanji: "ロバートさんの友達を知っています。", kana: "ろばーとさんのともだちをしっています。", romaji: "robāto san no tomodachi o shitte imasu." },
+        { icon: "🤷‍♂️❌", en: "I do not know that person.", kanji: "あの人を知りません。", kana: "あのひとをしりません。", romaji: "ano hito o shirimasen." },
+        { icon: "🏫🎓", en: "My younger sister works at a hospital.", kanji: "妹は病院で働いています。", kana: "いもうとはびょういんではたらいています。", romaji: "imōto wa byōin de hataractive imasu." },
+        { icon: "🏫📖", en: "Takeshi studies at the university every day.", kanji: "たけしさんは毎日大学で勉強しています。", kana: "たけしさんはまいにちだいがくでべんきょうしています。", romaji: "takeshi san wa mainichi daigaku de benkyō shite imasu." },
+        { icon: "🍔🙅‍♀️", en: "Mary does not eat meat (as a habit).", kanji: "メアリーさんは肉を食べていません。", kana: "めありーさんはにくをたべていません。", romaji: "mearī san wa niku o tabete imasen." },
+        { icon: "🏠🪟", en: "Who is sleeping in that room?", kanji: "あの部屋でだれが寝ていますか。", kana: "あのへやでだれがねていますか。", romaji: "ano heya de dare ga nete imasu ka." },
+        { icon: "👩‍💼💼", en: "Sora works at an office / company.", kanji: "ソラさんは会社で働いています。", kana: "そらさんはかいしゃではたらいています。", romaji: "sora san wa kaisha de hatarakeite imasu." },
+        { icon: "💻🎒", en: "I have two computers.", kanji: "コンピューターを二台持っています。", kana: "こんぴゅーたーをにだいもっています。", romaji: "konpyūtā o nidai motte imasu." },
+        { icon: "🗣️🇺🇸", en: "Mary speaks English at home.", kanji: "メアリーさんは家で英語を話しています。", kana: "めありーさんはうちでえいごをはなしています。", romaji: "mearī san wa uchi de eigo o hanashite imasu." },
+        { icon: "🚲🏡", en: "Does Takeshi have a bicycle?", kanji: "たけしさんは自転車を持っていますか。", kana: "たけしさんはじてんしゃをもっていますか。", romaji: "takeshi san wa jitensha o motte imasu ka." },
+        { icon: "🏙️📍", en: "Where do you live now?", kanji: "今どこに住んでいますか。", kana: "いまどこにすんでいますか。", romaji: "ima doko ni sunde imasu ka." },
+        { icon: "🏫👨‍🎓", en: "Robert is a student at Sakura University.", kanji: "ロバートさんはさくら大学に行っています。", kana: "ろばーとさんはさくらだいがくにいっています。", romaji: "robāto san wa sakura daigaku ni itte imasu." },
+        { icon: "🍟🍔", en: "I always eat fast food.", kanji: "いつもファーストフードを食べています。", kana: "いつもふぁーすとふーどをたべています。", romaji: "itsumo fāsutofūdo o tabete imasu." },
+        { icon: "🛌💤", en: "I don't sleep much lately.", kanji: "最近あまり寝ていません。", kana: "さいきんあまりねていません。", romaji: "saikin amari nete imasen." }
+      ],
+      // 2. 身体の特徴（〜が〜です：17問）
+      body_description: [
+        { icon: "👩👩", en: "Mary has long hair.", kanji: "メアリーさんは髪が長いです。", kana: "めありーさんはかみがながいです。", romaji: "mearī san wa kami ga nagai desu." },
+        { icon: "👀✨", en: "Takeshi has big eyes.", kanji: "たけしさんは目が大きいです。", kana: "たけしさんはめがおおきいです。", romaji: "takeshi san wa me ga ōkii desu." },
+        { icon: "🧍‍♂️📈", en: "Robert is tall.", kanji: "ロバートさんは背が高いです。", kana: "ろばーとさんはせがたかいです。", romaji: "robāto san wa se ga takai desu." },
+        { icon: "🧍‍♀️📉", en: "Sora is short (stature).", kanji: "ソラさんは背が低いです。", kana: "そらさんはせがひくいです。", romaji: "sora san wa se ga hikui desu." },
+        { icon: "🧒✨", en: "That child has a smart head (is bright).", kanji: "あの子供は頭がいいです。", kana: "あのこどもはあたまがいいです。", romaji: "ano kodomo wa atama ga ii desu." },
+        { icon: "🙎‍♂️❌", en: "His hair is not short.", kanji: "彼は髪が短くないです。", kana: "かれはかみがみじかくないです。", romaji: "kare wa kami ga mijikakunai desu." },
+        { icon: "👵💓", en: "My grandmother has a kind heart.", kanji: "祖母は心が優しいです。", kana: "そぼはこころがやさしいです。", romaji: "sobo wa kokoro ga yasashii desu." },
+        { icon: "🧎‍♂️📉", en: "Takeshi is smart / intelligent.", kanji: "たけしさんは頭がいいです。", kana: "たけしさんはあたまがいいです。", romaji: "takeshi san wa atama ga ii desu." },
+        { icon: "👀🤷‍♂️", en: "Are Mary's eyes blue?", kanji: "メアリーさんは目が青いですか。", kana: "めありーさんはめがあおいですか。", romaji: "mearī san wa me ga aoi desu ka." },
+        { icon: "🐱🐾", en: "That cat has a long tail.", kanji: "あの猫は尻尾が長いです。", kana: "あのねこはしっぽがながいです。", romaji: "ano neko wa shippo ga nagai desu." },
+        { icon: "👩✨", en: "Sora has short hair.", kanji: "ソラさんは髪が短いです。", kana: "そらさんはかみがみじかいです。", romaji: "sora san wa kami ga mijikai desu." },
+        { icon: "👨‍🏫📈", en: "Is Professor Yamashita tall?", kanji: "山下先生は背が高いですか。", kana: "やましたせんせいはせがたかいですか。", romaji: "yamashita sensei wa se ga takai desu ka." },
+        { icon: "🐕👂", en: "That dog has big ears.", kanji: "あの犬は耳が大きいです。", kana: "あのいぬはみみがおおきいです。", romaji: "ano inu wa mimi ga ōkii desu." },
+        { icon: "🙎‍♂️💬", en: "I have a headache (head hurts).", kanji: "頭が痛いです。", kana: "あたまがいたいです。", romaji: "atama ga itai desu." },
+        { icon: "👀👓", en: "My grandfather has bad eyesight (eyes are bad).", kanji: "祖父は目が悪いです。", kana: "そふはめがわるいです。", romaji: "sofu wa me ga warui desu." },
+        { icon: "👧🎒", en: "The new student is cute.", kanji: "新しい学生は顔が可愛いです。", kana: "あたらしいがくせいはかおがかわいーです。", romaji: "atarashii gakusei wa kao ga kawaii desu." },
+        { icon: "❓🧍", en: "Who is the tall person?", kanji: "背が高い人はだれですか。", kana: "せがたかいひとはだれですか。", romaji: "se ga takai hito wa dare desu ka." }
+      ],
+      // 3. て形による文の接続（17問）
+      te_joining: [
+        { icon: "🏙️☕", en: "I go to a café and drink coffee.", kanji: "喫茶店に行って、コーヒーを飲みます。", kana: "きっさてんにいって、こーひーをのみます。", romaji: "kissaten ni itte, kōhī o nomimasu." },
+        { icon: "🛌⏰", en: "I go home and sleep.", kanji: "家に帰って、寝ます。", kana: "うちに帰って、ねます。", romaji: "uchi ni kaette, nemasu." },
+        { icon: "📸🏙️", en: "I met my friend and took pictures.", kanji: "友達に会って、写真を撮りました。", kana: "ともだちにあって、しゃしんをとりました。", romaji: "tomodachi ni atte, shashin o torimashita." },
+        { icon: "🏫🍔", en: "I went to school and ate lunch.", kanji: "学校に行って、昼ご飯を食べました。", kana: "がくこうにいって、ひるごはんをたべました。", romaji: "gakkō ni itte, hirugohan o tabemashita." },
+        { icon: "🛒📖", en: "I went to the bookstore and bought a textbook.", kanji: "本屋に行って、教科書を買いました。", kana: "ほんやにいって、きょうかしょをかいました。", romaji: "hon'ya ni itte, kyōkasho o kaimashita." },
+        { icon: "👨‍🏫✨", en: "The teacher is 25 years old and single.", kanji: "先生は二十五歳で、独身です。", kana: "せんせいはにじゅうごさいで、どくしんです。", romaji: "sensei wa nijūgosai de, dokushin desu." },
+        { icon: "🏙️✨", en: "This town is quiet and beautiful.", kanji: "この町は静かで、綺麗です。", kana: "このまちはしずかで、きれいです。", romaji: "kono machi wa shizuka de, kirei desu." },
+        { icon: "🙎‍♂️❤️", en: "Robert is kind and interesting.", kanji: "ロバートさんは親切で、面白いです。", kana: "ろばーとさんはしんせつで、おもしろいです。", romaji: "robāto san wa shinsetsu de, omoshiroi desu." },
+        { icon: "🇯🇵💯", en: "Japanese is difficult but fun.", kanji: "日本語は難しくて、楽しいです。", kana: "にほんごはむずかしくて、たのしいです。", romaji: "nihongo wa muzukashikte, tanoshii desu." },
+        { icon: "🍔📉", en: "The food at this restaurant is cheap and delicious.", kanji: "この店の食堂は安くて、美味しいです。", kana: "このみせのしょくどうはやすくて、おいしいです。", romaji: "kono mise no shokudō wa yasukute, oishii desu." },
+        { icon: "🛋️🚪", en: "My room is small and not clean.", kanji: "私の部屋は小さくて、綺麗じゃないです。", kana: "わたしのへやはちいさくて、きれいじゃないです。", romaji: "watashi no heya wa chiisakute, kirei janai desu." },
+        { icon: "🌸🎒", en: "Sakura University is big and lively.", kanji: "さくら大学は大きくて、賑やかです。", kana: "さくらだいがくはおおきくて、にぎやかです。", romaji: "sakura daigaku wa ōkikute, nigiyaka desu." },
+        { icon: "🍿🎬", en: "I watched a movie and returned home.", kanji: "映画を見て、家に帰りました。", kana: "えいがをみて、うちにかえりました。", romaji: "eiga o mite, uchi ni kaerimashita." },
+        { icon: "📻🎶", en: "I listened to the radio and studied.", kanji: "ラジオを聞いて、勉強しました。", kana: "らじおをきいて、べんきょうしました。", romaji: "rajio o kiite, benkyō shimashita." },
+        { icon: "🛁🛏️", en: "I took a shower and slept.", kanji: "シャワーを浴びて、寝ました。", kana: "しゃわーをあびて、ねました。", romaji: "shawā o abite, nemasu." },
+        { icon: "🙎‍♂️🕶️", en: "That person over there is a student and an American.", kanji: "あの人は学生で、アメリカ人です。", kana: "あのひとはがくせいで、あめりかじんです。", romaji: "ano hito wa gakusei de, amerika jin desu." },
+        { icon: "🌶️🥵", en: "This food is spicy and hot.", kanji: "このご飯は辛くて、暑いです。", kana: "このごはんからはからくて、あついです。", romaji: "kono gohan wa karakute, atsui desu." }
+      ],
+      // 4. 着脱動詞の使い分け・目的の移動（17問）
+      clothing_purpose: [
+        { icon: "👕🙎‍♂️", en: "Takeshi is wearing a T-shirt.", kanji: "たけしさんはTシャツを着ています。", kana: "たけしさんはてぃーしゃつをきています。", romaji: "takeshi san wa tīshatsu o kite imasu." },
+        { icon: "🧢👩", en: "Mary is wearing a hat.", kanji: "メアリーさんは帽子をかぶっています。", kana: "めありーさんはぼうしをかぶっています。", romaji: "mearī san wa bōshi o kabutte imasu." },
+        { icon: "👓👨‍🏫", en: "The teacher is wearing glasses.", kanji: "先生は眼鏡をかけています。", kana: "せんせいはめがねをかけています。", romaji: "sensei wa megane o kakete imasu." },
+        { icon: "👟🇬🇧", en: "Robert is wearing white shoes.", kanji: "ロバートさんは白い靴をはいています。", kana: "ろばーとさんはしろいくつをはいています。", romaji: "robāto san wa shiroi kutsu o haite imasu." },
+        { icon: "🧥❄️", en: "I will put on a coat because it's cold.", kanji: "寒いですから、コートを着ます。", kana: "さむいですから、こーとをきます。", romaji: "samui desu kara, kōto o kimasu." },
+        { icon: "👓🙅‍♂️", en: "I am not wearing glasses now.", kanji: "今は眼鏡をかけていません。", kana: "いまはめがねをかけていません。", romaji: "ima wa megane o kakete imasen." },
+        { icon: "👖🕺", en: "He is wearing blue jeans.", kanji: "彼は青いジーンズをはいています。", kana: "かれはあおいじーんずをはいています。", romaji: "kare wa aoi jīnzu o haite imasu." },
+        { icon: "🏙️🛒", en: "I am going to the department store to buy clothes.", kanji: "デパートへ服を買いに行きます。", kana: "でぱーとへふくをかいにいきます。", romaji: "depāto he fuku o kai ni ikimasu." },
+        { icon: "🏫📖", en: "Mary came to the library to study.", kanji: "メアリーさんは図書館へ勉強しに来ました。", kana: "めありーさんはとしょかんへべんきょうしにきました。", romaji: "mearī san wa toshokan he benkyō shi ni kimashita." },
+        { icon: "🍟🍳", en: "Takeshi went to the cafeteria to eat lunch.", kanji: "たけしさんは食堂へ昼ご飯を食べに行きました。", kana: "たけしさんはしょくどうへひるごはんをたべにいきました。", romaji: "takeshi san wa shokudō he hirugohan o tabe ni ikimashita." },
+        { icon: "🏠🍷", en: "Robert came to my house to drink alcohol.", kanji: "ロバートさんは家にお酒を飲みに来ました。", kana: "ろばーとさんはうちにおさけをのみにきました。", romaji: "robāto san wa uchi ni osake o nomi ni kimashita." },
+        { icon: "❓🚶‍♂️", en: "What did you go to the town to do?", kanji: "町へ何をしに行きましたか。", kana: "まちへなにをしにいきましたか。", romaji: "machi he nani o shi ni ikimashita ka." },
+        { icon: "🍿🎬", en: "I went to see a movie.", kanji: "映画を見に行きました。", kana: "えがをみにいきました。", romaji: "eiga o mi ni ikimashita." },
+        { icon: "👒✨", en: "Sora is wearing a cute hat.", kanji: "ソラさんは可愛い帽子をかぶっています。", kana: "そらさんはかわいいぼうしをかぶっています。", romaji: "sora san wa kawaii bōshi o kabutte imasu." },
+        { icon: "🧣🎒", en: "Please take off your coat.", kanji: "コートを脱いでください。", kana: "こーとをぬいでください。", romaji: "kōto o nuide kudasai." },
+        { icon: "💍✨", en: "She is wearing a beautiful ring.", kanji: "彼女は綺麗な指輪をはめています。", kana: "かのじょはきれいなゆびわをはめています。", romaji: "kanojo wa kirei na yubiwa o hamete imasu." },
+        { icon: "🏙️🚶‍♂️", en: "I'll go to the city to meet my friend.", kanji: "町へ友達に会いにいきます。", kana: "まちへともだちにあいにいきます。", romaji: "machi he tomodachi ni ai ni ikimasu." }
+      ]
+    };
+
+    let currentCategory = 'te_iru_state';
+    let currentIndex = 0;
+    let isFlipped = false;
+
+    function switchCategory(category) {
+      currentCategory = category;
+      currentIndex = 0;
+      isFlipped = false;
+      
+      const categories = ['te_iru_state', 'body_description', 'te_joining', 'clothing_purpose'];
+      categories.forEach(cat => {
+        const tab = document.getElementById(`tab-${cat}`);
+        if (cat === category) {
+          tab.classList.remove('bg-white', 'text-teal-700', 'hover:bg-teal-50');
+          tab.classList.add('bg-teal-600', 'text-white');
+        } else {
+          tab.classList.remove('bg-teal-600', 'text-white');
+          tab.classList.add('bg-white', 'text-teal-700', 'hover:bg-teal-50');
+        }
+      });
+
+      document.getElementById('result-screen').classList.add('hidden');
+      document.getElementById('flashcard').classList.remove('hidden');
+      document.getElementById('controls').classList.remove('opacity-30', 'pointer-events-none');
+      
+      updateCard();
+    }
+
+    function updateCard() {
+      const card = document.getElementById('flashcard');
+      card.classList.remove('rotate-y-180');
+      isFlipped = false;
+
+      const data = dataset[currentCategory][currentIndex];
+      
+      document.getElementById('card-icon').innerText = data.icon;
+      document.getElementById('card-en').innerText = data.en;
+      document.getElementById('card-en-back').innerText = data.en;
+      document.getElementById('card-kanji').innerText = data.kanji;
+      document.getElementById('card-kana').innerText = data.kana;
+      document.getElementById('card-romaji').innerText = data.romaji;
+
+      document.getElementById('current-index').innerText = currentIndex + 1;
+    }
+
+    function flipCard() {
+      const card = document.getElementById('flashcard');
+      if (!isFlipped) {
+        card.classList.add('rotate-y-180');
+        isFlipped = true;
+      } else {
+        card.classList.remove('rotate-y-180');
+        isFlipped = false;
+      }
+    }
+
+    function nextCard() {
+      if (currentIndex < 16) {
+        currentIndex++;
+        updateCard();
+      } else {
+        document.getElementById('flashcard').classList.add('hidden');
+        document.getElementById('controls').classList.add('opacity-30', 'pointer-events-none');
+        document.getElementById('result-screen').classList.remove('hidden');
+      }
+    }
+
+    function prevCard() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateCard();
+      }
+    }
+
+    function restartCategory() {
+      document.getElementById('result-screen').classList.add('hidden');
+      document.getElementById('flashcard').classList.remove('hidden');
+      document.getElementById('controls').classList.remove('opacity-30', 'pointer-events-none');
+      currentIndex = 0;
+      updateCard();
+    }
+
+    function speakText(event) {
+      event.stopPropagation();
+      const data = dataset[currentCategory][currentIndex];
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(data.kana);
+      utterance.lang = 'ja-JP';
+      utterance.rate = 0.85;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    window.onload = () => { updateCard(); };
+  </script>
+</body>
+</html>
