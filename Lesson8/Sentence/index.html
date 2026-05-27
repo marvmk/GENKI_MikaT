@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Genki Lesson 8 Sentences - Flashcards (with Romaji)</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    .perspective-1000 { perspective: 1000px; }
+    .transform-style-3d { transform-style: preserve-3d; }
+    .backface-hidden { backface-visibility: hidden; }
+    .rotate-y-180 { transform: rotateY(180deg); }
+  </style>
+</head>
+<body class="bg-slate-50 font-sans min-h-screen flex flex-col justify-between">
+
+  <header class="bg-teal-600 text-white py-6 shadow-md text-center">
+    <h1 class="text-3xl md:text-4xl font-extrabold tracking-wide">Genki Lesson 8 Sentences</h1>
+    <p class="text-sm md:text-base mt-2 opacity-90">Practice Short Forms, "I think", "They said", and "Please don't"</p>
+  </header>
+
+  <main class="max-w-4xl w-full mx-auto p-4 flex-grow flex flex-col items-center justify-center">
+    
+    <div id="tabs" class="w-full flex flex-wrap justify-center gap-2 mb-6">
+      <button onclick="switchCategory('i_think')" id="tab-i_think" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-teal-600 text-white">
+        I think that... (~to omoimasu)
+      </button>
+      <button onclick="switchCategory('they_said')" id="tab-they_said" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">
+        They said... (~to itte imashita)
+      </button>
+      <button onclick="switchCategory('please_dont')" id="tab-please_dont" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">
+        Please don't... (~naide kudasai)
+      </button>
+      <button onclick="switchCategory('noun_clause')" id="tab-noun_clause" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">
+        Verb-no ga suki / jōzu
+      </button>
+    </div>
+
+    <div class="text-xl md:text-2xl font-bold text-slate-600 mb-4">
+      Question: <span id="current-index" class="text-teal-600">1</span> / 17
+    </div>
+
+    <div class="w-full max-w-2xl h-[480px] relative perspective-1000">
+      
+      <div id="flashcard" onclick="flipCard()" class="w-full h-full relative transform-style-3d transition-transform duration-500 cursor-pointer">
+        
+        <div class="absolute w-full h-full bg-white rounded-3xl shadow-xl border-2 border-teal-100 p-8 flex flex-col justify-center items-center text-center backface-hidden">
+          <div id="card-icon" class="text-7xl md:text-8xl mb-6 select-none">🤔🌧️</div>
+          <div id="card-en" class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800 leading-snug">
+            I think it will rain tomorrow.
+          </div>
+          <div class="text-xs text-teal-500 mt-8 font-semibold tracking-widest uppercase">Tap to see answer</div>
+        </div>
+
+        <div class="absolute w-full h-full bg-teal-50 rounded-3xl shadow-xl border-2 border-teal-200 p-6 flex flex-col justify-between items-center text-center backface-hidden rotate-y-180">
+          
+          <div id="card-en-back" class="text-xl md:text-2xl font-medium text-teal-800 pt-2">
+            I think it will rain tomorrow.
+          </div>
+
+          <div class="flex flex-col gap-3 my-auto w-full px-2">
+            <div id="card-kanji" class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-wide">
+              明日は雨が降ると思います。
+            </div>
+            <div id="card-kana" class="text-2xl md:text-3xl text-teal-600 font-bold tracking-normal">
+              あしたはあめがふるとおもいます。
+            </div>
+            <div id="card-romaji" class="text-xl md:text-2xl text-amber-600 font-semibold tracking-wide italic">
+              ashita wa ame ga furu to omoimasu.
+            </div>
+          </div>
+
+          <div class="pb-2">
+            <button onclick="speakText(event)" class="bg-teal-600 hover:bg-teal-700 active:scale-95 text-white p-5 rounded-full shadow-lg transition-all duration-200 flex items-center justify-center group" title="Listen">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 group-hover:animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="result-screen" class="absolute inset-0 bg-white rounded-3xl shadow-2xl border-4 border-teal-500 p-8 flex flex-col justify-center items-center text-center hidden z-10">
+        <div class="text-7xl mb-4">🎉</div>
+        <h2 class="text-4xl md:text-5xl font-black text-teal-600 mb-2">Ottimo!</h2>
+        <p class="text-2xl text-slate-600 mb-8 font-medium">You completed Lesson 8 sentences!</p>
+        <button onclick="restartCategory()" class="bg-teal-600 hover:bg-teal-700 text-white font-bold text-2xl px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all active:scale-95">
+          Restart
+        </button>
+      </div>
+
+    </div>
+
+    <div id="controls" class="flex items-center justify-center gap-6 mt-8 w-full max-w-md">
+      <button onclick="prevCard()" class="flex-1 bg-slate-700 hover:bg-slate-800 text-white font-bold text-xl py-4 rounded-xl shadow-md transition-all active:scale-95 disabled:opacity-30 disabled:pointer-events-none">
+        ← Previous
+      </button>
+      <button onclick="nextCard()" class="flex-1 bg-teal-600 hover:bg-teal-700 text-white font-bold text-xl py-4 rounded-xl shadow-md transition-all active:scale-95">
+        Next →
+      </button>
+    </div>
+
+  </main>
+
+  <footer class="bg-slate-800 text-slate-400 py-4 text-center text-sm border-t border-slate-700">
+    &copy; FujiGreentea - Japanese Learning Materials (Genki I)
+  </footer>
+
+  <script>
+    // --- 17問 × 4カテゴリー ＝ 全68問の完璧なデータ構造 ---
+    const dataset = {
+      // 1. 〜と思います（意見・推量：17問）
+      i_think: [
+        { icon: "🤔🌧️", en: "I think it will rain tomorrow.", kanji: "明日は雨が降ると思います。", kana: "あしたはあめがふるとおもいます。", romaji: "ashita wa ame ga furu to omoimasu." },
+        { icon: "🤔🤓", en: "I think Takeshi likes Mary.", kanji: "たけしさんはメアリーさんが好きだと思います。", kana: "たけしさんはめありーさんがすきだとおもいます。", romaji: "takeshi san wa mearī san ga suki da to omoimasu." },
+        { icon: "🤔💴", en: "I think this camera is expensive.", kanji: "このカメラは高いと思います。", kana: "このかめらはたかいとおもいます。", romaji: "kono kamera wa takai to omoimasu." },
+        { icon: "🤔❌", en: "I think Robert will not come today.", kanji: "ロバートさんは今日来ないと思います。", kana: "ろばーとさんはきょうこないとおもいます。", romaji: "robāto san wa kyō konai to omoimasu." },
+        { icon: "🤔💯", en: "I think today's test was easy.", kanji: "今日のテストは簡単だったと思います。", kana: "きょうのてすとはかんたんだったとおおもいます。", romaji: "kyō no tesuto wa kantan datta to omoimasu." },
+        { icon: "🤔😴", en: "I think Professor Yamashita is busy.", kanji: "山下先生は忙しいと思います。", kana: "やましたせんせいはいそがしいとおもいます。", romaji: "yamashita sensei wa isogashii to omoimasu." },
+        { icon: "🤔🚭", en: "I think you should not smoke here.", kanji: "ここでタバコを吸ってはいけないと思います。", kana: "ここでたばこをすってはいけないとおもいます。", romaji: "koko de tabako o sutte wa ikenai to omoimasu." },
+        { icon: "🤔🏡", en: "I think Mary is at home now.", kanji: "メアリーさんは今家にいると思います。", kana: "めありーさんはいまうちにいるとおおもいます。", romaji: "mearī san wa ima uchi ni iru to omoimasu." },
+        { icon: "🤔🎬", en: "I think that movie was not interesting.", kanji: "あの映画は面白くなかったと思います。", kana: "あのえいがはおもしロくなかったとおおもいます。", romaji: "ano eiga wa omoshirokunatta to omoimasu." },
+        { icon: "🤔🇯🇵", en: "I think Japanese history is interesting.", kanji: "日本お歴史は面白いと思います。", kana: "にほんのれきしはおもしろいとおもいます。", romaji: "nihon no rekishi wa omoshiroi to omoimasu." },
+        { icon: "🤔🍱", en: "I think Sora didn't eat breakfast.", kanji: "ソラさんは朝ご飯を食べなかったと思います。", kana: "そらさんはあすごはんをたべなかったとおおもいます。", romaji: "sora san wa asagohan o tabenakatta to omoimasu." },
+        { icon: "🤔🏫", en: "I think tomorrow is a holiday.", kanji: "明日は休みだと思います。", kana: "あしたはやすみだとおもいます。", romaji: "ashita wa yasumi da to omoimasu." },
+        { icon: "🤔🤝", en: "I think they were high school friends.", kanji: "二人は高校の友達だったと思います。", kana: "ふたりはこうこうのともだちだったとおおもいます。", romaji: "futari wa kōkō no tomodachi datta to omoimasu." },
+        { icon: "🤔💡", en: "I think it's better to turn on the light.", kanji: "電気をつけたほうがいいと思います。", kana: "でんきをつけたほうがいいとおおもいます。", romaji: "denki o tsuketa hō ga ii to omoimasu." },
+        { icon: "🤔🧼", en: "I think this hotel is not clean.", kanji: "このホテルは綺麗じゃないと思います。", kana: "このほてるはきれいじゃないとおおもいます。", romaji: "kono hoteru wa kirei janai to omoimasu." },
+        { icon: "🤔🚗", en: "I think Robert does not have a car.", kanji: "ロバートさんは車を持っていないと思います。", kana: "ろばーとさんはくるまをもっていないとおおもいます。", romaji: "robāto san wa kuruma o motte inai to omoimasu." },
+        { icon: "❓💭", en: "What do you think about Japan?", kanji: "日本についてどう思いますか。", kana: "にほんについてどうおもいますか。", romaji: "nihon ni tsuite dō omoimasu ka." }
+      ],
+      // 2. 〜と言っていました（引用・伝聞：17問）
+      they_said: [
+        { icon: "🗣️🇺🇸", en: "Mary said that she is an American.", kanji: "メアリーさんはアメリカ人だと言っていました。", kana: "めありーさんはあめりかじんだといっていました。", romaji: "mearī san wa amerika jin da to itte imashita." },
+        { icon: "🗣️🥶", en: "Takeshi said that it was cold yesterday.", kanji: "たけしさんは昨日は寒かったと言っていました。", kana: "たけしさんはきのうはさむかったといっていました。", romaji: "takeshi san wa kinō wa samukatta to itte imashita." },
+        { icon: "🗣️🍿", en: "Robert said that he didn't watch the movie.", kanji: "ロバートさんは映画を見なかったと言っていました。", kana: "ろばーとさんはえいがをみなかったといっていました。", romaji: "robāto san wa eiga o mimasen datta to itte imashita." },
+        { icon: "🗣️🛌", en: "Sora said that she is free tomorrow.", kanji: "ソラさんは明日は暇だと言っていました。", kana: "そらさんはあしたはひまだといっていました。", romaji: "sora san wa ashita wa hima da to itte imashita." },
+        { icon: "🗣️📝", en: "The teacher said that there is no test tomorrow.", kanji: "先生は明日テストがないと言っていました。", kana: "せんせいはあしたてすとがないといっていました。", romaji: "sensei wa ashita tesuto ga nai to itte imashita." },
+        { icon: "🗣️🛍️", en: "My mother said that she bought a new bag.", kanji: "お母さんは新しい鞄を買ったと言っていました。", kana: "おかあさんはあたらしいかばんをかったといっていました。", romaji: "okāsan wa atarashii kaban o katta to itte imashita." },
+        { icon: "🗣️🤝", en: "They said that they met Professor Yamashita.", kanji: "山下先生に会ったと言っていました。", kana: "やましたせんせいにあったといっていました。", romaji: "yamashita sensei ni adte to itte imashita." },
+        { icon: "🗣️🍣", en: "Mary said that she likes sushi.", kanji: "メアリーさんは寿司が好きだと言っていました。", kana: "めありーさんはすしがすきだといっていました。", romaji: "mearī san wa sushi ga suki da to itte imashita." },
+        { icon: "🗣️🚗", en: "Takeshi said that he doesn't own a car.", kanji: "たけしさんは車を持っていないと言っていました。", kana: "たけしさんはくるまをもっていないといっていました。", romaji: "takeshi san wa kuruma o motte inai to itte imashita." },
+        { icon: "🗣️❌", en: "Robert said that he wasn't busy last week.", kanji: "ロバートさんは先週は忙しくなかったと言っていました。", kana: "ろばーとさんはせんしゅうはいそがしくなかったといっていました。", romaji: "robāto san wa senshū wa isogashikunakatta to itte imashita." },
+        { icon: "🗣️😴", en: "Sora said that she was tired in the morning.", kanji: "ソラさんは朝、疲れていたと言っていました。", kana: "そらさんはあさ、つかれていたといっていました。", romaji: "sora san wa asa, tsukareteita to itte imashita." },
+        { icon: "🗣️🏫", en: "The student said that the school was old.", kanji: "学生は学校が古かったと言っていました。", kana: "がくせいはがっこうがふるかったといっていました。", romaji: "gakusei wa gakkō ga furukatta to itte imashita." },
+        { icon: "🗣️🍺", en: "He said that he didn't drink alcohol last night.", kanji: "昨晩はお酒を飲まなかったと言っていました。", kana: "さくばんはおさけをのまなかったといっていました。", romaji: "sakuban wa osake o nomanakatta to itte imashita." },
+        { icon: "🗣️🏙️", en: "They said that Tokyo is lively.", kanji: "東京は賑やかだと言っていました。", kana: "とうきょうはにぎやかだといっていました。", romaji: "tōkyō wa nigiyaka da to itte imashita." },
+        { icon: "🗣️🎶", en: "Mary said that the concert was not good.", kanji: "メアリーさんはコンサートはよくなかったと言っていました。", kana: "めありーさんはこんさーとはよくなかったといっていました。", romaji: "mearī san wa konsāto wa yokunakatta to itte imashita." },
+        { icon: "🗣️🧳", en: "Robert said that he will travel next week.", kanji: "ロバートさんは来週旅行すると言っていました。", kana: "ろばーとさんはらいしゅうりょこうするといっていました。", romaji: "robāto san wa raishū ryokō suru to itte imashita." },
+        { icon: "❓🗣️", en: "What did the teacher say?", kanji: "先生は何と言っていましたか。", kana: "せんせいはなんといっていましたか。", romaji: "sensei wa nan to itte imashita ka." }
+      ],
+      // 3. 〜ないでください（禁止の依頼：17問）
+      please_dont: [
+        { icon: "🛑📸", en: "Please don't take pictures here.", kanji: "ここで写真を撮らないでください。", kana: "ここでしゃしんをとらないでください。", romaji: "koko de shashin o toranaide kudasai." },
+        { icon: "🛑📖", en: "Please don't open the textbook.", kanji: "教科書を開けないでください。", kana: "きょうかしょをあけないでください。", romaji: "kyōkasho o akenaide kudasai." },
+        { icon: "🛑🗣️", en: "Please don't speak English in class.", kanji: "クラスで英語を話さないでください。", kana: "くらすでえいごをはなさないでください。", romaji: "kurasu de eigo o hanasanaide kudasai." },
+        { icon: "🛑🚬", en: "Please don't smoke here.", kanji: "ここでタバコを吸わないでください。", kana: "ここでたばこをすわないでください。", romaji: "koko de tabako o suwanaide kudasai." },
+        { icon: "🛑🚪", en: "Please don't enter this room.", kanji: "この部屋に入らないでください。", kana: "このへやにはいらないでください。", romaji: "kono heya ni hairanaide kudasai." },
+        { icon: "🛑🏃‍♂️", en: "Please don't hurry.", kanji: "急がないでください。", kana: "いそがないでください。", romaji: "isoganaide kudasai." },
+        { icon: "🛑📴", en: "Please don't turn off the light.", kanji: "電気を消さないでください。", kana: "でんきをけさないでください。", romaji: "denki o kesanaide kudasai." },
+        { icon: "🛑⏳", en: "Please don't wait for me.", kanji: "私を待たないでください。", kana: "わたしをまたないでください。", romaji: "watashi o matanaide kudasai." },
+        { icon: "🛑🏠", en: "Please don't return home yet.", kanji: "まだ家に帰らないでください。", kana: "まだうちにかえらないでください。", romaji: "mada uchi ni kaeranaide kudasai." },
+        { icon: "🛑🍷", en: "Please don't drink alcohol tonight.", kanji: "今晩はお酒を飲まないでください。", kana: "こんばんはおさけをのまないでください。", romaji: "konban wa osake o nomanaide kudasai." },
+        { icon: "🛑🪟", en: "Please don't close the window.", kanji: "窓を閉めないでください。", kana: "まどをしめないでください。", romaji: "mado o shimenaide kudasai." },
+        { icon: "🛑💺", en: "Please don't sit there.", kanji: "そこに座らないでください。", kana: "そこにすわらないでください。", romaji: "soko ni suwaranaide kudasai." },
+        { icon: "🛑📱", en: "Please don't use your phone during the test.", kanji: "テストの時にスマホを使わないでください。", kana: "てすとのときにすまほをつかわないでください。", romaji: "tesuto no toki ni sumaho o tsukawanaide kudasai." },
+        { icon: "🛑🛌", en: "Please don't sleep in class.", kanji: "クラスで寝ないでください。", kana: "くらすでねないでください。", romaji: "kurasu de nenaide kudasai." },
+        { icon: "🛑💸", en: "Please don't waste money.", kanji: "お金を使わないでください。", kana: "おかねをつかわないでください。", romaji: "okane o tsukawanaide kudasai." },
+        { icon: "🛑📄", en: "Please don't forget your homework.", kanji: "宿題を忘れないでください。", kana: "しゅくだいをわすれないでください。", romaji: "shukudai o wasurenaide kudasai." },
+        { icon: "🛑😢", en: "Please don't cry.", kanji: "泣かないでください。", kana: "なかないでください。", romaji: "nakanaide kudasai." }
+      ],
+      // 4. 〜のが好き / 上手（動詞の名詞化：17問）
+      noun_clause: [
+        { icon: "❤️🎶", en: "I like listening to music.", kanji: "私は音楽を聞くのが好きです。", kana: "わたしはおんがくをきくのがすきです。", romaji: "watashi wa ongaku o kiku no ga suki desu." },
+        { icon: "❤️🍳", en: "Mary likes cooking food.", kanji: "メアリーさんは料理を作るのが好きです。", kana: "めありーさんはりょうりをつくるのがすきです。", romaji: "mearī san wa ryōri o tsukuru no ga suki desu." },
+        { icon: "👍🇯🇵", en: "Takeshi is good at speaking Japanese.", kanji: "たけしさんは日本語を話すのが上手です。", kana: "たけしさんはにほんごをはなすのがじょうずです。", romaji: "takeshi san wa nihongo o hanasu no ga jōzu desu." },
+        { icon: "👎🎾", en: "Robert is bad at playing tennis.", kanji: "ロバートさんはテニスをするのが下手です。", kana: "ろばーとさんはてにすをするのがへたです。", romaji: "robāto san wa tenisu o suru no ga heta desu." },
+        { icon: "❤️📖", en: "I like reading books alone.", kanji: "一人で本を読むのが好きです。", kana: "ひとりでほんをよむのがすきです。", romaji: "hitori de hon o yumu no ga suki desu." },
+        { icon: "👍📸", en: "Sora is good at taking pictures.", kanji: "ソラさんは写真を撮るのが上手です。", kana: "そらさんはしゃしんをとるのがじょうずです。", romaji: "sora san wa shashin o toru no ga jōzu desu." },
+        { icon: "❤️🛌", en: "My friend likes sleeping early.", kanji: "友達は早く寝るのが好きです。", kana: "ともだちははやくねるのがすきです。", romaji: "tomodachi wa hayaku neru no ga suki desu." },
+        { icon: "👎🍳", en: "I am bad at cleaning the room.", kanji: "私は部屋を掃除するのが下手です。", kana: "わたしはへやをそうじするのがへたです。", romaji: "watashi wa heya o sōji suru no ga heta desu." },
+        { icon: "❤️🏊‍♂️", en: "Mary likes swimming in the sea.", kanji: "メアリーさんは海で泳ぐのが好きです。", kana: "めありーさんはうみでおよぐのがすきです。", romaji: "mearī san wa umi de oyogu no ga suki desu." },
+        { icon: "👍🚗", en: "Takeshi is good at driving cars.", kanji: "たけしさんは車を運転するのが上手です。", kana: "たけしさんはくるまをうんてんするのがじょうずです。", romaji: "takeshi san wa kuruma o unten suru no ga jōzu desu." },
+        { icon: "❤️🛒", en: "I like buying clothes at the department store.", kanji: "デパートで服を買うのが好きです。", kana: "でぱーとでふくをかうのがすきです。", romaji: "depāto de fuku o kau no ga suki desu." },
+        { icon: "👎🎤", en: "I am bad at singing.", kanji: "私は歌うのが下手です。", kana: "わたしはうたうのがへたです。", romaji: "watashi wa utau no ga heta desu." },
+        { icon: "❤️🚶‍♂️", en: "Sora likes walking in the park.", kanji: "ソラさんは公園を歩くのが好きです。", kana: "そらさんはこうえんをあるくのがすきです。", romaji: "sora san wa kōen o aruku no ga suki desu." },
+        { icon: "👍✍️", en: "Robert is good at writing letters.", kanji: "ロバートさんは手紙を書くのが上手です。", kana: "ろばーとさんはてがみをかくのがじょうずです。", romaji: "robāto san wa tegami o kaku no ga jōzu desu." },
+        { icon: "💔✍️", en: "I dislike studying on Saturdays.", kanji: "土曜日に勉強するのが嫌いです。", kana: "どようびにべんきょうするのがきらいです。", romaji: "doyōbi ni benkyō suru no ga kirai desu." },
+        { icon: "❤️🗣️", en: "Mary likes talking with friends.", kanji: "メアリーさんは友達と話すのが好きです。", kana: "めありーさんはともだちとはなすのがすきです。", romaji: "mearī san wa tomodachi to hanasu no ga suki desu." },
+        { icon: "❓🎨", en: "Are you good at drawing pictures?", kanji: "絵を描くのが上手ですか。", kana: "えをかくのがじょうずですか。", romaji: "e o kaku no ga jōzu desu ka." }
+      ]
+    };
+
+    let currentCategory = 'i_think';
+    let currentIndex = 0;
+    let isFlipped = false;
+
+    function switchCategory(category) {
+      currentCategory = category;
+      currentIndex = 0;
+      isFlipped = false;
+      
+      const categories = ['i_think', 'they_said', 'please_dont', 'noun_clause'];
+      categories.forEach(cat => {
+        const tab = document.getElementById(`tab-${cat}`);
+        if (cat === category) {
+          tab.classList.remove('bg-white', 'text-teal-700', 'hover:bg-teal-50');
+          tab.classList.add('bg-teal-600', 'text-white');
+        } else {
+          tab.classList.remove('bg-teal-600', 'text-white');
+          tab.classList.add('bg-white', 'text-teal-700', 'hover:bg-teal-50');
+        }
+      });
+
+      document.getElementById('result-screen').classList.add('hidden');
+      document.getElementById('flashcard').classList.remove('hidden');
+      document.getElementById('controls').classList.remove('opacity-30', 'pointer-events-none');
+      
+      updateCard();
+    }
+
+    function updateCard() {
+      const card = document.getElementById('flashcard');
+      card.classList.remove('rotate-y-180');
+      isFlipped = false;
+
+      const data = dataset[currentCategory][currentIndex];
+      
+      document.getElementById('card-icon').innerText = data.icon;
+      document.getElementById('card-en').innerText = data.en;
+      document.getElementById('card-en-back').innerText = data.en;
+      document.getElementById('card-kanji').innerText = data.kanji;
+      document.getElementById('card-kana').innerText = data.kana;
+      document.getElementById('card-romaji').innerText = data.romaji;
+
+      document.getElementById('current-index').innerText = currentIndex + 1;
+    }
+
+    function flipCard() {
+      const card = document.getElementById('flashcard');
+      if (!isFlipped) {
+        card.classList.add('rotate-y-180');
+        isFlipped = true;
+      } else {
+        card.classList.remove('rotate-y-180');
+        isFlipped = false;
+      }
+    }
+
+    function nextCard() {
+      if (currentIndex < 16) {
+        currentIndex++;
+        updateCard();
+      } else {
+        document.getElementById('flashcard').classList.add('hidden');
+        document.getElementById('controls').classList.add('opacity-30', 'pointer-events-none');
+        document.getElementById('result-screen').classList.remove('hidden');
+      }
+    }
+
+    function prevCard() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateCard();
+      }
+    }
+
+    function restartCategory() {
+      document.getElementById('result-screen').classList.add('hidden');
+      document.getElementById('flashcard').classList.remove('hidden');
+      document.getElementById('controls').classList.remove('opacity-30', 'pointer-events-none');
+      currentIndex = 0;
+      updateCard();
+    }
+
+    function speakText(event) {
+      event.stopPropagation();
+      const data = dataset[currentCategory][currentIndex];
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(data.kana);
+      utterance.lang = 'ja-JP';
+      utterance.rate = 0.85;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    window.onload = () => { updateCard(); };
+  </script>
+</body>
+</html>
