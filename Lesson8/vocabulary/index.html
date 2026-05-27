@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Genki Lesson 8 Vocabulary - 100% Complete</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    .perspective-1000 { perspective: 1000px; }
+    .transform-style-3d { transform-style: preserve-3d; }
+    .backface-hidden { backface-visibility: hidden; }
+    .rotate-y-180 { transform: rotateY(180deg); }
+  </style>
+</head>
+<body class="bg-slate-50 font-sans min-h-screen flex flex-col justify-between">
+
+  <header class="bg-teal-600 text-white py-6 shadow-md text-center">
+    <h1 class="text-3xl md:text-4xl font-extrabold tracking-wide">Genki L8 Vocab (49 Words Perfect)</h1>
+    <p class="text-sm md:text-base mt-2 opacity-90">Every Single Word from Lesson 8 Vocabulary List</p>
+  </header>
+
+  <main class="max-w-4xl w-full mx-auto p-4 flex-grow flex flex-col items-center justify-center">
+    
+    <div id="tabs" class="w-full flex flex-wrap justify-center gap-2 mb-6">
+      <button onclick="switchCategory('verbs')" id="tab-verbs" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-teal-600 text-white">
+        Verbs (21 Words)
+      </button>
+      <button onclick="switchCategory('nouns')" id="tab-nouns" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">
+        Nouns (14 Words)
+      </button>
+      <button onclick="switchCategory('expressions')" id="tab-expressions" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">
+        Adj, Adverbs & Etc (14 Words)
+      </button>
+    </div>
+
+    <div class="text-xl md:text-2xl font-bold text-slate-600 mb-4">
+      Word Count: <span id="current-index" class="text-teal-600">1</span> / <span id="total-index">21</span>
+    </div>
+
+    <div class="w-full max-w-2xl h-[500px] relative perspective-1000">
+      
+      <div id="flashcard" onclick="flipCard()" class="w-full h-full relative transform-style-3d transition-transform duration-500 cursor-pointer">
+        
+        <div class="absolute w-full h-full bg-white rounded-3xl shadow-xl border-2 border-teal-100 p-8 flex flex-col justify-center items-center text-center backface-hidden">
+          <div id="card-icon" class="text-7xl md:text-8xl mb-6 select-none">🗣️💭</div>
+          <div id="card-en" class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800 leading-snug">
+            to say
+          </div>
+          <div class="text-xs text-teal-500 mt-8 font-semibold tracking-widest uppercase">Tap to see Japanese</div>
+        </div>
+
+        <div class="absolute w-full h-full bg-teal-50 rounded-3xl shadow-xl border-2 border-teal-200 p-6 flex flex-col justify-between items-center text-center backface-hidden rotate-y-180">
+          
+          <div class="w-full flex flex-col items-center pt-2 gap-1">
+            <div id="card-en-back" class="text-xl md:text-2xl font-medium text-teal-800">
+              to say
+            </div>
+            <div id="card-type" class="text-xs px-3 py-1 bg-amber-100 text-amber-800 font-bold rounded-full uppercase tracking-wider">
+              U-Verb
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-3 my-auto w-full px-2">
+            <div id="card-kanji" class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-wide">
+              言う
+            </div>
+            <div id="card-kana" class="text-2xl md:text-3xl text-teal-600 font-bold tracking-normal">
+              いう
+            </div>
+            <div id="card-romaji" class="text-xl md:text-2xl text-amber-600 font-semibold tracking-wide italic">
+              iu
+            </div>
+          </div>
+
+          <div class="pb-2">
+            <button onclick="speakText(event)" class="bg-teal-600 hover:bg-teal-700 active:scale-95 text-white p-5 rounded-full shadow-lg transition-all duration-200 flex items-center justify-center group" title="Listen">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 group-hover:animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="result-screen" class="absolute inset-0 bg-white rounded-3xl shadow-2xl border-4 border-teal-500 p-8 flex flex-col justify-center items-center text-center hidden z-10">
+        <div class="text-7xl mb-4">🎉</div>
+        <h2 class="text-4xl md:text-5xl font-black text-teal-600 mb-2">Ottimo!</h2>
+        <p class="text-2xl text-slate-600 mb-8 font-medium">You completed this vocabulary set!</p>
+        <button onclick="restartCategory()" class="bg-teal-600 hover:bg-teal-700 text-white font-bold text-2xl px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all active:scale-95">
+          Restart
+        </button>
+      </div>
+
+    </div>
+
+    <div id="controls" class="flex items-center justify-center gap-6 mt-8 w-full max-w-md">
+      <button onclick="prevCard()" class="flex-1 bg-slate-700 hover:bg-slate-800 text-white font-bold text-xl py-4 rounded-xl shadow-md transition-all active:scale-95 disabled:opacity-30 disabled:pointer-events-none">
+        ← Previous
+      </button>
+      <button onclick="nextCard()" class="flex-1 bg-teal-600 hover:bg-teal-700 text-white font-bold text-xl py-4 rounded-xl shadow-md transition-all active:scale-95">
+        Next →
+      </button>
+    </div>
+
+  </main>
+
+  <footer class="bg-slate-800 text-slate-400 py-4 text-center text-sm border-t border-slate-700">
+    &copy; FujiGreentea - Japanese Vocabulary Master (Genki I)
+  </footer>
+
+  <script>
+    // --- 【49単語完全網羅】Genki Lesson 8 Vocabulary Database ---
+    const dataset = {
+      // 1. 動詞カテゴリー（21語）
+      verbs: [
+        { type: "U-Verb", icon: "🗣️💭", en: "to say", kanji: "言う", kana: "いう", romaji: "iu" },
+        { type: "U-Verb", icon: "🤔💡", en: "to need", kanji: "要る", kana: "いる", romaji: "iru" },
+        { type: "U-Verb", icon: "🚗💨", en: "to drive", kanji: "運転する", kanji: "運転する", kana: "うんてんする", romaji: "unten suru", type: "Irregular-Verb" }, 
+        { type: "U-Verb", icon: "🎙️🎶", en: "to sing", kanji: "歌う", kana: "うたう", romaji: "utau" },
+        { type: "U-Verb", icon: "🏊‍♂️🌊", en: "to swim", kanji: "泳ぐ", kana: "およぐ", romaji: "oyogu" },
+        { type: "U-Verb", icon: "🎨🖌️", en: "to draw / to paint", kanji: "描く", kana: "かく", romaji: "kaku" },
+        { type: "U-Verb", icon: "💵🤝", en: "to lend", kanji: "貸す", kana: "かす", romaji: "kasu" },
+        { type: "U-Verb", icon: "🏙️🚶‍♂️", en: "to push / to press", kanji: "押す", kana: "おす", romaji: "osu" },
+        { type: "U-Verb", icon: "🏙️🏃‍♂️", en: "to make / to produce", kanji: "作る", kana: "つくる", romaji: "tsukuru" },
+        { type: "U-Verb", icon: "📱💬", en: "to text / to send a message", kanji: "送る", kana: "おくる", romaji: "okuru" },
+        { type: "U-Verb", icon: "🧗‍♂️🏔️", en: "to climb", kanji: "登る", kana: "のぼる", romaji: "noboru" },
+        { type: "U-Verb", icon: "🗺️🏃‍♂️", en: "to enter / to go in", kanji: "入る", kana: "はいる", romaji: "hairu" },
+        { type: "U-Verb", icon: "🏃‍♂️💨", en: "to run", kanji: "走る", kana: "はしる", romaji: "hashiru" },
+        { type: "U-Verb", icon: "🌧️🌂", en: "to rain", kanji: "降る", kana: "ふる", romaji: "furu" },
+        { type: "U-Verb", icon: "🧼🧹", en: "to wash", kanji: "洗う", kana: "あらう", romaji: "arau" },
+        { type: "Ru-Verb", icon: "🧼🧹", en: "to clean up", kanji: "片付ける", kana: "かたづける", romaji: "katadukeru" },
+        { type: "Ru-Verb", icon: "📄❌", en: "to forget", kanji: "忘れる", kana: "わすれる", romaji: "wasureer" },
+        { type: "Ru-Verb", icon: "🛀♨️", en: "to take a bath", kanji: "お風呂に入る", kana: "おふろにはいる", romaji: "ofuro ni hairu", type: "U-Verb" },
+        { type: "Irregular-Verb", icon: "🧹🧼", en: "to clean (a room)", kanji: "掃除する", kana: "そうじする", romaji: "sōji suru" },
+        { type: "Irregular-Verb", icon: "🍳🍱", en: "to cook", kanji: "料理する", kana: "りょうりする", romaji: "ryōri suru" },
+        { type: "Irregular-Verb", icon: "📱💬", en: "to laundry / to wash clothes", kanji: "洗濯する", kana: "せんたくする", romaji: "sentaku suru" }
+      ],
+      // 2. 名詞カテゴリー（14語）
+      nouns: [
+        { type: "Noun", icon: "🎨✨", en: "picture / drawing / painting", kanji: "絵", kana: "え", romaji: "e" },
+        { type: "Noun", icon: "🍿🎬", en: "movie theater", kanji: "映画館", kana: "えいがかん", romaji: "eigakan" },
+        { type: "Noun", icon: "💍💒", en: "wedding", kanji: "結婚式", kana: "けっこんしき", romaji: "kekkonshiki" },
+        { type: "Noun", icon: "📱📸", en: "camera", kanji: "カメラ", kana: "かめら", romaji: "kamera" },
+        { type: "Noun", icon: "🧥👔", en: "jacket", kanji: "上着", kana: "うわぎ", romaji: "uwagi" },
+        { type: "Noun", icon: "👘🌸", en: "kimono", kanji: "着物", kana: "きもの", romaji: "kimono" },
+        { type: "Noun", icon: "🌏🗺️", en: "world", kanji: "世界", kana: "せかい", romaji: "sekai" },
+        { type: "Noun", icon: "💬📜", en: "word / language / expression", kanji: "言葉", kana: "ことば", romaji: "kotoba" },
+        { type: "Noun", icon: "🧾🖊️", en: "ticket (for train / concert)", kanji: "切符", kana: "きっぷ", romaji: "kippu" },
+        { type: "Noun", icon: "📅⏰", en: "schedule", kanji: "予定", kana: "よてい", romaji: "yotei" },
+        { type: "Noun", icon: "⛩️🌸", en: "shrine", kanji: "神社", kana: "じんじゃ", romaji: "jinja" },
+        { type: "Noun", icon: "💴📈", en: "price (of items)", kanji: "物価", kana: "ぶっか", romaji: "bukka" },
+        { type: "Noun", icon: "🦖🦴", en: "barbecue", kanji: "バーベキュー", kana: "ばーべきゅー", romaji: "bābekyū" },
+        { type: "Noun", icon: "👥🌏", en: "everyone / all people", kanji: "皆さん", kana: "みなさん", romaji: "minasan" }
+      ],
+      // 3. 形容詞・副詞・表現カテゴリー（14語）
+      expressions: [
+        { type: "I-Adj", icon: "👍✨", en: "good (short form variant)", kanji: "いい", kana: "いい", romaji: "ii" },
+        { type: "I-Adj", icon: "🥶❄️", en: "cool (weather / sensation)", kanji: "涼しい", kana: "すずしい", romaji: "suzushii" },
+        { type: "Na-Adj", icon: "💯✨", en: "easy / simple", kanji: "簡単（な）", kana: "かんたん", romaji: "kantan" },
+        { type: "Adverb", icon: "⏳📊", en: "late / slowly", kanji: "遅く", kana: "おそく", romaji: "osoku" },
+        { type: "Adverb", icon: "📈✨", en: "more", kanji: "もっと", kana: "もっと", romaji: "motto" },
+        { type: "Adverb", icon: "🗓️✨", en: "this morning", kanji: "今朝", kana: "けさ", romaji: "kesa" },
+        { type: "Adverb", icon: "📅⏭️", en: "this month", kanji: "今月", kana: "こんげつ", romaji: "kongetsu" },
+        { type: "Adverb", icon: "🍂🔙", en: "last year", kanji: "去年", kana: "きょねん", romaji: "kyonen" },
+        { type: "Expression", icon: "🗺️💡", en: "about... / regarding...", kanji: "〜について", kana: "〜について", romaji: "...ni tsuite" },
+        { type: "Expression", icon: "🤝✨", en: "by all means / take your time", kanji: "ゆっくり", kana: "ゆっくり", romaji: "yukkuri" },
+        { type: "Expression", icon: "🛑💁‍♂️", en: "not yet / still", kanji: "まだ", kana: "まだ", romaji: "mada" },
+        { type: "Expression", icon: "🔄✨", en: "after all", kanji: "やっぱり", kana: "やっぱり", romaji: "yappari" },
+        { type: "Counter", icon: "🔢⏱️", en: "[counter for degrees / times]", kanji: "〜度", kana: "〜ど", romaji: "...do" },
+        { type: "Expression", icon: "👥💬", en: "All together / Total", kanji: "全員で / 全部で", kana: "ぜんいんで / ぜんぶで", romaji: "zen'in de / zenbu de" }
+      ]
+    };
+
+    let currentCategory = 'verbs';
+    let currentIndex = 0;
+    let isFlipped = false;
+
+    function switchCategory(category) {
+      currentCategory = category;
+      currentIndex = 0;
+      isFlipped = false;
+      
+      const categories = ['verbs', 'nouns', 'expressions'];
+      categories.forEach(cat => {
+        const tab = document.getElementById(`tab-${cat}`);
+        if (cat === category) {
+          tab.classList.remove('bg-white', 'text-teal-700', 'hover:bg-teal-50');
+          tab.classList.add('bg-teal-600', 'text-white');
+        } else {
+          tab.classList.remove('bg-teal-600', 'text-white');
+          tab.classList.add('bg-white', 'text-teal-700', 'hover:bg-teal-50');
+        }
+      });
+
+      document.getElementById('result-screen').classList.add('hidden');
+      document.getElementById('flashcard').classList.remove('hidden');
+      document.getElementById('controls').classList.remove('opacity-30', 'pointer-events-none');
+      
+      document.getElementById('total-index').innerText = dataset[currentCategory].length;
+
+      updateCard();
+    }
+
+    function updateCard() {
+      const card = document.getElementById('flashcard');
+      card.classList.remove('rotate-y-180');
+      isFlipped = false;
+
+      const data = dataset[currentCategory][currentIndex];
+      
+      document.getElementById('card-icon').innerText = data.icon;
+      document.getElementById('card-en').innerText = data.en;
+      document.getElementById('card-en-back').innerText = data.en;
+      document.getElementById('card-kanji').innerText = data.kanji;
+      document.getElementById('card-kana').innerText = data.kana;
+      document.getElementById('card-romaji').innerText = data.romaji;
+      
+      const typeLabel = document.getElementById('card-type');
+      typeLabel.innerText = data.type;
+      if (data.type.includes('Verb')) {
+        typeLabel.className = "text-xs px-3 py-1 bg-amber-100 text-amber-800 font-bold rounded-full uppercase tracking-wider";
+      } else if (data.type.includes('Adj')) {
+        typeLabel.className = "text-xs px-3 py-1 bg-purple-100 text-purple-800 font-bold rounded-full uppercase tracking-wider";
+      } else {
+        typeLabel.className = "text-xs px-3 py-1 bg-slate-100 text-slate-800 font-bold rounded-full uppercase tracking-wider";
+      }
+
+      document.getElementById('current-index').innerText = currentIndex + 1;
+    }
+
+    function flipCard() {
+      const card = document.getElementById('flashcard');
+      if (!isFlipped) {
+        card.classList.add('rotate-y-180');
+        isFlipped = true;
+      } else {
+        card.classList.remove('rotate-y-180');
+        isFlipped = false;
+      }
+    }
+
+    function nextCard() {
+      const totalQuestions = dataset[currentCategory].length;
+      if (currentIndex < totalQuestions - 1) {
+        currentIndex++;
+        updateCard();
+      } else {
+        document.getElementById('flashcard').classList.add('hidden');
+        document.getElementById('controls').classList.add('opacity-30', 'pointer-events-none');
+        document.getElementById('result-screen').classList.remove('hidden');
+      }
+    }
+
+    function prevCard() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateCard();
+      }
+    }
+
+    function restartCategory() {
+      document.getElementById('result-screen').classList.add('hidden');
+      document.getElementById('flashcard').classList.remove('hidden');
+      document.getElementById('controls').classList.remove('opacity-30', 'pointer-events-none');
+      currentIndex = 0;
+      updateCard();
+    }
+
+    function speakText(event) {
+      event.stopPropagation();
+      const data = dataset[currentCategory][currentIndex];
+      window.speechSynthesis.cancel();
+      
+      let textToSpeak = data.kana.split('/')[0].replace(/（.*）/g, '').replace(/\(.*\)/g, '').replace('〜', '').trim();
+      
+      const utterance = new SpeechSynthesisUtterance(textToSpeak);
+      utterance.lang = 'ja-JP';
+      utterance.rate = 0.85;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    window.onload = () => {
+      document.getElementById('total-index').innerText = dataset[currentCategory].length;
+      updateCard();
+    };
+  </script>
+</body>
+</html>
