@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Genki Lesson 10 Sentences - Flashcards</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    .perspective-1000 { perspective: 1000px; }
+    .transform-style-3d { transform-style: preserve-3d; }
+    .backface-hidden { backface-visibility: hidden; }
+    .rotate-y-180 { transform: rotateY(180deg); }
+  </style>
+</head>
+<body class="bg-slate-50 font-sans min-h-screen flex flex-col justify-between">
+
+  <header class="bg-teal-600 text-white py-6 shadow-md text-center">
+    <h1 class="text-3xl md:text-4xl font-extrabold tracking-wide">Genki Lesson 10 Sentences</h1>
+    <p class="text-sm md:text-base mt-2 opacity-90">Practice Comparison, Superlatives, Intentions, and Becoming</p>
+  </header>
+
+  <main class="max-w-4xl w-full mx-auto p-4 flex-grow flex flex-col items-center justify-center">
+    
+    <div id="tabs" class="w-full flex flex-wrap justify-center gap-2 mb-6">
+      <button onclick="switchCategory('comparison')" id="tab-comparison" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-teal-600 text-white">
+        A vs B (~no hō ga)
+      </button>
+      <button onclick="switchCategory('superlative')" id="tab-superlative" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">
+        Superlative (~de ichiban)
+      </button>
+      <button onclick="switchCategory('intention')" id="tab-intention" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">
+        Intention (~tsumori desu)
+      </button>
+      <button onclick="switchCategory('becoming')" id="tab-becoming" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">
+        Adjective + naru / Adverb
+      </button>
+    </div>
+
+    <div class="text-xl md:text-2xl font-bold text-slate-600 mb-4">
+      Question: <span id="current-index" class="text-teal-600">1</span> / 17
+    </div>
+
+    <div class="w-full max-w-2xl h-[480px] relative perspective-1000">
+      
+      <div id="flashcard" onclick="flipCard()" class="w-full h-full relative transform-style-3d transition-transform duration-500 cursor-pointer">
+        
+        <div class="absolute w-full h-full bg-white rounded-3xl shadow-xl border-2 border-teal-100 p-8 flex flex-col justify-center items-center text-center backface-hidden">
+          <div id="card-icon" class="text-7xl md:text-8xl mb-6 select-none">🍎対🍏</div>
+          <div id="card-en" class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800 leading-snug">
+            Between apples and bananas, which one do you like more?
+          </div>
+          <div class="text-xs text-teal-500 mt-8 font-semibold tracking-widest uppercase">Tap to see answer</div>
+        </div>
+
+        <div class="absolute w-full h-full bg-teal-50 rounded-3xl shadow-xl border-2 border-teal-200 p-6 flex flex-col justify-between items-center text-center backface-hidden rotate-y-180">
+          
+          <div id="card-en-back" class="text-xl md:text-2xl font-medium text-teal-800 pt-2">
+            Between apples and bananas, which one do you like more?
+          </div>
+
+          <div class="flex flex-col gap-3 my-auto w-full px-2">
+            <div id="card-kanji" class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-wide">
+              りんごとバナナとどちらのほうが好きですか。
+            </div>
+            <div id="card-kana" class="text-2xl md:text-3xl text-teal-600 font-bold tracking-normal">
+              りんごとばななとどちらのほうがすきですか。
+            </div>
+            <div id="card-romaji" class="text-xl md:text-2xl text-amber-600 font-semibold tracking-wide italic">
+              ringo to banana to dochira no hō ga suki desu ka.
+            </div>
+          </div>
+
+          <div class="pb-2">
+            <button onclick="speakText(event)" class="bg-teal-600 hover:bg-teal-700 active:scale-95 text-white p-5 rounded-full shadow-lg transition-all duration-200 flex items-center justify-center group" title="Listen">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 group-hover:animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="result-screen" class="absolute inset-0 bg-white rounded-3xl shadow-2xl border-4 border-teal-500 p-8 flex flex-col justify-center items-center text-center hidden z-10">
+        <div class="text-7xl mb-4">🎉</div>
+        <h2 class="text-4xl md:text-5xl font-black text-teal-600 mb-2">Ottimo!</h2>
+        <p class="text-2xl text-slate-600 mb-8 font-medium">You completed Lesson 10 sentences!</p>
+        <button onclick="restartCategory()" class="bg-teal-600 hover:bg-teal-700 text-white font-bold text-2xl px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all active:scale-95">
+          Restart
+        </button>
+      </div>
+
+    </div>
+
+    <div id="controls" class="flex items-center justify-center gap-6 mt-8 w-full max-w-md">
+      <button onclick="prevCard()" class="flex-1 bg-slate-700 hover:bg-slate-800 text-white font-bold text-xl py-4 rounded-xl shadow-md transition-all active:scale-95 disabled:opacity-30 disabled:pointer-events-none">
+        ← Previous
+      </button>
+      <button onclick="nextCard()" class="flex-1 bg-teal-600 hover:bg-teal-700 text-white font-bold text-xl py-4 rounded-xl shadow-md transition-all active:scale-95">
+        Next →
+      </button>
+    </div>
+
+  </main>
+
+  <footer class="bg-slate-800 text-slate-400 py-4 text-center text-sm border-t border-slate-700">
+    &copy; FujiGreentea - Japanese Learning Materials (Genki I)
+  </footer>
+
+  <script>
+    const dataset = {
+      // 1. AとBの比較 (17問)
+      comparison: [
+        { icon: "🍎対🍌", en: "Between apples and bananas, which one do you like more?", kanji: "りんごとバナナとどちらのほうが好きですか。", kana: "りんごとばななとどちらのほうがすきですか。", romaji: "ringo to banana to dochira no hō ga suki desu ka." },
+        { icon: "🍎👍", en: "I like apples more than bananas.", kanji: "バナナよりりんごのほうが好きです。", kana: "ばななよりりんごのほうがすきですか。", kana: "ばななよりりんごのほうがすきです。", romaji: "banana yori ringo no hō ga suki desu." },
+        { icon: "🚌対🚄", en: "Between buses and bullet trains, which one is faster?", kanji: "バスと新幹線とどちらのほうが速いですか。", kana: "ばすとしんかんせんとどちらのほうがはやいですか。", romaji: "basu to shinkansen to dochira no hō ga hayai desu ka." },
+        { icon: "🚄💨", en: "The bullet train is faster than the bus.", kanji: "バスより新幹線のほうが速いです。", kana: "ばすよりしんかんせんのほうがはやいです。", romaji: "basu yori shinkansen no hō ga hayai desu." },
+        { icon: "☕対🍵", en: "Between coffee and tea, which one do you drink more often?", kanji: "コーヒーとお茶とどちらのほうがよく飲みますか。", kana: "こーひーとおちゃとどちらのほうがよくのみますか。", romaji: "kōhī to ocha to dochira no hō ga yoku nomimasu ka." },
+        { icon: "☕✨", en: "I drink coffee more than tea.", kanji: "お茶よりコーヒーのほうがよく飲みます。", kana: "おちゃよりこーひーのほうがよくのみます。", romaji: "ocha yori kōhī no hō ga yoku nomimasu." },
+        { icon: "🇨🇦対🇯🇵", en: "Which is bigger, Canada or Japan?", kanji: "カナダと日本とどちらのほうが大きいですか。", kana: "かなだとにほんとどちらのほうがおおきいですか。", romaji: "kanada to nihon to dochira no hō ga ōkii desu ka." },
+        { icon: "🇨🇦🍁", en: "Canada is bigger than Japan.", kanji: "日本よりカナダのほうが大きいです。", kana: "にほんよりかなだのほうがおおきいです。", romaji: "nihon yori kanada no hō ga ōkii desu ka." },
+        { icon: "🥶対🥵", en: "Which season do you like better, winter or summer?", kanji: "冬と夏とどちらのほうが好きですか。", kana: "ふゆとなつとどちらのほうがすきですか。", romaji: "fuyu to natsu to dochira no hō ga suki desu ka." },
+        { icon: "🥶❄️", en: "I like winter better than summer.", kanji: "夏より冬のほうが好きです。", kana: "なつよりふゆのほうがすきです。", romaji: "natsu yori fuyu no hō ga suki desu." },
+        { icon: "🐶対🐱", en: "Between dogs and cats, which one is cuter?", kanji: "犬と猫とどちらのほうが可愛いですか。", kana: "いぬとねことどちらのほうがかわいいですか。", romaji: "inu to neko to dochira no hō ga kawaii desu ka." },
+        { icon: "🐶❤️", en: "Dogs are cuter than cats.", kanji: "猫より犬のほうが可愛いです。", kana: "ねこよりいぬのほうがかわいいです。", romaji: "neko yori inu no hō ga kawaii desu." },
+        { icon: "👨‍🏫対👨‍🎓", en: "Who is taller, Robert or Takeshi?", kanji: "ロバートさんとたけしさんとどちらのほうが背が高いですか。", kana: "ろばーとさんとたけしさんとどちらのほうがせがたかいですか。", romaji: "robāto san to takeshi san to dochira no hō ga se ga takai desu ka." },
+        { icon: "🇬🇧🗼", en: "Robert is taller than Takeshi.", kanji: "たけしさんよりロバートさんのほうが背が高いです。", kana: "たけしさんよりろばーとさんのほうがせがたかいです。", romaji: "takeshi san yori robāto san no hō ga se ga takai desu ka." },
+        { icon: "🤔✏️", en: "Which exam was more difficult, yesterday's or today's?", kanji: "昨日のテストと今日のテストとどちらのほうが難しかったですか。", kana: "きのうのてすときょうのてすとどちらのほうがむずかしかったですか。", romaji: "kinō no tesuto to kyō no tesuto to dochira no hō ga muzukashikatta desu ka." },
+        { icon: "📝💥", en: "Yesterday's test was more difficult than today's.", kanji: "今日のテストより昨日のテストのほうが難しかったです。", kana: "きょうのてすとよりきのうのてすとのほうがむずかしかったです。", romaji: "kyō no tesuto yori kinō no tesuto no hō ga muzukashikatta desu." },
+        { icon: "🤷‍♂️💬", en: "Both are delicious.", kanji: "どちらも美味しいです。", kana: "どちらもおいしいです。", romaji: "dochira mo oishii desu." }
+      ],
+      // 2. 一番〜 (最上級: 17問)
+      superlative: [
+        { icon: "🗺️👑", en: "Among all countries, where do you want to go the most?", kanji: "世界の中でどこに一番行きたいですか。", kana: "せかいのなかでどこにいっちばんいきたいですか。", kana: "せかいのなかでどこにいちばんいきたいですか。", romaji: "sekai no naka de doko ni ichiban ikitai desu ka." },
+        { icon: "🇯🇵🍁", en: "I want to go to Japan the most.", kanji: "日本に一番行きたいです。", kana: "にほんへいちばんいきたいです。", kana: "にほんにいちばんいきたいです。", romaji: "nihon ni ichiban ikitai desu." },
+        { icon: "🍎👑", en: "What fruit do you like the best?", kanji: "果物の中で何が一番好きですか。", kana: "くだもののなかでなにがいちばんすきですか。", romaji: "kudamono no naka de nani ga ichiban suki desu ka." },
+        { icon: "🍓🍓", en: "I like strawberries the best.", kanji: "イチゴが一番好きです。", kana: "いちごがいちばんすきです。", romaji: "ichigo ga ichiban suki desu." },
+        { icon: "📅👑", en: "Which month of the year is the coldest?", kanji: "一年の中で何月が一番寒いですか。", kana: "いちねんのなかでなんがつがいちばんさむいですか。", romaji: "ichinen no naka de nangatsu ga ichiban samui desu ka." },
+        { icon: "🥶❄️", en: "January is the coldest.", kanji: "一月が一番寒いです。", kana: "いちがつがいちばんさむいです。", romaji: "ichigatsu ga ichiban samui desu." },
+        { icon: "🏫👑", en: "Who is the smartest in the class?", kanji: "クラスの中でだれが一番頭がいいですか。", kana: "くらすのなかでだれがいちばんあたまがいいですか。", romaji: "kurasu no naka de dare ga ichiban atama ga ii desu ka." },
+        { icon: "👨‍🎓💡", en: "Sora is the smartest.", kanji: "ソラさんが一番頭がいいです。", kana: "そらさんがいちばんあたまがいいです。", romaji: "sora san ga ichiban atama ga ii desu." },
+        { icon: "🍿👑", en: "What movie was the most interesting?", kanji: "映画の中でどれが一番面白かったですか。", kana: "えいがのなかでどれがいちばんおもしろかったですか。", romaji: "eiga no naka de dore ga ichiban omoshirokatta desu ka." },
+        { icon: "🎬✨", en: "This movie was the most interesting.", kanji: "この映画が一番面白かったです。", kana: "このえいがいちばんおもしろかったです。", kana: "このえいのがいちばんおもしろかったです。", kana: "このえいのがいちばんおもしろかったです。", kana: "このえいががいちばんおもしろかったです。", romaji: "kono eiga ga ichiban omoshirokatta desu." },
+        { icon: "🎵👑", en: "Among your family, who sings the best?", kanji: "家族の中でだれが一番歌うのが上手ですか。", kana: "かぞくのなかでだれがいちばんうたうのがじょうずですか。", romaji: "kazoku no naka de dare ga ichiban utau no ga jōzu desu ka." },
+        { icon: "👩‍🎤🎤", en: "My older sister sings the best.", kanji: "姉が一番歌うのが上手です。", kana: "あねがいちばんうたうのがじょうずです。", romaji: "ane ga ichiban utau no ga jōzu desu." },
+        { icon: "🍲👑", en: "What Japanese food do you like the best?", kanji: "日本料理の中で何が一番好きですか。", kana: "にほんりょうりのなかでなにがいちばんすきですか。", romaji: "nihon ryōri no naka de nani ga ichiban suki desu ka." },
+        { icon: "🍣🍣", en: "I like sushi the best.", kanji: "寿司が一番好きです。", kana: "すしがいちばんすきです。", romaji: "sushi ga ichiban suki desu." },
+        { icon: "🎒👑", en: "Among your belongings, what is the most expensive?", kanji: "荷物の中でどれが一番高いですか。", kana: "にもつのなかでどれがいちばんたかいですか。", romaji: "nimotsu no naka de dore ga ichiban takai desu ka." },
+        { icon: "💻💰", en: "The computer is the most expensive.", kanji: "パソコンが一番高いです。", kana: "ぱそこんがいちばんたかいです。", romaji: "pasokon ga ichiban takai desu." },
+        { icon: "⚽🏫", en: "I like soccer the best among sports.", kanji: "スポーツの中でサッカーが一番好きです。", kana: "すぽーつのなかでさっかーがいちばんすきです。", romaji: "supōtsu no naka de sakkā ga ichiban suki desu." }
+      ],
+      // 3. 〜つもりです (予定: 17問)
+      intention: [
+        { icon: "📅✈️", en: "I intend to go to Kyoto next week.", kanji: "来週京都に行くつもりです。", kana: "らいしゅうきょうとにいくつもりです。", romaji: "raishū kyōto ni iku tsumori desu." },
+        { icon: "📝❌", en: "I do not intend to study tonight.", kanji: "今晩は勉強しないつもりです。", kana: "こんばんはべんきょうしないつもりです。", romaji: "konban wa benkyō shinai tsumori desu." },
+        { icon: "🛒💻", en: "Mary intends to buy a new computer.", kanji: "メアリーさんは新しいパソコンを買うつもりです。", kana: "めありーさんはあたらしいぱそこんをかうつもりです。", romaji: "mearī san wa atarashii pasokon o kau tsumori desu." },
+        { icon: "🏠🍔", en: "Takeshi intends to eat dinner at home.", kanji: "たけしさんは家で晩ご飯を食べるつもりです。", kana: "たけしさんはうちでばんごはんをたべるつもりです。", romaji: "takeshi san wa uchi ni bangohan o taberu tsumori desu." },
+        { icon: "🍿🎬", en: "Robert intends to watch a movie tomorrow.", kanji: "ロバートさんは明日映画を見るつもりです。", kana: "ろばーとさんはあしたえいがをみるつもりです。", romaji: "robāto san wa ashita eiga o miru tsumori desu." },
+        { icon: "🚗💨", en: "I intend to drive a car on the weekend.", kanji: "週末は車を運転するつもりです。", kana: "しゅうまつはくるまをうんてんするつもりです。", romaji: "shūmatsu wa kuruma o unten suru tsumori desu." },
+        { icon: "🛌❌", en: "Sora does not intend to sleep early tonight.", kanji: "ソラさんは今晩早く寝ないつもりです。", kana: "そらさんはこんばんはやくねないつもりです。", romaji: "sora san wa konban hayaku nenai tsumori desu." },
+        { icon: "🤝🍺", en: "We intend to meet friends and drink beer.", kanji: "友達に会ってお酒を飲むつもりです。", kana: "ともだちにあっておさけをのむつもりです。", romaji: "tomodachi ni atte osake o nomu tsumori desu." },
+        { icon: "❓🛫", en: "Where do you intend to travel next year?", kanji: "来年はどこへ旅行するつもりですか。", kana: "らいねんはどこへりょこうするつもりですか。", romaji: "rainen wa doko he ryokō suru tsumori desu ka." },
+        { icon: "🌊🏖️", en: "I intend to travel to Okinawa.", kanji: "沖縄へ旅行するつもりです。", kana: "おきなわへりょこうするつもりです。", romaji: "okinawa he ryokō suru tsumori desu." },
+        { icon: "👨‍🏫📞", en: "I intend to make a phone call to the teacher.", kanji: "先生に電話をかけるつもりです。", kana: "せんせいにでんわをかけるつもりです。", romaji: "sensei ni denwa o kakeru tsumori desu." },
+        { icon: "🛒🎁", en: "I intend to buy souvenirs at the airport.", kanji: "空港でお土産を買うつもりです。", kana: "くうこうでおみやげをかうつもりです。", romaji: "kūkō de omiyage o kau tsumori desu." },
+        { icon: "🏫❌", en: "Robert does not intend to skip class tomorrow.", kanji: "ロバートさんは明日クラスをサボらないつもりです。", kana: "ろばーとさんはあしたくらすをさぼらないつもりです。", romaji: "robāto san wa ashita kurasu o saboranai tsumori desu." },
+        { icon: "🏡🧼", en: "I intend to clean the room on Saturday.", kanji: "土曜日に部屋を掃除するつもりです。", kana: "どようびにへやをそうじするつもりです。", romaji: "doyōbi ni heya o sōji suru tsumori desu." },
+        { icon: "🎓✈️", en: "Sora intends to study abroad in America next year.", kanji: "ソラさんは来年アメリカに留学するつもりです。", kana: "そらさんはらいねんあめりかにりゅうがくするつもりです。", romaji: "sora san wa rainen amerika ni ryūgaku suru tsumori desu." },
+        { icon: "💵🤝", en: "I intend to lend money to my friend.", kanji: "友達にお金を貸すつもりです。", kana: "ともだちにおかねをかすつもりです。", romaji: "tomodachi ni okane o kasu tsumori desu." },
+        { icon: "❓🍔", en: "What do you intend to cook?", kanji: "何をつくるつもりですか。", kanji: "何を料理するつもりですか。", kana: "なにをりょうりするつもりですか。", romaji: "nani o ryōri suru tsumori desu ka." }
+      ],
+      // 4. 〜くなります / 〜になります (変化) ＆ 副詞 (17問)
+      becoming: [
+        { icon: "📈🥵", en: "It has become hot.", kanji: "暑くなりました。", kana: "あつくなりました。", romaji: "atsuku narimashita." },
+        { icon: "📉🥶", en: "It has become cold.", kanji: "寒くなりました。", kana: "さむくなりました。", romaji: "samuku narimashita." },
+        { icon: "🎓👨‍🏫", en: "Takeshi became a teacher.", kanji: "たけしさんは先生になりました。", kana: "たけしさんはせんせいになりました。", romaji: "takeshi san wa sensei ni narimashita." },
+        { icon: "📈💡", en: "Sora has become good at Japanese.", kanji: "ソラさんは日本語が上手になりました。", kana: "そらさんはにほんごがじょうずになりました。", romaji: "sora san wa nihongo ga jōzu ni narimashita." },
+        { icon: "📉💥", en: "The test became difficult.", kanji: "テストは難しくなりました。", kana: "てすとはむずかしくなりました。", romaji: "tesuto wa muzukashiku narimashita." },
+        { icon: "🛋️🧼", en: "The room became clean.", kanji: "部屋が綺麗になりました。", kana: "へやがきれいになりました。", romaji: "heya ga kirei ni narimashita." },
+        { icon: "💰📈", en: "The prices have become expensive.", kanji: "物価が高くなりました。", kana: "ぶっかがたかくなりました。", romaji: "bukka ga takaku narimashita." },
+        { icon: "🦸‍♂️💪", en: "My grandfather became energetic/healthy.", kanji: "祖父は元気になりました。", kana: "そふはげんきになりました。", romaji: "sofu wa genki ni narimashita." },
+        { icon: "🤫🌾", en: "The library became quiet.", kanji: "図書館は静かになりました。", kana: "としょかんはしずかになりました。", romaji: "toshokan wa shizuka ni narimashita." },
+        { icon: "🥞😋", en: "This food became delicious.", kanji: "この料理は美味しくなりました。", kana: "このりょうりはおいしくなりました。", romaji: "kono ryōri wa oishiku narimashita." },
+        { icon: "🏃‍♂️💨", en: "Please speak loudly/clearly.", kanji: "大きく話してください。", kana: "おおきくはなしてください。", romaji: "ōkiku hanashite kudasai." },
+        { icon: "🤫💬", en: "Please speak quietly.", kanji: "静かに話してください。", kana: "しずかにはなしてください。", romaji: "shizuka ni hanashite kudasai." },
+        { icon: "🍳🍱", en: "Mary became good at cooking.", kanji: "メアリーさんは料理が上手になりました。", kana: "めありーさんはりょうりがじょうずになりました。", romaji: "mearī san wa ryōri ga jōzu ni narimashita." },
+        { icon: "🏙️🌆", en: "The town became lively.", kanji: "町は賑やかになりました。", kana: "まちはにぎやかになりました。", romaji: "machi wa nigiyaka ni narimashita." },
+        { icon: "✍️🗒️", en: "Please write it neatly/beautifully.", kanji: "綺麗に書いてください。", kana: "きれいにかいてください。", romaji: "kirei ni kaite kudasai." },
+        { icon: "🛒🏷️", en: "This clothes became cheap.", kanji: "この服は安くなりました。", kana: "このふくはやすくなりました。", romaji: "kono fuku wa yasuku narimashita." },
+        { icon: "👨‍🎓💍", en: "Robert became free (has free time) today.", kanji: "ロバートさんは今日、暇になりました。", kana: "ろばーとさんはきょう、ひまになりました。", romaji: "robāto san wa kyō, hima ni narimashita." }
+      ]
+    };
+
+    let currentCategory = 'comparison';
+    let currentIndex = 0;
+    let isFlipped = false;
+
+    function switchCategory(category) {
+      currentCategory = category;
+      currentIndex = 0;
+      isFlipped = false;
+      
+      const categories = ['comparison', 'superlative', 'intention', 'becoming'];
+      categories.forEach(cat => {
+        const tab = document.getElementById(`tab-${cat}`);
+        if (cat === category) {
+          tab.classList.remove('bg-white', 'text-teal-700', 'hover:bg-teal-50');
+          tab.classList.add('bg-teal-600', 'text-white');
+        } else {
+          tab.classList.remove('bg-teal-600', 'text-white');
+          tab.classList.add('bg-white', 'text-teal-700', 'hover:bg-teal-50');
+        }
+      });
+
+      document.getElementById('result-screen').classList.add('hidden');
+      document.getElementById('flashcard').classList.remove('hidden');
+      document.getElementById('controls').classList.remove('opacity-30', 'pointer-events-none');
+      
+      updateCard();
+    }
+
+    function updateCard() {
+      const card = document.getElementById('flashcard');
+      card.classList.remove('rotate-y-180');
+      isFlipped = false;
+
+      const data = dataset[currentCategory][currentIndex];
+      
+      document.getElementById('card-icon').innerText = data.icon;
+      document.getElementById('card-en').innerText = data.en;
+      document.getElementById('card-en-back').innerText = data.en;
+      document.getElementById('card-kanji').innerText = data.kanji;
+      document.getElementById('card-kana').innerText = data.kana;
+      document.getElementById('card-romaji').innerText = data.romaji;
+
+      document.getElementById('current-index').innerText = currentIndex + 1;
+    }
+
+    function flipCard() {
+      const card = document.getElementById('flashcard');
+      if (!isFlipped) {
+        card.classList.add('rotate-y-180');
+        isFlipped = true;
+      } else {
+        card.classList.remove('rotate-y-180');
+        isFlipped = false;
+      }
+    }
+
+    function nextCard() {
+      if (currentIndex < 16) {
+        currentIndex++;
+        updateCard();
+      } else {
+        document.getElementById('flashcard').classList.add('hidden');
+        document.getElementById('controls').classList.add('opacity-30', 'pointer-events-none');
+        document.getElementById('result-screen').classList.remove('hidden');
+      }
+    }
+
+    function prevCard() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateCard();
+      }
+    }
+
+    function restartCategory() {
+      document.getElementById('result-screen').classList.add('hidden');
+      document.getElementById('flashcard').classList.remove('hidden');
+      document.getElementById('controls').classList.remove('opacity-30', 'pointer-events-none');
+      currentIndex = 0;
+      updateCard();
+    }
+
+    function speakText(event) {
+      event.stopPropagation();
+      const data = dataset[currentCategory][currentIndex];
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(data.kana);
+      utterance.lang = 'ja-JP';
+      utterance.rate = 0.85;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    window.onload = () => { updateCard(); };
+  </script>
+</body>
+</html>
