@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Genki Lesson 11 Sentences - Flashcards</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    .perspective-1000 { perspective: 1000px; }
+    .transform-style-3d { transform-style: preserve-3d; }
+    .backface-hidden { backface-visibility: hidden; }
+    .rotate-y-180 { transform: rotateY(180deg); }
+  </style>
+</head>
+<body class="bg-slate-50 font-sans min-h-screen flex flex-col justify-between">
+
+  <header class="bg-teal-600 text-white py-6 shadow-md text-center">
+    <h1 class="text-3xl md:text-4xl font-extrabold tracking-wide">Genki Lesson 11 Sentences</h1>
+    <p class="text-sm md:text-base mt-2 opacity-90">Practice Wanting to Do (~tai), Advice (~ta hō ga ii), Because (~node), and Prediction (~deshō)</p>
+  </header>
+
+  <main class="max-w-4xl w-full mx-auto p-4 flex-grow flex flex-col items-center justify-center">
+    
+    <div id="tabs" class="w-full flex flex-wrap justify-center gap-2 mb-6">
+      <button onclick="switchCategory('want_to')" id="tab-want_to" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-teal-600 text-white">
+        Want to... (~tai)
+      </button>
+      <button onclick="switchCategory('advice')" id="tab-advice" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">
+        Had better... (~hō ga ii)
+      </button>
+      <button onclick="switchCategory('because_node')" id="tab-because_node" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">
+        Because... (~node)
+      </button>
+      <button onclick="switchCategory('prediction')" id="tab-prediction" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-teal-700 hover:bg-teal-50">
+        Probably... (~deshō)
+      </button>
+    </div>
+
+    <div class="text-xl md:text-2xl font-bold text-slate-600 mb-4">
+      Question: <span id="current-index" class="text-teal-600">1</span> / 17
+    </div>
+
+    <div class="w-full max-w-2xl h-[480px] relative perspective-1000">
+      
+      <div id="flashcard" onclick="flipCard()" class="w-full h-full relative transform-style-3d transition-transform duration-500 cursor-pointer">
+        
+        <div class="absolute w-full h-full bg-white rounded-3xl shadow-xl border-2 border-teal-100 p-8 flex flex-col justify-center items-center text-center backface-hidden">
+          <div id="card-icon" class="text-7xl md:text-8xl mb-6 select-none">🇯🇵✈️</div>
+          <div id="card-en" class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800 leading-snug">
+            I want to go to Japan next year.
+          </div>
+          <div class="text-xs text-teal-500 mt-8 font-semibold tracking-widest uppercase">Tap to see answer</div>
+        </div>
+
+        <div class="absolute w-full h-full bg-teal-50 rounded-3xl shadow-xl border-2 border-teal-200 p-6 flex flex-col justify-between items-center text-center backface-hidden rotate-y-180">
+          
+          <div id="card-en-back" class="text-xl md:text-2xl font-medium text-teal-800 pt-2">
+            I want to go to Japan next year.
+          </div>
+
+          <div class="flex flex-col gap-3 my-auto w-full px-2">
+            <div id="card-kanji" class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-wide">
+              来年日本に行きたいです。
+            </div>
+            <div id="card-kana" class="text-2xl md:text-3xl text-teal-600 font-bold tracking-normal">
+              らいねんにほんへいきたいです。
+            </div>
+            <div id="card-romaji" class="text-xl md:text-2xl text-amber-600 font-semibold tracking-wide italic">
+              rainen nihon ni ikitai desu.
+            </div>
+          </div>
+
+          <div class="pb-2">
+            <button onclick="speakText(event)" class="bg-teal-600 hover:bg-teal-700 active:scale-95 text-white p-5 rounded-full shadow-lg transition-all duration-200 flex items-center justify-center group" title="Listen">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 group-hover:animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="result-screen" class="absolute inset-0 bg-white rounded-3xl shadow-2xl border-4 border-teal-500 p-8 flex flex-col justify-center items-center text-center hidden z-10">
+        <div class="text-7xl mb-4">🎉</div>
+        <h2 class="text-4xl md:text-5xl font-black text-teal-600 mb-2">Ottimo!</h2>
+        <p class="text-2xl text-slate-600 mb-8 font-medium">You completed Lesson 11 sentences!</p>
+        <button onclick="restartCategory()" class="bg-teal-600 hover:bg-teal-700 text-white font-bold text-2xl px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all active:scale-95">
+          Restart
+        </button>
+      </div>
+
+    </div>
+
+    <div id="controls" class="flex items-center justify-center gap-6 mt-8 w-full max-w-md">
+      <button onclick="prevCard()" class="flex-1 bg-slate-700 hover:bg-slate-800 text-white font-bold text-xl py-4 rounded-xl shadow-md transition-all active:scale-95 disabled:opacity-30 disabled:pointer-events-none">
+        ← Previous
+      </button>
+      <button onclick="nextCard()" class="flex-1 bg-teal-600 hover:bg-teal-700 text-white font-bold text-xl py-4 rounded-xl shadow-md transition-all active:scale-95">
+        Next →
+      </button>
+    </div>
+
+  </main>
+
+  <footer class="bg-slate-800 text-slate-400 py-4 text-center text-sm border-t border-slate-700">
+    &copy; FujiGreentea - Japanese Learning Materials (Genki I)
+  </footer>
+
+  <script>
+    const dataset = {
+      // 1. 〜たい (希望: 17問)
+      want_to: [
+        { icon: "🇯🇵✈️", en: "I want to go to Japan next year.", kanji: "来年日本に行きたいです。", kana: "らいねんにほんへいきたいです。", romaji: "rainen nihon ni ikitai desu." },
+        { icon: "🍣😋", en: "I want to eat delicious sushi.", kanji: "美味しい寿司を食べたいです。", kana: "おいしいすしをたべたいです。", romaji: "oishii sushi o tabetai desu." },
+        { icon: "💻🛒", en: "I don't want to buy a cheap computer.", kanji: "安いパソコンは買いたくないです。", kana: "やすいぱそこんはかいたくないです。", romaji: "yasui pasokon wa kaitakunai desu." },
+        { icon: "❓☕", en: "What do you want to drink?", kanji: "何が飲みたいですか。", kana: "なにがのみたいですか。", romaji: "nani ga nomitai desu ka." },
+        { icon: "🛏️💤", en: "I am tired, so I want to sleep early tonight.", kanji: "疲れたので、今晩は早く寝たいです。", kana: "つかれたので、こんばんははやくねたいです。", romaji: "tsukarete node, konban wa hayaku netai desu." },
+        { icon: "🎬🍿", en: "I didn't want to see that movie.", kanji: "あの映画は見たくなかったです。", kana: "あのえいがはみたくなかったです。", romaji: "ano eiga wa mitakunatta desu." },
+        { icon: "🎸🎶", en: "Sora wants to practice the guitar.", kanji: "ソラさんはギターを練習したいです。", kana: "そらさんはぎたーをれんしゅうしたいです。", romaji: "sora san wa gitā o renshū shitai desu." },
+        { icon: "👩‍💼💼", en: "I want to work at a big company in the future.", kanji: "将来、大きい会社で働きたいです。", kana: "しょうらい、おおきいかいしゃではたらきたいです。", romaji: "shōrai, ōkii kaisha de hatarakitai desu." },
+        { icon: "🚗🏁", en: "Do you want to drive a car?", kanji: "車を運転したいですか。", kana: "くるまをうんてんしたいですか。", romaji: "kuruma o unten shitai desu ka." },
+        { icon: "💵🙅‍♂️", en: "I didn't want to pay money.", kanji: "お金を払いたくなかったです。", kana: "おかねをはらいたくなかったです。", romaji: "okane o haraitakunatta desu." },
+        { icon: "🏞️ Walk", en: "I want to walk in the park because it's warm.", kanji: "暖かいので、公園を歩きたいです。", kana: "あたたかいので、こうえんをあるきたいです。", romaji: "atatakai node, kōen o aruitai desu." },
+        { icon: "🏖️🏊‍♂️", en: "Takeshi wants to swim in the sea.", kanji: "たけしさんは海で泳ぎたいです。", kana: "たけしさんはうみでおよぎたいです。", romaji: "takeshi san wa umi de oyogitai desu." },
+        { icon: "📱❌", en: "I don't want to make a phone call now.", kanji: "今は電話をかけたくないです。", kana: "いまはでんわをかけたくないです。", romaji: "ima wa denwa o kaketakunai desu." },
+        { icon: "🏫🎓", en: "Robert wanted to study abroad in Japan.", kanji: "ロバートさんは日本に留学したかった海外です。", kanji: "ロバートさんは日本に留学したかったです。", kana: "ろばーとさんはにほんへりゅうがくしたかったです。", romaji: "robāto san wa nihon ni ryūgaku shitakatta desu." },
+        { icon: "🧼🧹", en: "I don't want to clean my room today.", kanji: "今日は部屋を掃除したくないです。", kana: "きょうはへやをそうじしたくないです。", romaji: "kyō wa heya o sōji shitakunai desu." },
+        { icon: "🤝💓", en: "Who do you want to meet?", kanji: "だれに会いたいですか。", kana: "だれにあいたいですか。", romaji: "dare ni aitai desu ka." },
+        { icon: "🏡のんびり", en: "I didn't want to go out on Sunday.", kanji: "日曜日は出かけたくなかったです。", kana: "にちようびはでかけたくなかったです。", romaji: "doyōbi wa dekaketakunatta desu." }
+      ],
+      // 2. 〜たほうがいい / 〜ないほうがいい (アドバイス: 17問)
+      advice: [
+        { icon: "🩺💊", en: "You had better go to the hospital.", kanji: "病院に行ったほうがいいですよ。", kana: "びょういんにいったほうがいいですよ。", romaji: "byōin ni itta hō ga ii desu yo." },
+        { icon: "🛌💤", en: "You had better sleep early tonight.", kanji: "今晩は早く寝たほうがいいですよ。", kana: "こんばんははやくねたほうがいいですよ。", romaji: "konban wa hayaku neta hō ga ii desu yo." },
+        { icon: "🧁❌", en: "You had better not eat too many sweets.", kanji: "甘い物をたくさん食べないほうがいいですよ。", kana: "あまいものをたくさんたべないほうがいいですよ。", romaji: "amai mono o takasan tabenai hō ga ii desu yo." },
+        { icon: "📝💯", en: "You had better study for the test.", kanji: "テストの勉強をしたほうがいいですよ。", kana: "てすとのべんきょうをしたほうがいいですよ。", romaji: "tesuto no benkyō o shita hō ga ii desu yo." },
+        { icon: "🚬🙅‍♂️", en: "You had better not smoke tobacco.", kanji: "タバコを吸わないほうがいいですよ。", kana: "たばこをすわないほうがいいですよ。", romaji: "tabako o suwanai hō ga ii desu yo." },
+        { icon: "🧥❄️", en: "You had better wear a coat because it's cold.", kanji: "寒いから、コートを着たほうがいいですよ。", kana: "さむいから、こーとをきたほうがいいですよ。", romaji: "samui kara, kōto o kita hō ga ii desu yo." },
+        { icon: "💸🛍️", en: "You had better not buy that expensive watch.", kanji: "あの高い時計は買わないほうがいいですよ。", kana: "あのたかいとけいはかわないほうがいいですよ。", romaji: "ano takai tokei wa kawanai hō ga ii desu yo." },
+        { icon: "👨‍🏫💬", en: "You had better talk to the teacher.", kanji: "先生に話したほうがいいですよ。", kana: "せんせいにはなしたほうがいいですよ。", romaji: "sensei ni hanashita hō ga ii desu yo." },
+        { icon: "📱❌", en: "You had better not use your smartphone while driving.", kanji: "運転する時にスマホを見ないほうがいいですよ。", kana: "うんてんするときにすまほをみないほうがいいですよ。", romaji: "unten suru toki ni sumaho o minai hō ga ii desu yo." },
+        { icon: "🧼🛀", en: "You had better take a warm bath.", kanji: "暖かいお風呂に入ったほうがいいですよ。", kana: "あたたかいおふろにはいったほうがいいですよ。", romaji: "atatakai ofuro ni haitta hō ga ii desu yo." },
+        { icon: "🌧️🌂", en: "You had better bring an umbrella tomorrow.", kanji: "明日傘を持っていったほうがいいですよ。", kana: "あしたかさをもっていったほうがいいですよ。", romaji: "ashita kasa o motte itta hō ga ii desu yo." },
+        { icon: "🗣️❌", en: "You had better not tell that story to everyone.", kanji: "皆さんにあの話をしないほうがいいですよ。", kana: "みなさんにあのはなしをしないほうがいいですよ。", romaji: "minasan ni ano hanashi o shianai hō ga ii desu yo." },
+        { icon: "🏡🧼", en: "You had better clean your room on the weekend.", kanji: "週末に部屋を掃除したほうがいいですよ。", kana: "しゅうまつにへやをそうじしたほうがいいですよ。", romaji: "shūmatsu ni heya o sōji hō ga ii desu yo." },
+        { icon: "☕🌱", en: "You had better not drink too much coffee.", kanji: "コーヒーを飲みすぎないほうがいいですよ。", kana: "こーひーをのみすぎないほうがいいですよ。", romaji: "kōhī o nomisuginai hō ga ii desu yo." },
+        { icon: "📄🎒", en: "You had better not forget your passport.", kanji: "パスポートを忘れないほうがいいですよ。", kana: "ぱすぽーとをわすれないほうがいいですよ。", romaji: "pasupōto o wasurenai hō ga ii desu yo." },
+        { icon: "🚶‍♂️💨", en: "You had better hurry because you're late.", kanji: "遅いから、急いだほうがいいですよ。", kana: "おそいから、いそいだほうがいいですよ。", romaji: "osoi kara, isoida hō ga ii desu yo." },
+        { icon: "🤝💬", en: "You had better practice Japanese every day.", kanji: "毎日日本語を練習したほうがいいですよ。", kana: "まいにちにほんごをれんしゅうしたほうがいいですよ。", romaji: "mainichi nihongo o renshū shita hō ga ii desu yo." }
+      ],
+      // 3. 〜ので (理由の接続: 17問)
+      because_node: [
+        { icon: "💵❌", en: "Because I have no money, I will not go out.", kanji: "お金がないので、出かけません。", kana: "おかねがないので、でかけません。", romaji: "okane ga nai node, dekamasen." },
+        { icon: "🌧️🏠", en: "Because it is raining, I will stay at home.", kanji: "雨が降っているので、家にいます。", kana: "あめがふっているので、うちにいます。", romaji: "ame ga futte iru node, uchi ni imasu." },
+        { icon: "🍿🎬", en: "Because I like movies, I often go to the theater.", kanji: "映画が好きなので、よく映画館に行きます。", kana: "えいががすきなので、よくえいがかんにいきます。", romaji: "eiga ga suki na node, yoku eigakan ni ikimasu." },
+        { icon: "🏫やすみ", en: "Because tomorrow is a holiday, I am happy.", kanji: "明日は休みなので、嬉しいです。", kana: "あしたはやすみなので、うれしいです。", romaji: "ashita wa yasumi na node, ureshii desu." },
+        { icon: "🥶🧣", en: "Because it was cold yesterday, I wore a jacket.", kanji: "昨日は寒かったので、上着を着ました。", kana: "きのうはさむかったので、うわぎをきました。", romaji: "kinō wa samukatta node, uwagi o kimashita." },
+        { icon: "🧠💥", en: "Because the test was difficult, I couldn't do it well.", kanji: "テストが難しかったので、よくできませんでした。", kana: "てすとがむずかしかったので、よくできませんでした。", romaji: "tesuto ga muzukashikatta node, yoku dekimasen datta." },
+        { icon: "🤫🌾", en: "Because the room was quiet, I slept well.", kanji: "部屋が静かだったので、よく寝ました。", kana: "へやがしずかだったので、よくねました。", romaji: "heya ga shizuka datta node, yoku nemashita." },
+        { icon: "🚌💨", en: "Because the bus didn't come, I took a taxi.", kanji: "バスが来なかったので、タクシーに乗りました。", kana: "ばすがこなかったので、たくしーにのりました。", romaji: "basu ga konatta node, takushī ni norimashita." },
+        { icon: "🥞😋", en: "Because it is delicious, please eat a lot.", kanji: "美味しいので、たくさん食べてください。", kana: "おいしいので、たくさんたべてください。", romaji: "oishii node, takasan tabete kudasai." },
+        { icon: "🩺🤒", en: "Because my head hurts, I will rest today.", kanji: "頭が痛いので、今日は休みます。", kana: "あたまがいたいので、きょうはやすみます。", romaji: "atama ga itai node, kyō wa yasumimasu." },
+        { icon: "👩‍💼😴", en: "Because Professor Yamashita is kind, everyone likes him.", kanji: "山下先生は親切なので、皆さんが好きです。", kana: "やましたせんせいはしんせつなので、みなさんがすきです。", romaji: "yamashita sensei wa shinsetsu na node, minasan ga suki desu." },
+        { icon: "🌍✈️", en: "Because I have never traveled abroad, I want to go.", kanji: "外国を旅行したことがないので、行きたいです。", kanji: "外国へ旅行したことがないので、行きたいです。", kana: "がいこくへりょこうしたことがないので、いきたいです。", romaji: "gaikoku ni ryokō shita koto ga nai node, ikitai desu." },
+        { icon: "🏙️🌆", en: "Because the town is lively, it is fun.", kanji: "町が賑やかなので、楽しいです。", kana: "まちがにぎやかなので、たのしいです。", romaji: "machi ga nigiyaka na node, tanoshii desu." },
+        { icon: "💻🛒", en: "Because this camera was cheap, I bought it.", kanji: "このカメラは安かったので、買いました。", kana: "このかめらはやすかったので、かいました。", romaji: "kono kamera wa yasukatta node, kaimashita." },
+        { icon: "🛌💤", en: "Because I overslept this morning, I hurried.", kanji: "今朝は朝寝坊したので、急ぎました。", kana: "けさはあさねぼうしたので、いそぎました。", romaji: "kesa wa asanebō shita node, isogimashita." },
+        { icon: "🍷🙅‍♂️", en: "Because I have to drive a car, I will not drink alcohol.", kanji: "車を運転するので、お酒は飲みません。", kana: "くるまをうんてんするので、おさけはのみません。", romaji: "kuruma o unten suru node, osake wa nomimasen." },
+        { icon: "🧠💡", en: "Because Japanese is interesting, I study it every day.", kanji: "日本語は面白いので、毎日勉強します。", kana: "にほんごはおもしろいの、まいにちべんきょうします。", kana: "にほんごはおもしろいので、まいにちべんきょうします。", romaji: "nihongo wa omoshiroi node, mainichi benkyō shimasu." }
+      ],
+      // 4. 〜でしょう (推量: 17問)
+      prediction: [
+        { icon: "☀️☁️", en: "It will probably be sunny tomorrow.", kanji: "明日は晴れでしょう。", kana: "あしたははれでしょう。", romaji: "ashita wa hare deshō." },
+        { icon: "🌧️🌂", en: "It will probably rain in the afternoon.", kanji: "午後は雨が降るでしょう。", kana: "ごごはあめがふるでしょう。", romaji: "gogo wa ame ga furu deshō." },
+        { icon: "📝💥", en: "Today's test will probably be difficult.", kanji: "今日のテストは難しいでしょう。", kana: "きょうのてすとはむずかしいでしょう。", romaji: "kyō no tesuto wa muzukashii deshō." },
+        { icon: "🇯🇵🍁", en: "Kyoto will probably be beautiful in October.", kanji: "十月の京都は綺麗でしょう。", kana: "じゅうがつのきょうとはきれいでしょう。", romaji: "jūgatsu no kyōto wa kirei deshō." },
+        { icon: "🏫❌", en: "Mary will probably not come to school tomorrow.", kanji: "メアリーさんは明日学校に来ないでしょう。", kana: "めありーさんはあしたがっこうにこないでしょう。", romaji: "mearī san wa ashita gakkō ni konai deshō." },
+        { icon: "🥞💰", en: "The food at that restaurant is probably expensive.", kanji: "あの店の料理は高いでしょう。", kana: "あのみせのりょうりはたかいでしょう。", romaji: "ano mise no ryōri wa takai deshō." },
+        { icon: "☃️❄️", en: "It will probably snow in Hokkaido next week.", kanji: "来週北海道は雪が降るでしょう。", kana: "らいしゅうほっかいどうはゆきがふるでしょう。", romaji: "raishū hokkaidō wa yuki ga furu deshō." },
+        { icon: "🛋️🧼", en: "Takeshi's room is probably not clean.", kanji: "たけしさんの部屋は綺麗じゃないでしょう。", kana: "たけしさんのへやはきれいじゃないでしょう。", romaji: "takeshi san no heya wa kirei janai deshō." },
+        { icon: "👨‍🎓💡", en: "Sora will probably pass the exam.", kanji: "ソラさんは試験に合格するでしょう。", kana: "そらさんはしけんにごうかくするでしょう。", romaji: "sora san wa shiken ni gōkaku suru deshō." },
+        { icon: "🍿🎬", en: "That movie was probably not interesting.", kanji: "あの映画は面白くなかったでしょう。", kana: "あのえいがはおもしろくなかったでしょう。", romaji: "ano eiga wa omoshirokunatta deshō." },
+        { icon: "🏙️🌆", en: "Tokyo is probably lively tonight.", kanji: "今晩の東京は賑やかでしょう。", kana: "こんばんのとうきょうはにぎやかでしょう。", romaji: "konban no tōkyō wa nigiyaka deshō." },
+        { icon: "💻🛒", en: "This new computer will probably be good.", kanji: "この新しいパソコンはいいでしょう。", kana: "このあたらしいぱそこんはいいでしょう。", romaji: "kono atarashii pasokon wa ii deshō." },
+        { icon: "💵📉", en: "The bus ticket will probably be cheap.", kanji: "バスの切符は安いでしょう。", kana: "ばすのきっぷはやすいでしょう。", romaji: "basu no kippu wa yasui deshō." },
+        { icon: "👨‍🏫😴", en: "Professor Yamashita is probably free on Saturday.", kanji: "山下先生は土曜日は暇でしょう。", kana: "やましたせんせいはどようびはひまでしょう。", romaji: "yamashita sensei wa doyōbi wa hima deshō." },
+        { icon: "🤝🍺", en: "Robert will probably drink beer at the party.", kanji: "ロバートさんはパーティーでビールを飲むでしょう。", kana: "ろばーとさんはぱーてぃーでびーるをのむでしょう。", romaji: "robāto san wa pātī de bīru o nomu deshō." },
+        { icon: "🛌❌", en: "My roommate will probably not clean the room.", kanji: "ルームメイトは部屋を掃除しないでしょう。", kana: "るーむめいとはへやをそうじしないでしょう。", romaji: "rūmumeito wa heya o sōji shinai deshō." },
+        { icon: "❓🌤️", en: "Will it be cloudy tomorrow? (Question variant)", kanji: "明日は曇りでしょうか。", kana: "あしたはくもりでしょうか。", romaji: "ashita wa kumori deshō ka." }
+      ]
+    };
+
+    let currentCategory = 'want_to';
+    let currentIndex = 0;
+    let isFlipped = false;
+
+    function switchCategory(category) {
+      currentCategory = category;
+      currentIndex = 0;
+      isFlipped = false;
+      
+      const categories = ['want_to', 'advice', 'because_node', 'prediction'];
+      categories.forEach(cat => {
+        const tab = document.getElementById(`tab-${cat}`);
+        if (cat === category) {
+          tab.classList.remove('bg-white', 'text-teal-700', 'hover:bg-teal-50');
+          tab.classList.add('bg-teal-600', 'text-white');
+        } else {
+          tab.classList.remove('bg-teal-600', 'text-white');
+          tab.classList.add('bg-white', 'text-teal-700', 'hover:bg-teal-50');
+        }
+      });
+
+      document.getElementById('result-screen').classList.add('hidden');
+      document.getElementById('flashcard').classList.remove('hidden');
+      document.getElementById('controls').classList.remove('opacity-30', 'pointer-events-none');
+      
+      updateCard();
+    }
+
+    function updateCard() {
+      const card = document.getElementById('flashcard');
+      card.classList.remove('rotate-y-180');
+      isFlipped = false;
+
+      const data = dataset[currentCategory][currentIndex];
+      
+      document.getElementById('card-icon').innerText = data.icon;
+      document.getElementById('card-en').innerText = data.en;
+      document.getElementById('card-en-back').innerText = data.en;
+      document.getElementById('card-kanji').innerText = data.kanji;
+      document.getElementById('card-kana').innerText = data.kana;
+      document.getElementById('card-romaji').innerText = data.romaji;
+
+      document.getElementById('current-index').innerText = currentIndex + 1;
+    }
+
+    function flipCard() {
+      const card = document.getElementById('flashcard');
+      if (!isFlipped) {
+        card.classList.add('rotate-y-180');
+        isFlipped = true;
+      } else {
+        card.classList.remove('rotate-y-180');
+        isFlipped = false;
+      }
+    }
+
+    function nextCard() {
+      if (currentIndex < 16) {
+        currentIndex++;
+        updateCard();
+      } else {
+        document.getElementById('flashcard').classList.add('hidden');
+        document.getElementById('controls').classList.add('opacity-30', 'pointer-events-none');
+        document.getElementById('result-screen').classList.remove('hidden');
+      }
+    }
+
+    function prevCard() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateCard();
+      }
+    }
+
+    function restartCategory() {
+      document.getElementById('result-screen').classList.add('hidden');
+      document.getElementById('flashcard').classList.remove('hidden');
+      document.getElementById('controls').classList.remove('opacity-30', 'pointer-events-none');
+      currentIndex = 0;
+      updateCard();
+    }
+
+    function speakText(event) {
+      event.stopPropagation();
+      const data = dataset[currentCategory][currentIndex];
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(data.kana);
+      utterance.lang = 'ja-JP';
+      utterance.rate = 0.85;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    window.onload = () => { updateCard(); };
+  </script>
+</body>
+</html>
