@@ -3,97 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MikaT GENKI Japaneseポータル</title>
+    <title>Lessons (第1課〜第12課)</title>
     <style>
-        /* 全体の背景と中央揃えの設定 */
+        /* 全体の背景（少し青みのある薄いグレー） */
         body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            background-color: #f0f2f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #eef2f7;
             margin: 0;
+            padding: 20px;
+            color: #333;
         }
 
-        /* 白いカード部分 */
-        .container {
-            background-color: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            text-align: center;
-            width: 90%;
-            max-width: 500px;
-        }
-
-        /* タイトルと説明文 */
-        h1 {
+        /* 上部のヘッダーバー */
+        .header-bar {
+            background-color: #e1ecf7;
+            border-left: 5px solid #3b76cc;
+            padding: 12px 20px;
+            border-radius: 4px;
+            font-size: 18px;
+            font-weight: bold;
             color: #2c3e50;
-            font-size: 28px;
-            margin-bottom: 10px;
+            max-width: 1200px;
+            margin: 0 auto 25px auto;
         }
-        .subtitle {
-            color: #7f8c8d;
-            font-size: 16px;
-            margin-bottom: 30px;
-            line-height: 1.5;
+
+        /* カードを並べるグリッド */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* 白いレッスンカード */
+        .lesson-card {
+            background-color: #ffffff;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            border: 1px solid #eef0f4;
+        }
+
+        /* レッスンタイトル */
+        .lesson-card h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #5c93e6;
+            font-size: 20px;
+            font-weight: bold;
+            border-bottom: 1px solid #edf1f7;
+            padding-bottom: 8px;
+        }
+
+        /* ボタンを横に並べるグループ */
+        .button-group {
+            display: flex;
+            gap: 12px;
         }
 
         /* ボタンの共通スタイル */
         .btn {
-            display: block;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-decoration: none;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 15px;
+            padding: 12px;
+            border-radius: 8px;
             color: white;
             font-weight: bold;
-            font-size: 18px;
-            transition: transform 0.2s, opacity 0.2s;
+            font-size: 15px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            transition: opacity 0.2s;
         }
         .btn:hover {
-            transform: translateY(-2px);
-            opacity: 0.9;
-        }
-        .btn span {
-            display: block;
-            font-size: 12px;
-            font-weight: normal;
-            margin-top: 5px;
-            opacity: 0.8;
+            opacity: 0.85;
         }
 
-        /* GENKI 1 ボタン（赤） */
-        .btn-primary-1 {
-            background-color: #d9534f;
-        }
-
-        /* GENKI 2 ボタン（青） */
-        .btn-primary-2 {
+        /* 🚀 GO ボタン */
+        .btn-go {
             background-color: #4a86e8;
+        }
+
+        /* 📖 VOCAB ボタン */
+        .btn-vocab {
+            background-color: #e6a23c;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>MikaT Online Practice</h1>
-        <div class="subtitle">
-            どのコースを勉強しますか？<br>
-            Which book are you studying?
-        </div>
-
-        <a href="./genki1.html" class="btn btn-primary-1">
-            📘 GENKI 1
-            <span>Lesson 1 - Lesson 12</span>
-        </a>
-
-        <a href="./genki2.html" class="btn btn-primary-2">
-            🔮 GENKI 2
-            <span>Lesson 13 - Lesson 23</span>
-        </a>
+    <div class="header-bar">
+        📘 Lessons (第1課〜第12課)
     </div>
 
-</body>
-</html>
+    <div class="grid-container">
+        
+        <div class="lesson-card">
+            <h3>Lesson 1</h3>
+            <div class="button-group">
+                <a href="./Lesson1/" class="btn btn-go">🚀 GO</a>
+                <a href="./Lesson1/vocab.html" class="btn btn-vocab">📖 VOCAB</a>
+            </div>
+        </div>
+
+        <div class="lesson-card">
+            <h3>Lesson 2</h3>
+            <div class="button-group">
+                <a href="./Lesson2/" class="btn btn-go">🚀 GO</a>
+                <a href="./Lesson2/vocab.html" class="btn btn-vocab">📖 VOCAB</a>
+            </div>
+        </div>
+
+        <div class="lesson-card">
+            <h3>Lesson 3</h3>
+            <div class="button-group">
+                <a href="./Lesson3/" class="btn btn-go">🚀 GO</a>
+                <a href="./Lesson3/vocab.html" class="btn btn-vocab">📖 VOCAB</a>
+            </div>
+        </div>
+
+        <div class="lesson-card">
+            <h3>Lesson 4</h3>
+            <div class="button-group">
+                <a href="./Lesson4/" class="btn btn-go">🚀 GO</a>
+                <a href="./Lesson4/vocab.html" class="btn btn-vocab">📖 VOCAB</a>
+            </div>
+        </div>
+
+        <div class="lesson-card">
+            <h3>Lesson 5</h3>
+            <div class="button-group">
+                <a href="./Lesson5/" class="btn btn-go">🚀 GO</a>
+                <a href="./Lesson5/vocab.html" class="btn btn-vocab">📖 VOCAB</a>
+            </div>
+        </div>
+
+        <div class="lesson-card">
+            <h3>Lesson 6</h3>
+            <div class="button-group">
+                <a href="./Lesson6/" class="btn btn-go">🚀 GO</a>
+                <a href="./Lesson6/vocab.html" class="btn btn-vocab">📖 VOCAB</a>
+            </div>
+        </div>
+
+        <div class="lesson-card">
+            <h3>Lesson 7</h3>
+            <div class="button-group">
+                <a href="./Lesson7/" class="btn btn-go">🚀 GO</a>
+                <a href="./Lesson7/vocab.html" class="btn btn-vocab">📖 VOCAB</a>
+            </div>
+        </div>
+
+        <div class="lesson-card">
+            <h3>Lesson 8</h3>
+            <div class="button-group">
+                <a href="./Lesson8/" class="btn btn-go">🚀 GO</a>
+                <a href="./Lesson8/vocab.html" class="btn btn-vocab">📖 VOCAB</a>
+            </div>
+        </div>
+
+        <div class="lesson-card">
+            <h3>Lesson 9</h3>
+            <div class="button-group">
+                <a href="./Lesson9/" class="btn btn-go">🚀 GO</a>
+                <a href="./Lesson9/vocab.html" class="btn btn-vocab">📖 VOCAB</a>
+            </div>
+        </div>
