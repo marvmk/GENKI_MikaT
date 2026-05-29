@@ -15,15 +15,17 @@
 <body class="bg-slate-50 font-sans min-h-screen flex flex-col justify-between">
 
   <header class="bg-rose-600 text-white py-6 shadow-md text-center">
-    <h1 class="text-3xl md:text-4xl font-extrabold tracking-wide">Genki L14 Sentence Master 🎨</h1>
-    <p class="text-sm md:text-base mt-2 opacity-90">Focus: 欲しい, 〜かもしれない, Giving/Receiving, 〜たらどうですか, も/しか</p>
+    <h1 class="text-3xl md:text-4xl font-extrabold tracking-wide">Genki L13/L14 Sentence Master 🎨</h1>
+    <!-- ヘッダー内のフォーカス部分を完全英語化 -->
+    <p class="text-sm md:text-base mt-2 opacity-90">Focus: Want (Hoshii), May (Kamoshirenai), Giving & Receiving, Advice, Counters & Limitations</p>
   </header>
 
   <main class="max-w-4xl w-full mx-auto p-4 flex-grow flex flex-col items-center justify-center">
     
+    <!-- カテゴリー切り替えタブを完全に英語表記に変更 -->
     <div id="tabs" class="w-full flex flex-wrap justify-center gap-2 mb-6">
-      <button onclick="switchCategory('want_may')" id="tab-want_may" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-rose-600 text-white">欲しい & かもしれない (5)</button>
-      <button onclick="switchCategory('giving')" id="tab-giving" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-rose-700 hover:bg-rose-50">あげる/くれる/もらう (5)</button>
+      <button onclick="switchCategory('want_may')" id="tab-want_may" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-rose-600 text-white">Want & May (5)</button>
+      <button onclick="switchCategory('giving')" id="tab-giving" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-rose-700 hover:bg-rose-50">Giving & Receiving (5)</button>
       <button onclick="switchCategory('advice_num')" id="tab-advice_num" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-rose-700 hover:bg-rose-50">Advice & Counters (4)</button>
     </div>
 
@@ -31,17 +33,18 @@
       Sentence: <span id="current-index" class="text-rose-600">1</span> / <span id="total-index">5</span>
     </div>
 
+    <!-- フラッシュカード本体エリア -->
     <div class="w-full max-w-2xl h-[450px] relative perspective-1000">
       <div id="flashcard" onclick="flipCard()" class="w-full h-full relative transform-style-3d transition-transform duration-500 cursor-pointer">
         
-        <!-- 表 -->
+        <!-- 表面 (Front: English) -->
         <div class="absolute w-full h-full bg-white rounded-3xl shadow-xl border-2 border-rose-100 p-8 flex flex-col justify-center items-center text-center backface-hidden">
           <div id="card-icon" class="text-7xl md:text-8xl mb-6 select-none">💯🎒</div>
           <div id="card-en" class="text-2xl md:text-3xl font-bold text-slate-800 leading-snug">I want a good grade.</div>
           <div class="text-xs text-rose-500 mt-8 font-semibold tracking-widest uppercase">Tap to see Japanese Answer</div>
         </div>
 
-        <!-- 裏 -->
+        <!-- 裏面 (Back: Japanese) -->
         <div class="absolute w-full h-full bg-rose-50 rounded-3xl shadow-xl border-2 border-rose-200 p-6 flex flex-col justify-between items-center text-center backface-hidden rotate-y-180">
           <div class="w-full flex flex-col items-center pt-2">
             <div id="card-en-back" class="text-lg md:text-xl font-medium text-rose-800">I want a good grade.</div>
@@ -59,20 +62,26 @@
 
       </div>
 
+      <!-- セット完了画面 -->
       <div id="result-screen" class="absolute inset-0 bg-white rounded-3xl shadow-2xl border-4 border-rose-500 p-8 flex flex-col justify-center items-center text-center hidden z-10">
         <div class="text-7xl mb-4">🎉</div>
         <h2 class="text-4xl font-black text-rose-600 mb-2">Excellent!</h2>
         <p class="text-xl text-slate-600 mb-8">You finished this sentence practice set!</p>
-        <button onclick="restartCategory()" class="bg-rose-600 hover:bg-rose-700 text-white font-bold text-xl px-8 py-4 rounded-full shadow-md active:scale-95">Restart</button>
+        <button onclick="restartCategory()" class="bg-rose-600 hover:bg-rose-700 text-white font-bold text-xl px-8 py-4 rounded-full shadow-md transition-all active:scale-95">Restart</button>
       </div>
     </div>
 
+    <!-- コントロールボタン -->
     <div id="controls" class="flex items-center justify-center gap-6 mt-8 w-full max-w-md">
       <button onclick="prevCard()" class="flex-1 bg-slate-700 hover:bg-slate-800 text-white font-bold text-lg py-4 rounded-xl shadow-md transition-all active:scale-95">← Previous</button>
       <button onclick="nextCard()" class="flex-1 bg-rose-600 hover:bg-rose-700 text-white font-bold text-lg py-4 rounded-xl shadow-md transition-all active:scale-95">Next →</button>
     </div>
 
   </main>
+
+  <footer class="bg-slate-800 text-slate-400 py-4 text-center text-sm border-t border-slate-700">
+    &copy; FujiGreentea - Genki Sentence Master
+  </footer>
 
   <script>
     const dataset = {
@@ -91,10 +100,10 @@
         { icon: "🧣➡🙋", en: "My big sister gave me a winter scarf.", kanji: "姉が私にマフラーをくれました。", kana: "あねがわたしにまふらーをくれました。" }
       ],
       advice_num: [
-        { icon: "💊🥤", en: "Why don't you take some medicine? (Advice)", kanji: "薬を飲んだらどうですか。", kana: "くすりをのんだらどうですか。" },
-        { icon: "📖✍️🔥", en: "Why don't you study harder? (Strong recommendation)", kanji: "もっと勉強したらどうですか。", kana: "もっとべんきょうしたらどうですか。" },
-        { icon: "🐈🐈🐈", en: "There are three cats in our house. (as many as 3)", kanji: "私のうちには猫が三匹います。", kana: "わたしのうちにはねこがさんびきいます。" },
-        { icon: "📖🚫", en: "I have only one Japanese book. (as few as 1)", kanji: "私は日本語の本を一冊しか持っていません。", kana: "わたしはにほんごのほんをいっさつしかもっていません。" }
+        { icon: "💊🥤", en: "Why don't you take some medicine?", kanji: "薬を飲んだらどうですか。", kana: "くすりをのんだらどうですか。" },
+        { icon: "📖✍️🔥", en: "Why don't you study harder?", kanji: "もっと勉強したらどうですか。", kana: "もっとべんきょうしたらどうですか。" },
+        { icon: "🐈🐈🐈", en: "There are three cats in our house.", kanji: "私のうちには猫が三匹います。", kana: "わたしのうちにはねこがさんびきいます。" },
+        { icon: "📖🚫", en: "I have only one Japanese book.", kanji: "私は日本語の本を一冊しか持っていません。", kana: "わたしはにほんごのほんをいっさつしかもっていません。" }
       ]
     };
 
@@ -107,7 +116,11 @@
       const cats = ['want_may', 'giving', 'advice_num'];
       cats.forEach(c => {
         const btn = document.getElementById(`tab-${c}`);
-        btn.className = c === category ? "px-5 py-3 rounded-full font-bold text-lg shadow-sm bg-rose-600 text-white" : "px-5 py-3 rounded-full font-bold text-lg shadow-sm bg-white text-rose-700 hover:bg-rose-50";
+        if (c === category) {
+          btn.className = "px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-rose-600 text-white";
+        } else {
+          btn.className = "px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-rose-700 hover:bg-rose-50";
+        }
       });
       document.getElementById('result-screen').classList.add('hidden');
       document.getElementById('flashcard').classList.remove('hidden');
