@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Genki Lesson 18 Sentence Practice</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    .perspective-1000 { perspective: 1000px; }
+    .transform-style-3d { transform-style: preserve-3d; }
+    .backface-hidden { backface-visibility: hidden; }
+    .rotate-y-180 { transform: rotateY(180deg); }
+  </style>
+</head>
+<body class="bg-slate-50 font-sans min-h-screen flex flex-col justify-between">
+
+  <header class="bg-rose-600 text-white py-6 shadow-md text-center">
+    <h1 class="text-3xl md:text-4xl font-extrabold tracking-wide">Genki L18 Sentence Master 🎨</h1>
+    <p class="text-sm md:text-base mt-2 opacity-90">Focus: Transitive vs Intransitive, Expressing Completion & Regret (~te shimau), Simultaneous Actions (~nagara), Hypothetical Regrets (~ba yokatta)</p>
+  </header>
+
+  <main class="max-w-4xl w-full mx-auto p-4 flex-grow flex flex-col items-center justify-center">
+    
+    <div id="tabs" class="w-full flex flex-wrap justify-center gap-2 mb-6">
+      <button onclick="switchCategory('trans_intrans')" id="tab-trans_intrans" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-rose-600 text-white">Transitive vs Intransitive (5)</button>
+      <button onclick="switchCategory('completion_regret')" id="tab-completion_regret" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-rose-700 hover:bg-rose-50">Completion & Regret (5)</button>
+      <button onclick="switchCategory('nagara_regret')" id="tab-nagara_regret" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-rose-700 hover:bg-rose-50">Simultaneous & Past Regret (5)</button>
+    </div>
+
+    <div class="text-xl md:text-2xl font-bold text-slate-600 mb-4">
+      Sentence: <span id="current-index" class="text-rose-600">1</span> / <span id="total-index">5</span>
+    </div>
+
+    <div class="w-full max-w-2xl h-[450px] relative perspective-1000">
+      <div id="flashcard" onclick="flipCard()" class="w-full h-full relative transform-style-3d transition-transform duration-500 cursor-pointer">
+        
+        <div class="absolute w-full h-full bg-white rounded-3xl shadow-xl border-2 border-rose-100 p-8 flex flex-col justify-center items-center text-center backface-hidden">
+          <div id="card-icon" class="text-7xl md:text-8xl mb-6 select-none">🚪🚶‍♂️</div>
+          <div id="card-en" class="text-2xl md:text-3xl font-bold text-slate-800 leading-snug">Takeshi closed the window. (Transitive)</div>
+          <div class="text-xs text-rose-500 mt-8 font-semibold tracking-widest uppercase">Tap to see Japanese Answer</div>
+        </div>
+
+        <div class="absolute w-full h-full bg-rose-50 rounded-3xl shadow-xl border-2 border-rose-200 p-6 flex flex-col justify-between items-center text-center backface-hidden rotate-y-180">
+          <div class="w-full flex flex-col items-center pt-2">
+            <div id="card-en-back" class="text-lg md:text-xl font-medium text-rose-800">Takeshi closed the window. (Transitive)</div>
+          </div>
+          <div class="flex flex-col gap-3 my-auto w-full px-2">
+            <div id="card-kanji" class="text-2xl md:text-3xl lg:text-4xl font-extrabold text-slate-900 leading-relaxed">たけしさんが窓を閉めました。</div>
+            <div id="card-kana" class="text-xl md:text-2xl text-rose-600 font-bold">たけしさんがまどをしめました。</div>
+          </div>
+          <div class="pb-2">
+            <button onclick="speakText(event)" class="bg-rose-600 hover:bg-rose-700 active:scale-95 text-white p-4 rounded-full shadow-lg flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="result-screen" class="absolute inset-0 bg-white rounded-3xl shadow-2xl border-4 border-rose-500 p-8 flex flex-col justify-center items-center text-center hidden z-10">
+        <div class="text-7xl mb-4">🎉</div>
+        <h2 class="text-4xl font-black text-rose-600 mb-2">Excellent!</h2>
+        <p class="text-xl text-slate-600 mb-8">You finished this sentence practice set!</p>
+        <button onclick="restartCategory()" class="bg-rose-600 hover:bg-rose-700 text-white font-bold text-xl px-8 py-4 rounded-full shadow-md active:scale-95">Restart</button>
+      </div>
+    </div>
+
+    <div id="controls" class="flex items-center justify-center gap-6 mt-8 w-full max-w-md">
+      <button onclick="prevCard()" class="flex-1 bg-slate-700 hover:bg-slate-800 text-white font-bold text-lg py-4 rounded-xl shadow-md transition-all active:scale-95">← Previous</button>
+      <button onclick="nextCard()" class="flex-1 bg-rose-600 hover:bg-rose-700 text-white font-bold text-lg py-4 rounded-xl shadow-md transition-all active:scale-95">Next →</button>
+    </div>
+
+  </main>
+
+  <script>
+    const dataset = {
+      trans_intrans: [
+        { icon: "🚪🚶‍♂️", en: "Takeshi closed the window. (Transitive)", kanji: "たけしさんが窓を閉めました。", kana: "たけしさんがまどをしめました。" },
+        { icon: "🍃🚪", en: "The window closed due to the wind. (Intransitive)", kanji: "窓が閉まりました。", kana: "まどがしまりました。" },
+        { icon: "💡🔌", en: "I turned on the light. (Transitive)", kanji: "電気をつけました。", kana: "でんきをつけました。" },
+        { icon: "💡⚡", en: "The light went on. (Intransitive)", kanji: "電気がつきました。", kana: "でんきがつきました。" },
+        { icon: "☕💔", en: "I boiled the hot water. / The hot water is boiling.", kanji: "お湯を沸かしました。 / お湯が沸いています。", kana: "おゆをわかしました。 / おゆがわいています。" }
+      ],
+      completion_regret: [
+        { icon: "📖🏁🔥", en: "I have read this book completely.", kanji: "この本はもう読んでしまいました。", kana: "このほんはもうよんでしまいました。" },
+        { icon: "✍️🗒️🏁", en: "I will finish writing the homework by tomorrow.", kanji: "明日までに宿題をやってしまいます。", kana: "あしたまでにしゅくだいをやってしまいます。" },
+        { icon: "📱💧😭", en: "Oh no! I dropped my phone into the water (Regret).", kanji: "大変です！スマホを水の中に落としてしまいました。", kana: "たいへんです！すまほをみずのなかにおとしてしまいました。" },
+        { icon: "💼🚪🚗", en: "I inadvertently left my bag on the train.", kanji: "電車の中に鞄を忘れてしまいました。", kana: "でんしゃのなかにかばんをわすれてしまいました。" },
+        { icon: "😭💔", en: "My pet passed away.", kanji: "ペットが死んでしまいました。", kana: "ぺっとがしんでしまいました。" }
+      ],
+      nagara_regret: [
+        { icon: "🎵🎷✍️", en: "I study Japanese while listening to music.", kanji: "音楽を聞きながら日本語を勉強します。", ...{kana:"おんがくをききながらにほんごをべんきょうします。"} },
+        { icon: "🚶‍♂️🗣️📞", en: "It is dangerous to walk while talking on the phone.", kanji: "電話で話しながら歩くのは危ないです。", kana: "でんわではなしたがらあるくのはあぶないです。" },
+        { icon: "💵📉🔙", en: "I wish I had bought it when it was cheap. (Past regret)", kanji: "安かった時に買えばよかったです。", kana: "やすかったときにかえばよかったです。" },
+        { icon: "👨‍🏫💬👂", en: "I should have listened to my teacher's advice.", kanji: "先生に相談すればよかったです。", kana: "せんせいにそうだんすればよかったです。" },
+        { icon: "🤬👋❌", en: "I shouldn't have said such a heart-breaking thing.", kanji: "あんなつらいことを言わなければよかったです。", kana: "あんなつらいことをいわなければよかったです。" }
+      ]
+    };
+
+    let currentCategory = 'trans_intrans';
+    let currentIndex = 0;
+    let isFlipped = false;
+
+    function switchCategory(category) {
+      currentCategory = category; currentIndex = 0; isFlipped = false;
+      const cats = ['trans_intrans', 'completion_regret', 'nagara_regret'];
+      cats.forEach(c => {
+        const btn = document.getElementById(`tab-${c}`);
+        btn.className = c === category ? "px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-rose-600 text-white" : "px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-rose-700 hover:bg-rose-50";
+      });
+      document.getElementById('result-screen').classList.add('hidden');
+      document.getElementById('flashcard').classList.remove('hidden');
+      document.getElementById('total-index').innerText = dataset[currentCategory].length;
+      updateCard();
+    }
+
+    function updateCard() {
+      document.getElementById('flashcard').classList.remove('rotate-y-180'); isFlipped = false;
+      const data = dataset[currentCategory][currentIndex];
+      document.getElementById('card-icon').innerText = data.icon;
+      document.getElementById('card-en').innerText = data.en;
+      document.getElementById('card-en-back').innerText = data.en;
+      document.getElementById('card-kanji').innerText = data.kanji;
+      document.getElementById('card-kana').innerText = data.kana;
+      document.getElementById('current-index').innerText = currentIndex + 1;
+    }
+
+    function flipCard() { document.getElementById('flashcard').classList.toggle('rotate-y-180'); isFlipped = !isFlipped; }
+
+    function nextCard() {
+      if (currentIndex < dataset[currentCategory].length - 1) { currentIndex++; updateCard(); }
+      else { document.getElementById('flashcard').classList.add('hidden'); document.getElementById('result-screen').classList.remove('hidden'); }
+    }
+    function prevCard() { if (currentIndex > 0) { currentIndex--; updateCard(); } }
+    function restartCategory() { document.getElementById('result-screen').classList.add('hidden'); document.getElementById('flashcard').classList.remove('hidden'); currentIndex = 0; updateCard(); }
+    function speakText(event) { event.stopPropagation(); const data = dataset[currentCategory][currentIndex]; window.speechSynthesis.cancel(); const utterance = new SpeechSynthesisUtterance(data.kanji.split(' / ')[0]); utterance.lang = 'ja-JP'; window.speechSynthesis.speak(utterance); }
+
+    window.onload = () => { document.getElementById('total-index').innerText = dataset[currentCategory].length; updateCard(); };
+  </script>
+</body>
+</html>
