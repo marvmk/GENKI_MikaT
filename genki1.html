@@ -12,17 +12,42 @@
             padding: 20px;
             color: #333;
         }
+
+        /* ヘッダーバー（横並びにしてホームボタンを配置） */
         .header-bar {
             background-color: #e1ecf7;
             border-left: 5px solid #3b76cc;
             padding: 12px 20px;
             border-radius: 4px;
+            max-width: 1200px;
+            margin: 0 auto 25px auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-sizing: border-box;
+        }
+        .header-title {
             font-size: 18px;
             font-weight: bold;
             color: #2c3e50;
-            max-width: 1200px;
-            margin: 0 auto 25px auto;
         }
+        /* 🏠 ホームボタンのデザイン */
+        .btn-home {
+            background-color: #ffffff;
+            color: #3b76cc;
+            text-decoration: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            border: 1px solid #3b76cc;
+            transition: all 0.2s;
+        }
+        .btn-home:hover {
+            background-color: #3b76cc;
+            color: #ffffff;
+        }
+
         .grid-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -72,108 +97,14 @@
 <body>
 
     <div class="header-bar">
-        📘 Lessons (第1課〜第12課)
+        <div class="header-title">📘 Lessons (第1課〜第12課)</div>
+        <a href="./index.html" class="btn-home">🏠 Home</a>
     </div>
 
     <div class="grid-container">
-        
         <div class="lesson-card">
             <h3>Lesson 1</h3>
             <div class="button-group">
                 <a href="./Lesson1/Sentence/index.html" class="btn btn-go">🚀 GO</a>
                 <a href="./Lesson1/vocabulary/index.html" class="btn btn-vocab">📖 VOCAB</a>
             </div>
-        </div>
-
-        <div class="lesson-card">
-            <h3>Lesson 2</h3>
-            <div class="button-group">
-                <a href="./Lesson2/Sentence/index.html" class="btn btn-go">🚀 GO</a>
-                <a href="./Lesson2/vocabulary/index.html" class="btn btn-vocab">📖 VOCAB</a>
-            </div>
-        </div>
-
-        <div class="lesson-card">
-            <h3>Lesson 3</h3>
-            <div class="button-group">
-                <a href="./Lesson3/Sentence/index.html" class="btn btn-go">🚀 GO</a>
-                <a href="./Lesson3/vocabulary/index.html" class="btn btn-vocab">📖 VOCAB</a>
-            </div>
-        </div>
-
-        <div class="lesson-card">
-            <h3>Lesson 4</h3>
-            <div class="button-group">
-                <a href="./Lesson4/Sentence/index.html" class="btn btn-go">🚀 GO</a>
-                <a href="./Lesson4/vocabulary/index.html" class="btn btn-vocab">📖 VOCAB</a>
-            </div>
-        </div>
-
-        <div class="lesson-card">
-            <h3>Lesson 5</h3>
-            <div class="button-group">
-                <a href="./Lesson5/Sentence/index.html" class="btn btn-go">🚀 GO</a>
-                <a href="./Lesson5/vocabulary/index.html" class="btn btn-vocab">📖 VOCAB</a>
-            </div>
-        </div>
-
-        <div class="lesson-card">
-            <h3>Lesson 6</h3>
-            <div class="button-group">
-                <a href="./Lesson6/Sentence/index.html" class="btn btn-go">🚀 GO</a>
-                <a href="./Lesson6/vocabulary/index.html" class="btn btn-vocab">📖 VOCAB</a>
-            </div>
-        </div>
-
-        <div class="lesson-card">
-            <h3>Lesson 7</h3>
-            <div class="button-group">
-                <a href="./Lesson7/Sentence/index.html" class="btn btn-go">🚀 GO</a>
-                <a href="./Lesson7/vocabulary/index.html" class="btn btn-vocab">📖 VOCAB</a>
-            </div>
-        </div>
-
-        <div class="lesson-card">
-            <h3>Lesson 8</h3>
-            <div class="button-group">
-                <a href="./Lesson8/Sentence/index.html" class="btn btn-go">🚀 GO</a>
-                <a href="./Lesson8/vocabulary/index.html" class="btn btn-vocab">📖 VOCAB</a>
-            </div>
-        </div>
-
-        <div class="lesson-card">
-            <h3>Lesson 9</h3>
-            <div class="button-group">
-                <a href="./Lesson9/Sentence/index.html" class="btn btn-go">🚀 GO</a>
-                <a href="./Lesson9/vocabulary/index.html" class="btn btn-vocab">📖 VOCAB</a>
-            </div>
-        </div>
-
-        <div class="lesson-card">
-            <h3>Lesson 10</h3>
-            <div class="button-group">
-                <a href="./Lesson10/Sentence/index.html" class="btn btn-go">🚀 GO</a>
-                <a href="./Lesson10/vocabulary/index.html" class="btn btn-vocab">📖 VOCAB</a>
-            </div>
-        </div>
-
-        <div class="lesson-card">
-            <h3>Lesson 11</h3>
-            <div class="button-group">
-                <a href="./Lesson11/Sentence/index.html" class="btn btn-go">🚀 GO</a>
-                <a href="./Lesson11/vocabulary/index.html" class="btn btn-vocab">📖 VOCAB</a>
-            </div>
-        </div>
-
-        <div class="lesson-card">
-            <h3>Lesson 12</h3>
-            <div class="button-group">
-                <a href="./Lesson12/Sentence/index.html" class="btn btn-go">🚀 GO</a>
-                <a href="./Lesson12/vocabulary/index.html" class="btn btn-vocab">📖 VOCAB</a>
-            </div>
-        </div>
-
-    </div>
-
-</body>
-</html>
