@@ -1,1 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MikaT 日本語練習ポータル</title>
+    <style>
+        /* 全体の背景と中央揃えの設定 */
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
 
+        /* 白いカード部分 */
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        /* タイトルと説明文 */
+        h1 {
+            color: #2c3e50;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 16px;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        /* ボタンの共通スタイル */
+        .btn {
+            display: block;
+            text-decoration: none;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+        .btn span {
+            display: block;
+            font-size: 12px;
+            font-weight: normal;
+            margin-top: 5px;
+            opacity: 0.8;
+        }
+
+        /* 初級 I ボタン（赤） */
+        .btn-primary-1 {
+            background-color: #d9534f;
+        }
+
+        /* 初級 II ボタン（青） */
+        .btn-primary-2 {
+            background-color: #4a86e8;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>MikaT Online Practice</h1>
+        <div class="subtitle">
+            どのコースを勉強しますか？<br>
+            Which book are you studying?
+        </div>
+
+        <a href="./Lesson1/" class="btn btn-primary-1">
+            📘 初級 I
+            <span>Lesson 1 - Lesson 25</span>
+        </a>
+
+        <a href="./Lesson26/" class="btn btn-primary-2">
+            🔮 初級 II
+            <span>Lesson 26 - Lesson 50</span>
+        </a>
+    </div>
+
+</body>
+</html>
