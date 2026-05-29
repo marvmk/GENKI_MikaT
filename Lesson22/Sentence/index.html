@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Genki Lesson 22 Sentence Practice</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    .perspective-1000 { perspective: 1000px; }
+    .transform-style-3d { transform-style: preserve-3d; }
+    .backface-hidden { backface-visibility: hidden; }
+    .rotate-y-180 { transform: rotateY(180deg); }
+  </style>
+</head>
+<body class="bg-slate-50 font-sans min-h-screen flex flex-col justify-between">
+
+  <header class="bg-rose-600 text-white py-6 shadow-md text-center">
+    <h1 class="text-3xl md:text-4xl font-extrabold tracking-wide">Genki L22 Sentence Master 🎨</h1>
+    <p class="text-sm md:text-base mt-2 opacity-90">Focus: Causative Verbs (~saseru), Let me do (~te kudasai), Command Form (~nasai), If Clauses (~ba), Even Though (~noni)</p>
+  </header>
+
+  <main class="max-w-4xl w-full mx-auto p-4 flex-grow flex flex-col items-center justify-center">
+    
+    <div id="tabs" class="w-full flex flex-wrap justify-center gap-2 mb-6">
+      <button onclick="switchCategory('causative_let')" id="tab-causative_let" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-rose-600 text-white">Causative & Permission (5)</button>
+      <button onclick="switchCategory('command_if')" id="tab-command_if" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-rose-700 hover:bg-rose-50">Commands & If Clauses (5)</button>
+      <button onclick="switchCategory('even_though')" id="tab-even_though" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-rose-700 hover:bg-rose-50">Even Though (~noni) (5)</button>
+    </div>
+
+    <div class="text-xl md:text-2xl font-bold text-slate-600 mb-4">
+      Sentence: <span id="current-index" class="text-rose-600">1</span> / <span id="total-index">5</span>
+    </div>
+
+    <div class="w-full max-w-2xl h-[450px] relative perspective-1000">
+      <div id="flashcard" onclick="flipCard()" class="w-full h-full relative transform-style-3d transition-transform duration-500 cursor-pointer">
+        
+        <div class="absolute w-full h-full bg-white rounded-3xl shadow-xl border-2 border-rose-100 p-8 flex flex-col justify-center items-center text-center backface-hidden">
+          <div id="card-icon" class="text-7xl md:text-8xl mb-6 select-none">👨‍🏫📖😭</div>
+          <div id="card-en" class="text-2xl md:text-3xl font-bold text-slate-800 leading-snug">The professor made the student read the textbook. (Causative force)</div>
+          <div class="text-xs text-rose-500 mt-8 font-semibold tracking-widest uppercase">Tap to see Japanese Answer</div>
+        </div>
+
+        <div class="absolute w-full h-full bg-rose-50 rounded-3xl shadow-xl border-2 border-rose-200 p-6 flex flex-col justify-between items-center text-center backface-hidden rotate-y-180">
+          <div class="w-full flex flex-col items-center pt-2">
+            <div id="card-en-back" class="text-lg md:text-xl font-medium text-rose-800">The professor made the student read the textbook.</div>
+          </div>
+          <div class="flex flex-col gap-3 my-auto w-full px-2">
+            <div id="card-kanji" class="text-2xl md:text-3xl lg:text-4xl font-extrabold text-slate-900 leading-relaxed">先生は学生に教科書を読ませました。</div>
+            <div id="card-kana" class="text-xl md:text-2xl text-rose-600 font-bold">せんせいはがくせいにきょうかしょをよませました。</div>
+          </div>
+          <div class="pb-2">
+            <button onclick="speakText(event)" class="bg-rose-600 hover:bg-rose-700 active:scale-95 text-white p-4 rounded-full shadow-lg flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="result-screen" class="absolute inset-0 bg-white rounded-3xl shadow-2xl border-4 border-rose-500 p-8 flex flex-col justify-center items-center text-center hidden z-10">
+        <div class="text-7xl mb-4">🎉</div>
+        <h2 class="text-4xl font-black text-rose-600 mb-2">Excellent!</h2>
+        <p class="text-xl text-slate-600 mb-8">You finished this sentence practice set!</p>
+        <button onclick="restartCategory()" class="bg-rose-600 hover:bg-rose-700 text-white font-bold text-xl px-8 py-4 rounded-full shadow-md active:scale-95">Restart</button>
+      </div>
+    </div>
+
+    <div id="controls" class="flex items-center justify-center gap-6 mt-8 w-full max-w-md">
+      <button onclick="prevCard()" class="flex-1 bg-slate-700 hover:bg-slate-800 text-white font-bold text-lg py-4 rounded-xl shadow-md transition-all active:scale-95">← Previous</button>
+      <button onclick="nextCard()" class="flex-1 bg-rose-600 hover:bg-rose-700 text-white font-bold text-lg py-4 rounded-xl shadow-md transition-all active:scale-95">Next →</button>
+    </div>
+
+  </main>
+
+  <footer class="bg-slate-800 text-slate-400 py-4 text-center text-sm border-t border-slate-700">
+    &copy; FujiGreentea - Genki Sentence Master
+  </footer>
+
+  <script>
+    const dataset = {
+      causative_let: [
+        { icon: "👨‍🏫📖😭", en: "The professor made the student read the textbook.", kanji: "先生は学生に教科書を読ませました。", kana: "せんせいはがくせいにきょうかしょをよませました。" },
+        { icon: "👩‍👦🥦😭", en: "The mother made her child eat vegetables.", kanji: "お母さんは子供に野菜を食べさせました。", kana: "おかあさんはこどもにやさいをたべさせました。" },
+        { icon: "🙋‍♂️🛫🌐", en: "Please let me go abroad on a business trip. (Causative + kudasai)", kanji: "私に出張に行かせてください。", kana: "わたしにしゅっちょうにいかせてください。" },
+        { icon: "🎸🎵✨", en: "My parents let me play the musical instrument when I was young.", kanji: "両親は私に楽器を弾かせてくれました。", kana: "りょうしんはわたしにがっきをひかせてくれました。" },
+        { icon: "🚗💨🛑", en: "I was made to drive all day long (Causative passive flavor).", kanji: "一日中車を運転させられました。", kana: "いちにちじゅうくるまをうんてんさせられました。" }
+      ],
+      command_if: [
+        { icon: "🧑‍🏫✍️🔥", en: "Study hard! (Command form from teacher/parent)", kanji: "よく勉強しなさい。", kana: "よくべんきょうしなさい。" },
+        { icon: "🛌💤⏰", en: "Go to bed early.", kanji: "早く寝なさい。", kana: "はやくねなさい。" },
+        { icon: "🚶‍♂️🗺️💡", en: "If you ask your friend, you will understand the directions immediately. (~ba)", kanji: "友だちに聞けば、道がすぐわかりますよ。", kana: "ともだちにきけば、みちがすぐわかりますよ。" },
+        { icon: "💵📉🛒", en: "If the tuition is cheap, I will participate in the study abroad program.", kanji: "授業料が安ければ、留学に参加します。", kana: "じゅぎょうりょうがやすければ、りゅうがくにさんかします。" },
+        { icon: "☀️🏃‍♂️💨", en: "If it is sunny tomorrow, let's go for a walk.", kanji: "明日が晴れれば、散歩に行きましょう。", kana: "あしたははれれば、さんぽにいきましょう。" }
+      ],
+      even_though: [
+        { icon: "✍️🔥💯❌", en: "Even though I studied hard, my grades didn't go up. (~noni)", kanji: "たくさん勉強したのに、成績が上がりませんでした。", kana: "たくさんべんきょうしたのに、せいせきがあがりませんでした。" },
+        { icon: "🏪🛍️🚫", en: "Even though it's a convenience store, it's not open. (Shocking counter-fact)", kanji: "コンビニなのに、開いていません。", kana: "こんびになのに、あいていません。" },
+        { icon: "🏡🌱❌", en: "Although this room is spacious, the rent is cheap.", kanji: "この部屋は広いのに、家賃が安いです。", kana: "このへやはひろいのに、やちんがやすいです。" },
+        { icon: "🧍💼🛑", en: "Even though he is a company president, he is very stingy.", kanji: "あの人は社長なのに、とてもけちです。", kana: "あの人はしゃちょうなのに、とてもけちです。" },
+        { icon: "🇯🇵✈️🗣️❌", en: "Despite living in Japan, they cannot speak Japanese.", kanji: "日本に住んでいるのに、日本語が話せません。", kana: "にほんにすんでいるのに、にほんごがはなせません。" }
+      ]
+    };
+
+    let currentCategory = 'causative_let';
+    let currentIndex = 0;
+    let isFlipped = false;
+
+    function switchCategory(category) {
+      currentCategory = category; currentIndex = 0; isFlipped = false;
+      const cats = ['causative_let', 'command_if', 'even_though'];
+      cats.forEach(c => {
+        const btn = document.getElementById(`tab-${c}`);
+        btn.className = c === category ? "px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-rose-600 text-white" : "px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-rose-700 hover:bg-rose-50";
+      });
+      document.getElementById('result-screen').classList.add('hidden');
+      document.getElementById('flashcard').classList.remove('hidden');
+      document.getElementById('total-index').innerText = dataset[currentCategory].length;
+      updateCard();
+    }
+
+    function updateCard() {
+      document.getElementById('flashcard').classList.remove('rotate-y-180'); isFlipped = false;
+      const data = dataset[currentCategory][currentIndex];
+      document.getElementById('card-icon').innerText = data.icon;
+      document.getElementById('card-en').innerText = data.en;
+      document.getElementById('card-en-back').innerText = data.en;
+      document.getElementById('card-kanji').innerText = data.kanji;
+      document.getElementById('card-kana').innerText = data.kana;
+      document.getElementById('current-index').innerText = currentIndex + 1;
+    }
+
+    function flipCard() { document.getElementById('flashcard').classList.toggle('rotate-y-180'); isFlipped = !isFlipped; }
+
+    function nextCard() {
+      if (currentIndex < dataset[currentCategory].length - 1) { currentIndex++; updateCard(); }
+      else { document.getElementById('flashcard').classList.add('hidden'); document.getElementById('result-screen').classList.remove('hidden'); }
+    }
+    function prevCard() { if (currentIndex > 0) { currentIndex--; updateCard(); } }
+    function restartCategory() { document.getElementById('result-screen').classList.add('hidden'); document.getElementById('flashcard').classList.remove('hidden'); currentIndex = 0; updateCard(); }
+    function speakText(event) { event.stopPropagation(); const data = dataset[currentCategory][currentIndex]; window.speechSynthesis.cancel(); const utterance = new SpeechSynthesisUtterance(data.kanji); utterance.lang = 'ja-JP'; window.speechSynthesis.speak(utterance); }
+
+    window.onload = () => { document.getElementById('total-index').innerText = dataset[currentCategory].length; updateCard(); };
+  </script>
+</body>
+</html>
