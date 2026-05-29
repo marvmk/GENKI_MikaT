@@ -1,1 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GENKI 2 Lessons</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .header { background-color: white; padding: 20px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); width: 90%; max-width: 1000px; text-align: center; }
+        .header h2 { margin: 0; color: #2c3e50; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; width: 90%; max-width: 1000px; }
+        .card { background: white; border-radius: 15px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: center; }
+        .card h3 { margin-top: 0; color: #4a86e8; font-size: 22px; margin-bottom: 15px; }
+        .button-group { display: flex; gap: 10px; }
+        .btn { flex: 1; text-align: center; text-decoration: none; padding: 12px; border-radius: 10px; color: white; font-weight: bold; font-size: 14px; transition: transform 0.1s; }
+        .btn:hover { transform: translateY(-2px); }
+        .btn-go { background-color: #4a86e8; }
+        .btn-vocab { background-color: #f6b26b; }
+        .btn i { margin-right: 5px; }
+    </style>
+</head>
+<body>
 
+<div class="header">
+    <h2>🔮 GENKI 2 (Lesson 13 - Lesson 23)</h2>
+</div>
+
+<div class="grid">
+    <script>
+        for (let i = 13; i <= 23; i++) {
+            document.write(`
+                <div class="card">
+                    <h3>Lesson ${i}</h3>
+                    <div class="button-group">
+                        <a href="./Lesson${i}/" class="btn btn-go"><i class="fas fa-external-link-alt"></i> GO</a>
+                        <a href="./Lesson${i}/vocab.html" class="btn btn-vocab"><i class="fas fa-th-large"></i> VOCAB</a>
+                    </div>
+                </div>
+            `);
+        }
+    </script>
+</div>
+
+</body>
+</html>
