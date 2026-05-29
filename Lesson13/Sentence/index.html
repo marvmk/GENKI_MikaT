@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Genki Lesson 13 Sentence App</title>
+  <title>Genki Lesson 13 Sentence Practice</title>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <style>
     .perspective-1000 { perspective: 1000px; }
@@ -13,28 +13,37 @@
   </style>
 </head>
 <body class="bg-slate-50 font-sans min-h-screen flex flex-col justify-between">
+
   <header class="bg-rose-600 text-white py-6 shadow-md text-center">
-    <h1 class="text-3xl md:text-4xl font-extrabold tracking-wide">Genki L13 Sentences</h1>
-    <p class="text-sm md:text-base mt-2 opacity-90">Grammar Patterns: Potential Verbs, ~shi, and ~sou</p>
+    <h1 class="text-3xl md:text-4xl font-extrabold tracking-wide">Genki L13 Sentence Master</h1>
+    <p class="text-sm md:text-base mt-2 opacity-90">Grammar Focus: Potential, Reasons (~shi), Looks like (~sou), Try doing (~te miru)</p>
   </header>
 
   <main class="max-w-4xl w-full mx-auto p-4 flex-grow flex flex-col items-center justify-center">
+    
+    <!-- カテゴリー切り替えタブ -->
     <div id="tabs" class="w-full flex flex-wrap justify-center gap-2 mb-6">
-      <button onclick="switchCategory('potential')" id="tab-potential" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-rose-600 text-white">Potential (~eru/~rareru)</button>
+      <button onclick="switchCategory('potential')" id="tab-potential" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-rose-600 text-white">Potential (~eru/rareru)</button>
       <button onclick="switchCategory('reason')" id="tab-reason" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-rose-700 hover:bg-rose-50">Reasons (~shi)</button>
-      <button onclick="switchCategory('conjecture')" id="tab-conjecture" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-rose-700 hover:bg-rose-50">Conjecture (~sou)</button>
+      <button onclick="switchCategory('conjecture')" id="tab-conjecture" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-rose-700 hover:bg-rose-50">Looks like (~sou)</button>
+      <button onclick="switchCategory('temiru')" id="tab-temiru" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-rose-700 hover:bg-rose-50">Try doing (~te miru)</button>
     </div>
 
     <div class="text-xl md:text-2xl font-bold text-slate-600 mb-4">
       Sentence: <span id="current-index" class="text-rose-600">1</span> / <span id="total-index">4</span>
     </div>
 
+    <!-- フラッシュカード本体エリア -->
     <div class="w-full max-w-2xl h-[450px] relative perspective-1000">
       <div id="flashcard" onclick="flipCard()" class="w-full h-full relative transform-style-3d transition-transform duration-500 cursor-pointer">
+        
+        <!-- 表面 (Front: English) -->
         <div class="absolute w-full h-full bg-white rounded-3xl shadow-xl border-2 border-rose-100 p-8 flex flex-col justify-center items-center text-center backface-hidden">
           <div id="card-en" class="text-2xl md:text-3xl font-bold text-slate-800 leading-snug">I can speak Japanese.</div>
-          <div class="text-xs text-rose-500 mt-8 font-semibold tracking-widest uppercase">Tap to see Japanese Sentence</div>
+          <div class="text-xs text-rose-500 mt-8 font-semibold tracking-widest uppercase">Tap to see Japanese Answer</div>
         </div>
+
+        <!-- 裏面 (Back: Japanese) -->
         <div class="absolute w-full h-full bg-rose-50 rounded-3xl shadow-xl border-2 border-rose-200 p-6 flex flex-col justify-between items-center text-center backface-hidden rotate-y-180">
           <div class="w-full flex flex-col items-center pt-2">
             <div id="card-en-back" class="text-lg md:text-xl font-medium text-rose-800">I can speak Japanese.</div>
@@ -44,44 +53,57 @@
             <div id="card-kana" class="text-xl md:text-2xl text-rose-600 font-bold">わたしはにほんごがはなせます。</div>
           </div>
           <div class="pb-2">
-            <button onclick="speakText(event)" class="bg-rose-600 hover:bg-rose-700 active:scale-95 text-white p-4 rounded-full shadow-lg flex items-center justify-center">
+            <button onclick="speakText(event)" class="bg-rose-600 hover:bg-rose-700 active:scale-95 text-white p-4 rounded-full shadow-lg flex items-center justify-center" title="Listen">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
             </button>
           </div>
         </div>
+
       </div>
 
+      <!-- セット完了画面 -->
       <div id="result-screen" class="absolute inset-0 bg-white rounded-3xl shadow-2xl border-4 border-rose-500 p-8 flex flex-col justify-center items-center text-center hidden z-10">
         <div class="text-7xl mb-4">🎉</div>
         <h2 class="text-4xl font-black text-rose-600 mb-2">Excellent!</h2>
-        <p class="text-xl text-slate-600 mb-8">You finished the sentence practice!</p>
-        <button onclick="restartCategory()" class="bg-rose-600 hover:bg-rose-700 text-white font-bold text-xl px-8 py-4 rounded-full shadow-md">Restart</button>
+        <p class="text-xl text-slate-600 mb-8">You finished this sentence practice set!</p>
+        <button onclick="restartCategory()" class="bg-rose-600 hover:bg-rose-700 text-white font-bold text-xl px-8 py-4 rounded-full shadow-md transition-all active:scale-95">Restart</button>
       </div>
     </div>
 
+    <!-- コントロールボタン -->
     <div id="controls" class="flex items-center justify-center gap-6 mt-8 w-full max-w-md">
-      <button onclick="prevCard()" class="flex-1 bg-slate-700 hover:bg-slate-800 text-white font-bold text-lg py-4 rounded-xl shadow-md">← Previous</button>
-      <button onclick="nextCard()" class="flex-1 bg-rose-600 hover:bg-rose-700 text-white font-bold text-lg py-4 rounded-xl shadow-md">Next →</button>
+      <button onclick="prevCard()" class="flex-1 bg-slate-700 hover:bg-slate-800 text-white font-bold text-lg py-4 rounded-xl shadow-md transition-all active:scale-95">← Previous</button>
+      <button onclick="nextCard()" class="flex-1 bg-rose-600 hover:bg-rose-700 text-white font-bold text-lg py-4 rounded-xl shadow-md transition-all active:scale-95">Next →</button>
     </div>
+
   </main>
+
+  <footer class="bg-slate-800 text-slate-400 py-4 text-center text-sm border-t border-slate-700">
+    &copy; FujiGreentea - Genki Sentence Master
+  </footer>
 
   <script>
     const dataset = {
       potential: [
         { en: "I can speak Japanese.", kanji: "私は日本語が話せます。", kana: "わたしはにほんごがはなせます。" },
-        { en: "I can swim tomorrow.", kanji: "明日は泳げます。", kana: "あしたはおよげます。" },
         { en: "Mary can play the guitar.", kanji: "メアリーさんはギターが弾けます。", kana: "めありーさんはぎたーがひけます。" },
-        { en: "I cannot go to the party tonight.", kanji: "今晩パーティーに行けません。", kana: "こんばんぱーてぃーにいけません。" }
+        { en: "You cannot keep dogs in this apartment.", kanji: "このアパートでは犬を飼うことができません。", kana: "このあぱーとではいぬをかうことができません。" },
+        { en: "I can meet various people at a part-time job.", kanji: "アルバイトで色々な人に会えます。", kana: "あるばいとでいろいろなひとにあえます。" }
       ],
       reason: [
-        { en: "Because it's clean and close to the station, I like this room.", kanji: "綺麗だし、駅に近いし、この部屋が好きです。", kana: "きれいだし、えきにちかいし、このへやがすきです。" },
-        { en: "Professor Yamashita is kind and interesting.", kanji: "山下先生は優しいし、面白いです。", kana: "やましたせんせいはやさしいし、おもしろいです。" },
-        { en: "The food is cheap and delicious.", kanji: "料理は安いし、美味しいです。", kana: "りょうりはやすいし、おいしいです。" }
+        { en: "Because Japanese is interesting, I love class.", kanji: "日本語は面白いから、クラスが大好きです。", kana: "にほんごはおもしろいから、くらすがだいすきです。" },
+        { en: "The food is cheap and delicious.", kanji: "物価が安いし、料理も美味しいです。", kana: "ぶっかがやすいし、りょうりもおいしいです。" },
+        { en: "Professor Yamashita is a good teacher; he's smart and kind.", kanji: "山下先生はいい先生です。頭がいいし、親切だし。", kana: "やましたせんせいはいいせんせいです。あたまがいいし、しんせつだし。" }
       ],
       conjecture: [
-        { en: "This apple looks delicious.", kanji: "このりんごは美味しそうです。", kana: "このりんごはおいしそうです。" },
-        { en: "It looks like it will rain tomorrow.", kanji: "明日は雨が降りそうです。", kana: "あしたはあめがふりそうです。" },
-        { en: "He looks energetic.", kanji: "彼は元気そうです。", kana: "かれはげんきそうです。" }
+        { en: "This curry looks delicious.", kanji: "このカレーは美味しそうです。", kana: "このかれーはおいしそうです。" },
+        { en: "This book does not look difficult.", kanji: "この本は難しくなさそうです。", kana: "このほんはむずかしくなさそうです。" },
+        { en: "Sora does not look good at tennis.", kanji: "ソラさんはテニスが上手じゃなさそうです。", kana: "そらさんはてにすがじょうずじゃなさそうです。" }
+      ],
+      temiru: [
+        { en: "I will try to wear this cloth.", kanji: "この服を着てみます。", kana: "このふくをきてみます。" },
+        { en: "I will try to read this book.", kanji: "この本を読んでみます。", kana: "このほんをよんでみます。" },
+        { en: "I want to try going to India.", kanji: "インドに行ってみたいです。", kana: "いんどにいってみたいです。" }
       ]
     };
 
@@ -93,20 +115,90 @@
       currentCategory = category;
       currentIndex = 0;
       isFlipped = false;
-      const cats = ['potential', 'reason', 'conjecture'];
+      
+      const cats = ['potential', 'reason', 'conjecture', 'temiru'];
       cats.forEach(c => {
         const btn = document.getElementById(`tab-${c}`);
-        if(c === category) {
+        if (c === category) {
           btn.className = "px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-rose-600 text-white";
         } else {
           btn.className = "px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-rose-700 hover:bg-rose-50";
         }
       });
+
       document.getElementById('result-screen').classList.add('hidden');
       document.getElementById('flashcard').classList.remove('hidden');
       document.getElementById('controls').classList.remove('opacity-30', 'pointer-events-none');
+      
       document.getElementById('total-index').innerText = dataset[currentCategory].length;
       updateCard();
     }
 
-    ... (以下Vocabularyと同様のロジックで動作します)
+    function updateCard() {
+      const card = document.getElementById('flashcard');
+      card.classList.remove('rotate-y-180');
+      isFlipped = false;
+
+      const data = dataset[currentCategory][currentIndex];
+      document.getElementById('card-en').innerText = data.en;
+      document.getElementById('card-en-back').innerText = data.en;
+      document.getElementById('card-kanji').innerText = data.kanji;
+      document.getElementById('card-kana').innerText = data.kana;
+      document.getElementById('current-index').innerText = currentIndex + 1;
+    }
+
+    function flipCard() {
+      const card = document.getElementById('flashcard');
+      if (!isFlipped) {
+        card.classList.add('rotate-y-180');
+        isFlipped = true;
+      } else {
+        card.classList.remove('rotate-y-180');
+        isFlipped = false;
+      }
+    }
+
+    function nextCard() {
+      const totalQuestions = dataset[currentCategory].length;
+      if (currentIndex < totalQuestions - 1) {
+        currentIndex++;
+        updateCard();
+      } else {
+        document.getElementById('flashcard').classList.add('hidden');
+        document.getElementById('controls').classList.add('opacity-30', 'pointer-events-none');
+        document.getElementById('result-screen').classList.remove('hidden');
+      }
+    }
+
+    function prevCard() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateCard();
+      }
+    }
+
+    function restartCategory() {
+      document.getElementById('result-screen').classList.add('hidden');
+      document.getElementById('flashcard').classList.remove('hidden');
+      document.getElementById('controls').classList.remove('opacity-30', 'pointer-events-none');
+      currentIndex = 0;
+      updateCard();
+    }
+
+    function speakText(event) {
+      event.stopPropagation();
+      const data = dataset[currentCategory][currentIndex];
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(data.kanji);
+      utterance.lang = 'ja-JP';
+      utterance.rate = 0.85;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    window.onload = () => {
+      document.getElementById('total-index').innerText = dataset[currentCategory].length;
+      updateCard();
+    };
+  </script>
+</body>
+</html>
