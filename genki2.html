@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lessons (第13課〜第23課)</title>
     <style>
+        /* 全体の背景（GENKI 1と共通の薄いグレー） */
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: #eef2f7;
@@ -12,6 +13,8 @@
             padding: 20px;
             color: #333;
         }
+
+        /* 上部のヘッダーバー */
         .header-bar {
             background-color: #e1ecf7;
             border-left: 5px solid #3b76cc;
@@ -23,6 +26,8 @@
             max-width: 1200px;
             margin: 0 auto 25px auto;
         }
+
+        /* カードを並べるグリッド */
         .grid-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -30,6 +35,8 @@
             max-width: 1200px;
             margin: 0 auto;
         }
+
+        /* 白いレッスンカード */
         .lesson-card {
             background-color: #ffffff;
             border-radius: 16px;
@@ -37,6 +44,8 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
             border: 1px solid #eef0f4;
         }
+
+        /* レッスンタイトル */
         .lesson-card h3 {
             margin-top: 0;
             margin-bottom: 15px;
@@ -46,10 +55,14 @@
             border-bottom: 1px solid #edf1f7;
             padding-bottom: 8px;
         }
+
+        /* ボタンを横に並べるグループ */
         .button-group {
             display: flex;
             gap: 12px;
         }
+
+        /* ボタンの共通スタイル */
         .btn {
             flex: 1;
             display: flex;
@@ -64,9 +77,19 @@
             box-shadow: 0 2px 6px rgba(0,0,0,0.1);
             transition: opacity 0.2s;
         }
-        .btn:hover { opacity: 0.85; }
-        .btn-go { background-color: #4a86e8; }
-        .btn-vocab { background-color: #e6a23c; }
+        .btn:hover {
+            opacity: 0.85;
+        }
+
+        /* 🚀 GO ボタン（青） */
+        .btn-go {
+            background-color: #4a86e8;
+        }
+
+        /* 📖 VOCAB ボタン（オレンジ） */
+        .btn-vocab {
+            background-color: #e6a23c;
+        }
     </style>
 </head>
 <body>
@@ -111,21 +134,4 @@
 
         <div class="lesson-card">
             <h3>Lesson 17</h3>
-            <div class="button-group">
-                <a href="./Lesson17/Sentence/index.html" class="btn btn-go">🚀 GO</a>
-                <a href="./Lesson17/vocabulary/index.html" class="btn btn-vocab">📖 VOCAB</a>
-            </div>
-        </div>
-
-        <div class="lesson-card">
-            <h3>Lesson 18</h3>
-            <div class="button-group">
-                <a href="./Lesson18/Sentence/index.html" class="btn btn-go">🚀 GO</a>
-                <a href="./Lesson18/vocabulary/index.html" class="btn btn-vocab">📖 VOCAB</a>
-            </div>
-        </div>
-
-        <div class="lesson-card">
-            <h3>Lesson 19</h3>
-            <div class="button-group">
-                <a href="./Lesson19/Sentence
+            <div class="button
