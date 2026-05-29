@@ -15,7 +15,7 @@
 <body class="bg-slate-50 font-sans min-h-screen flex flex-col justify-between">
 
   <header class="bg-rose-600 text-white py-6 shadow-md text-center">
-    <h1 class="text-3xl md:text-4xl font-extrabold tracking-wide">Genki L13 Sentence Master</h1>
+    <h1 class="text-3xl md:text-4xl font-extrabold tracking-wide">Genki L13 Sentence Master 🎨</h1>
     <p class="text-sm md:text-base mt-2 opacity-90">Grammar Focus: Potential, Reasons (~shi), Looks like (~sou), Try doing (~te miru)</p>
   </header>
 
@@ -37,8 +37,9 @@
     <div class="w-full max-w-2xl h-[450px] relative perspective-1000">
       <div id="flashcard" onclick="flipCard()" class="w-full h-full relative transform-style-3d transition-transform duration-500 cursor-pointer">
         
-        <!-- 表面 (Front: English) -->
+        <!-- 表面 (Front: English + 絵文字イラスト復活) -->
         <div class="absolute w-full h-full bg-white rounded-3xl shadow-xl border-2 border-rose-100 p-8 flex flex-col justify-center items-center text-center backface-hidden">
+          <div id="card-icon" class="text-7xl md:text-8xl mb-6 select-none">🗣️🇯🇵</div>
           <div id="card-en" class="text-2xl md:text-3xl font-bold text-slate-800 leading-snug">I can speak Japanese.</div>
           <div class="text-xs text-rose-500 mt-8 font-semibold tracking-widest uppercase">Tap to see Japanese Answer</div>
         </div>
@@ -85,25 +86,25 @@
   <script>
     const dataset = {
       potential: [
-        { en: "I can speak Japanese.", kanji: "私は日本語が話せます。", kana: "わたしはにほんごがはなせます。" },
-        { en: "Mary can play the guitar.", kanji: "メアリーさんはギターが弾けます。", kana: "めありーさんはぎたーがひけます。" },
-        { en: "You cannot keep dogs in this apartment.", kanji: "このアパートでは犬を飼うことができません。", kana: "このあぱーとではいぬをかうことができません。" },
-        { en: "I can meet various people at a part-time job.", kanji: "アルバイトで色々な人に会えます。", kana: "あるばいとでいろいろなひとにあえます。" }
+        { icon: "🗣️🇯🇵", en: "I can speak Japanese.", kanji: "私は日本語が話せます。", kana: "わたしはにほんごがはなせます。" },
+        { icon: "🎸🎵", en: "Mary can play the guitar.", kanji: "メアリーさんはギターが弾けます。", kana: "めありーさんはぎたーがひけます。" },
+        { icon: "🏢🚫🐕", en: "You cannot keep dogs in this apartment.", kanji: "このアパートでは犬を飼うことができません。", kana: "このあぱーとではいぬをかうことができません。" },
+        { icon: "💼🤝🧑‍🤝‍🧑", en: "I can meet various people at a part-time job.", kanji: "アルバイトで色々な人に会えます。", kana: "あるばいとでいろいろなひとにあえます。" }
       ],
       reason: [
-        { en: "Because Japanese is interesting, I love class.", kanji: "日本語は面白いから、クラスが大好きです。", kana: "にほんごはおもしろいから、くらすがだいすきです。" },
-        { en: "The food is cheap and delicious.", kanji: "物価が安いし、料理も美味しいです。", kana: "ぶっかがやすいし、りょうりもおいしいです。" },
-        { en: "Professor Yamashita is a good teacher; he's smart and kind.", kanji: "山下先生はいい先生です。頭がいいし、親切だし。", kana: "やましたせんせいはいいせんせいです。あたまがいいし、しんせつだし。" }
+        { icon: "❤️🏫🏫", en: "Because Japanese is interesting, I love class.", kanji: "日本語は面白いから、クラスが大好きです。", kana: "にほんごはおもしろいから、くらすがだいすきです。" },
+        { icon: "📉🍛😋", en: "The food is cheap and delicious.", kanji: "物価が安いし、料理も美味しいです。", kana: "ぶっかがやすいし、りょうりもおいしいです。" },
+        { icon: "👨‍🏫🧠❤️", en: "Professor Yamashita is a good teacher; he's smart and kind.", kanji: "山下先生はいい先生です。頭がいいし、親切だし。", kana: "やましたせんせいはいいせんせいです。あたまがいいし、しんせつだし。" }
       ],
       conjecture: [
-        { en: "This curry looks delicious.", kanji: "このカレーは美味しそうです。", kana: "このかれーはおいしそうです。" },
-        { en: "This book does not look difficult.", kanji: "この本は難しくなさそうです。", kana: "このほんはむずかしくなさそうです。" },
-        { en: "Sora does not look good at tennis.", kanji: "ソラさんはテニスが上手じゃなさそうです。", kana: "そらさんはてにすがじょうずじゃなさそうです。" }
+        { icon: "🍛🔥😋", en: "This curry looks delicious.", kanji: "このカレーは美味しそうです。", kana: "このかれーはおいしそうです。" },
+        { icon: "📚🔍🤔", en: "This book does not look difficult.", kanji: "この本は難しくなさそうです。", kana: "このほんはむずかしくなさそうです。" },
+        { icon: "🎾👟❌", en: "Sora does not look good at tennis.", kanji: "ソラさんはテニスが上手じゃなさそうです。", kana: "そらさんはてにすがじょうずじゃなさそうです。" }
       ],
       temiru: [
-        { en: "I will try to wear this cloth.", kanji: "この服を着てみます。", kana: "このふくをきてみます。" },
-        { en: "I will try to read this book.", kanji: "この本を読んでみます。", kana: "このほんをよんでみます。" },
-        { en: "I want to try going to India.", kanji: "インドに行ってみたいです。", kana: "いんどにいってみたいです。" }
+        { icon: "👕🧥✨", en: "I will try to wear this cloth.", kanji: "この服を着てみます。", kana: "このふくをきてみます。" },
+        { icon: "📖🤓🔍", en: "I will try to read this book.", kanji: "この本を読んでみます。", kana: "このほんをよんでみます。" },
+        { icon: "🇮🇳✈️🐘", en: "I want to try going to India.", kanji: "インドに行ってみたいです。", kana: "いんどにいってみたいです。" }
       ]
     };
 
@@ -140,6 +141,7 @@
       isFlipped = false;
 
       const data = dataset[currentCategory][currentIndex];
+      document.getElementById('card-icon').innerText = data.icon; // 絵文字更新
       document.getElementById('card-en').innerText = data.en;
       document.getElementById('card-en-back').innerText = data.en;
       document.getElementById('card-kanji').innerText = data.kanji;
