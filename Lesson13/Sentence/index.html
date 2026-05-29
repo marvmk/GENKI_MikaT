@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Genki Lesson 13 Sentence App</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    .perspective-1000 { perspective: 1000px; }
+    .transform-style-3d { transform-style: preserve-3d; }
+    .backface-hidden { backface-visibility: hidden; }
+    .rotate-y-180 { transform: rotateY(180deg); }
+  </style>
+</head>
+<body class="bg-slate-50 font-sans min-h-screen flex flex-col justify-between">
+  <header class="bg-rose-600 text-white py-6 shadow-md text-center">
+    <h1 class="text-3xl md:text-4xl font-extrabold tracking-wide">Genki L13 Sentences</h1>
+    <p class="text-sm md:text-base mt-2 opacity-90">Grammar Patterns: Potential Verbs, ~shi, and ~sou</p>
+  </header>
+
+  <main class="max-w-4xl w-full mx-auto p-4 flex-grow flex flex-col items-center justify-center">
+    <div id="tabs" class="w-full flex flex-wrap justify-center gap-2 mb-6">
+      <button onclick="switchCategory('potential')" id="tab-potential" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-rose-600 text-white">Potential (~eru/~rareru)</button>
+      <button onclick="switchCategory('reason')" id="tab-reason" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-rose-700 hover:bg-rose-50">Reasons (~shi)</button>
+      <button onclick="switchCategory('conjecture')" id="tab-conjecture" class="px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-rose-700 hover:bg-rose-50">Conjecture (~sou)</button>
+    </div>
+
+    <div class="text-xl md:text-2xl font-bold text-slate-600 mb-4">
+      Sentence: <span id="current-index" class="text-rose-600">1</span> / <span id="total-index">4</span>
+    </div>
+
+    <div class="w-full max-w-2xl h-[450px] relative perspective-1000">
+      <div id="flashcard" onclick="flipCard()" class="w-full h-full relative transform-style-3d transition-transform duration-500 cursor-pointer">
+        <div class="absolute w-full h-full bg-white rounded-3xl shadow-xl border-2 border-rose-100 p-8 flex flex-col justify-center items-center text-center backface-hidden">
+          <div id="card-en" class="text-2xl md:text-3xl font-bold text-slate-800 leading-snug">I can speak Japanese.</div>
+          <div class="text-xs text-rose-500 mt-8 font-semibold tracking-widest uppercase">Tap to see Japanese Sentence</div>
+        </div>
+        <div class="absolute w-full h-full bg-rose-50 rounded-3xl shadow-xl border-2 border-rose-200 p-6 flex flex-col justify-between items-center text-center backface-hidden rotate-y-180">
+          <div class="w-full flex flex-col items-center pt-2">
+            <div id="card-en-back" class="text-lg md:text-xl font-medium text-rose-800">I can speak Japanese.</div>
+          </div>
+          <div class="flex flex-col gap-3 my-auto w-full px-2">
+            <div id="card-kanji" class="text-2xl md:text-3xl lg:text-4xl font-extrabold text-slate-900 leading-relaxed">私は日本語が話せます。</div>
+            <div id="card-kana" class="text-xl md:text-2xl text-rose-600 font-bold">わたしはにほんごがはなせます。</div>
+          </div>
+          <div class="pb-2">
+            <button onclick="speakText(event)" class="bg-rose-600 hover:bg-rose-700 active:scale-95 text-white p-4 rounded-full shadow-lg flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="result-screen" class="absolute inset-0 bg-white rounded-3xl shadow-2xl border-4 border-rose-500 p-8 flex flex-col justify-center items-center text-center hidden z-10">
+        <div class="text-7xl mb-4">🎉</div>
+        <h2 class="text-4xl font-black text-rose-600 mb-2">Excellent!</h2>
+        <p class="text-xl text-slate-600 mb-8">You finished the sentence practice!</p>
+        <button onclick="restartCategory()" class="bg-rose-600 hover:bg-rose-700 text-white font-bold text-xl px-8 py-4 rounded-full shadow-md">Restart</button>
+      </div>
+    </div>
+
+    <div id="controls" class="flex items-center justify-center gap-6 mt-8 w-full max-w-md">
+      <button onclick="prevCard()" class="flex-1 bg-slate-700 hover:bg-slate-800 text-white font-bold text-lg py-4 rounded-xl shadow-md">← Previous</button>
+      <button onclick="nextCard()" class="flex-1 bg-rose-600 hover:bg-rose-700 text-white font-bold text-lg py-4 rounded-xl shadow-md">Next →</button>
+    </div>
+  </main>
+
+  <script>
+    const dataset = {
+      potential: [
+        { en: "I can speak Japanese.", kanji: "私は日本語が話せます。", kana: "わたしはにほんごがはなせます。" },
+        { en: "I can swim tomorrow.", kanji: "明日は泳げます。", kana: "あしたはおよげます。" },
+        { en: "Mary can play the guitar.", kanji: "メアリーさんはギターが弾けます。", kana: "めありーさんはぎたーがひけます。" },
+        { en: "I cannot go to the party tonight.", kanji: "今晩パーティーに行けません。", kana: "こんばんぱーてぃーにいけません。" }
+      ],
+      reason: [
+        { en: "Because it's clean and close to the station, I like this room.", kanji: "綺麗だし、駅に近いし、この部屋が好きです。", kana: "きれいだし、えきにちかいし、このへやがすきです。" },
+        { en: "Professor Yamashita is kind and interesting.", kanji: "山下先生は優しいし、面白いです。", kana: "やましたせんせいはやさしいし、おもしろいです。" },
+        { en: "The food is cheap and delicious.", kanji: "料理は安いし、美味しいです。", kana: "りょうりはやすいし、おいしいです。" }
+      ],
+      conjecture: [
+        { en: "This apple looks delicious.", kanji: "このりんごは美味しそうです。", kana: "このりんごはおいしそうです。" },
+        { en: "It looks like it will rain tomorrow.", kanji: "明日は雨が降りそうです。", kana: "あしたはあめがふりそうです。" },
+        { en: "He looks energetic.", kanji: "彼は元気そうです。", kana: "かれはげんきそうです。" }
+      ]
+    };
+
+    let currentCategory = 'potential';
+    let currentIndex = 0;
+    let isFlipped = false;
+
+    function switchCategory(category) {
+      currentCategory = category;
+      currentIndex = 0;
+      isFlipped = false;
+      const cats = ['potential', 'reason', 'conjecture'];
+      cats.forEach(c => {
+        const btn = document.getElementById(`tab-${c}`);
+        if(c === category) {
+          btn.className = "px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-rose-600 text-white";
+        } else {
+          btn.className = "px-5 py-3 rounded-full font-bold text-lg shadow-sm transition-all duration-300 bg-white text-rose-700 hover:bg-rose-50";
+        }
+      });
+      document.getElementById('result-screen').classList.add('hidden');
+      document.getElementById('flashcard').classList.remove('hidden');
+      document.getElementById('controls').classList.remove('opacity-30', 'pointer-events-none');
+      document.getElementById('total-index').innerText = dataset[currentCategory].length;
+      updateCard();
+    }
+
+    ... (以下Vocabularyと同様のロジックで動作します)
