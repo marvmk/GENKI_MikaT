@@ -3,50 +3,217 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GENKI 1 Lessons</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Lessons (第1課〜第12課)</title>
     <style>
-        body { font-family: sans-serif; background-color: #eef2f7; margin: 0; padding: 20px; }
-        .header { background-color: white; padding: 15px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-        .card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .card h3 { margin-top: 0; color: #4a86e8; font-size: 20px; }
-        .button-group { display: flex; gap: 10px; }
-        .btn { flex: 1; text-align: center; text-decoration: none; padding: 10px; border-radius: 8px; color: white; font-weight: bold; font-size: 14px; }
-        .btn-go { background-color: #4a86e8; } /* 青色 */
-        .btn-vocab { background-color: #f6b26b; } /* オレンジ色 */
-        .btn i { margin-right: 5px; }
+        /* 全体の背景（少し青みのある薄いグレー） */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #eef2f7;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        /* 上部のヘッダーバー */
+        .header-bar {
+            background-color: #e1ecf7;
+            border-left: 5px solid #3b76cc;
+            padding: 12px 20px;
+            border-radius: 4px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+            max-width: 1200px;
+            margin: 0 auto 25px auto;
+        }
+
+        /* カードを並べるグリッド（レスポンシブ対応） */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* 白いレッスンカード */
+        .lesson-card {
+            background-color: #ffffff;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            border: 1px solid #eef0f4;
+        }
+
+        /* レッスンタイトル */
+        .lesson-card h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #5c93e6;
+            font-size: 20px;
+            font-weight: bold;
+            border-bottom: 1px solid #edf1f7;
+            padding-bottom: 8px;
+        }
+
+        /* ボタンを横に並べるグループ */
+        .button-group {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* ボタンの共通スタイル */
+        .btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            font-size: 15px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            transition: opacity 0.2s;
+        }
+        .btn:hover {
+            opacity: 0.85;
+        }
+
+        /* 🚀 GO ボタン（鮮やかな青） */
+        .btn-go {
+            background-color: #4a86e8;
+        }
+
+        /* 📖 VOCAB ボタン（落ち着いたオレンジ） */
+        .btn-vocab {
+            background-color: #e6a23c;
+        }
+
+        /* 特別な横長バー（Lesson 4 Specialなど） */
+        .special-bar {
+            grid-column: 1 / -1; /* グリッドを横いっぱいに広げる */
+            background-color: #6a7d8c;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 15px;
+            margin: 10px 0;
+        }
     </style>
 </head>
 <body>
 
-<div class="header">
-    <h2><i class="fas fa-book"></i> GENKI 1 (第1課〜第12課)</h2>
-</div>
+    <div class="header-bar">
+        📘 Lessons (第1課〜第12課)
+    </div>
 
-<div class="grid">
-    <div class="card">
-        <h3>Lesson 1</h3>
-        <div class="button-group">
-            <a href="./Lesson1/" class="btn btn-go"><i class="fas fa-external-link-alt"></i> GO</a>
-            <a href="./Lesson1/vocab.html" class="btn btn-vocab"><i class="fas fa-th-large"></i> VOCAB</a>
+    <div class="grid-container">
+        
+        <div class="lesson-card">
+            <h3>Lesson 1</h3>
+            <div class="button-group">
+                <a href="./Lesson1/" class="btn btn-go">🚀 GO</a>
+                <a href="./Lesson1/vocab.html" class="btn btn-vocab">📖 VOCAB</a>
+            </div>
         </div>
-    </div>
-    <div class="card">
-        <h3>Lesson 2</h3>
-        <div class="button-group">
-            <a href="./Lesson2/" class="btn btn-go"><i class="fas fa-external-link-alt"></i> GO</a>
-            <a href="./Lesson2/vocab.html" class="btn btn-vocab"><i class="fas fa-th-large"></i> VOCAB</a>
+
+        <div class="lesson-card">
+            <h3>Lesson 2</h3>
+            <div class="button-group">
+                <a href="./Lesson2/" class="btn btn-go">🚀 GO</a>
+                <a href="./Lesson2/vocab.html" class="btn btn-vocab">📖 VOCAB</a>
+            </div>
         </div>
-    </div>
-    <div class="card">
-        <h3>Lesson 3</h3>
-        <div class="button-group">
-            <a href="./Lesson3/" class="btn btn-go"><i class="fas fa-external-link-alt"></i> GO</a>
-            <a href="./Lesson3/vocab.html" class="btn btn-vocab"><i class="fas fa-th-large"></i> VOCAB</a>
+
+        <div class="lesson-card">
+            <h3>Lesson 3</h3>
+            <div class="button-group">
+                <a href="./Lesson3/" class="btn btn-go">🚀 GO</a>
+                <a href="./Lesson3/vocab.html" class="btn btn-vocab">📖 VOCAB</a>
+            </div>
         </div>
+
+        <div class="lesson-card">
+            <h3>Lesson 4</h3>
+            <div class="button-group">
+                <a href="./Lesson4/" class="btn btn-go">🚀 GO</a>
+                <a href="./Lesson4/vocab.html" class="btn btn-vocab">📖 VOCAB</a>
+            </div>
+        </div>
+
+        <div class="special-bar">
+            📅 Lesson 4: Day-Week-Month Special
+        </div>
+
+        <div class="lesson-card">
+            <h3>Lesson 5</h3>
+            <div class="button-group">
+                <a href="./Lesson5/" class="btn btn-go">🚀 GO</a>
+                <a href="./Lesson5/vocab.html" class="btn btn-vocab">📖 VOCAB</a>
+            </div>
+        </div>
+
+        <div class="lesson-card">
+            <h3>Lesson 6</h3>
+            <div class="button-group">
+                <a href="./Lesson6/" class="btn btn-go">🚀 GO</a>
+                <a href="./Lesson6/vocab.html" class="btn btn-vocab">📖 VOCAB</a>
+            </div>
+        </div>
+
+        <div class="lesson-card">
+            <h3>Lesson 7</h3>
+            <div class="button-group">
+                <a href="./Lesson7/" class="btn btn-go">🚀 GO</a>
+                <a href="./Lesson7/vocab.html" class="btn btn-vocab">📖 VOCAB</a>
+            </div>
+        </div>
+
+        <div class="lesson-card">
+            <h3>Lesson 8</h3>
+            <div class="button-group">
+                <a href="./Lesson8/" class="btn btn-go">🚀 GO</a>
+                <a href="./Lesson8/vocab.html" class="btn btn-vocab">📖 VOCAB</a>
+            </div>
+        </div>
+
+        <div class="lesson-card">
+            <h3>Lesson 9</h3>
+            <div class="button-group">
+                <a href="./Lesson9/" class="btn btn-go">🚀 GO</a>
+                <a href="./Lesson9/vocab.html" class="btn btn-vocab">📖 VOCAB</a>
+            </div>
+        </div>
+
+        <div class="lesson-card">
+            <h3>Lesson 10</h3>
+            <div class="button-group">
+                <a href="./Lesson10/" class="btn btn-go">🚀 GO</a>
+                <a href="./Lesson10/vocab.html" class="btn btn-vocab">📖 VOCAB</a>
+            </div>
+        </div>
+
+        <div class="lesson-card">
+            <h3>Lesson 11</h3>
+            <div class="button-group">
+                <a href="./Lesson11/" class="btn btn-go">🚀 GO</a>
+                <a href="./Lesson11/vocab.html" class="btn btn-vocab">📖 VOCAB</a>
+            </div>
+        </div>
+
+        <div class="lesson-card">
+            <h3>Lesson 12</h3>
+            <div class="button-group">
+                <a href="./Lesson12/" class="btn btn-go">🚀 GO</a>
+                <a href="./Lesson12/vocab.html" class="btn btn-vocab">📖 VOCAB</a>
+            </div>
+        </div>
+
     </div>
-</div>
 
 </body>
 </html>
